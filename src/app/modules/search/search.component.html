@@ -7,6 +7,51 @@
     </header>
 </div>
 
+<div class="panelAcordeon">
+    <form [formGroup]="configuracionAcordeon" (ngSubmit)="sendconfiguracionAcordeon()" class="flex flex-col gap-4">
+        <p-panel formGroupName="cercaAvancadaAcordeon" [collapsed]="panels['cercaAvancadaAcordeon']" (collapsedChange)="detectPanelChanges($event, 'cercaAvancadaAcordeon')" [toggleable]="true" expandIcon="pi pi-chevron-up" collapseIcon="pi pi-chevron-down">
+            <ng-template pTemplate="header">
+                <div class="header-menu flex flex-row gap-2">
+                    <span class="font-bold">Cerca avançada</span>
+                </div>
+            </ng-template>
+
+
+            <div class="flex flex-row items-center justify-start gap-x-20 w-full">    
+                <div class="card flex flex-col justify-content-center">
+                    <label for="inputTitol">Títol</label>
+                    <input type="text" id="inputTitol" pInputText />
+
+                    <label for="inputAutorArtista">Autor/artista</label>
+                    <input type="text" id="inputAutorArtista" pInputText />
+
+                    <label for="materiaInput">Matèria</label>
+                    <input type="text" id="materiaInput" pInputText />
+
+                    <p>Limitar per:</p>
+                    <label for="tipusDeMaterial">Tipus de material</label>
+                    <input type="text" id="tipusDeMaterial" pInputText />
+
+                    <label for="inputLlengua">Llengua</label>
+                    <input type="text" id="inputLlengua" pInputText />
+
+                    <label for="inputAny">Any:</label>
+                    <input type="text" id="inputAny" pInputText />
+
+                    <label for="dropdownEditorial">Editorial</label>
+                    
+                    <label for="selectOrdenarPer">Ordenar per</label>
+                    <p-selectButton id="selectOrdenarPer" [options]="stateOptions" optionLabel="label" optionValue="ordenarPerValue"></p-selectButton>
+
+                    <p-button severity="icon">
+                        <i class="pi pi-search"></i>
+                    </p-button>
+                </div>
+            </div>
+        </p-panel>
+    </form>
+</div>
+
 <div class="searchContainer">
     <div class="grid grid-cols-3 px-10 mb-40 justify-center gap-x-20">
         <ng-container *ngFor="let book of books">
