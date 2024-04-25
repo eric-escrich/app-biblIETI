@@ -1,0 +1,21 @@
+.headerContainer {
+    padding: 300px 0;
+    margin: 0 0 40px 0;
+    width: auto;
+    height: auto;
+    background-image: url('/assets/imgs/header.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.bentoBox img {
+    width: 400px;
+    height: 600px;
+}

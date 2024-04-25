@@ -1,0 +1,18 @@
+<div class="headerContainer flex flex-col items-center justify-center text-center">
+    <header class="w-4/5">
+        <div class="flex flex-col items-center justify-center ">
+            <h1>BIBLIOTECA IES ESTEVE TERRADAS I ILLA</h1>
+            <p class="text-white font-semibold">Text de subtítol</p>
+        </div>
+    </header>
+</div>
+
+<div class="searchContainer">
+    <div class="grid grid-cols-3 px-10 mb-40 justify-center gap-x-20">
+        <ng-container *ngFor="let book of books">
+            <app-libros 
+                [bookImg]="book.image">
+            </app-libros>
+        </ng-container>
+    </div>
+</div>

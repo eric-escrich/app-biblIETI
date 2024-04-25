@@ -1,0 +1,100 @@
+div.mainContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+form {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+input {
+    width: 100%;
+    height: 3rem;
+    padding: 0.5rem;
+}
+
+input.p-inputtext.ng-dirty.ng-invalid {
+    border-color: #e24c4c;
+}
+
+.error {
+    height: 52px;
+}
+
+.error p {
+    color: red;
+}
+
+label.ng-invalid {
+    color: #e24c4c;
+}
+
+:host::ng-deep .p-button .p-button-label {
+    display: flex;
+    justify-content: center;
+}
+
+.forgottenPwdContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.forgottenPwd {
+    text-decoration: underline;
+    color: #556958;
+    cursor: pointer;
+}
+
+.closePopUp {
+    width: 20px;
+    height: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 100px;
+    cursor: pointer;
+    color: #556958;
+}
+
+.popup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 100%;
+    padding: 40px;
+    background-color: rgb(245, 245, 245);
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+
+.blur-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo borroso con opacidad */
+    backdrop-filter: blur(8px); /* Aplica un desenfoque al fondo */
+    z-index: 999; /* Asegura que el fondo esté detrás del popup */
+    display: none; /* Por defecto oculto */
+}
