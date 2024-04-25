@@ -4,7 +4,7 @@
         <header class="w-4/5">
             <div class="flex flex-col items-center justify-center ">
                 <h1>BIBLIOTECA IES ESTEVE TERRADAS I ILLA</h1>
-                <!-- <p class="text-white font-semibold">Text de subtítol</p> -->
+                <p class="text-white font-semibold">Text de subtítol</p>
             </div>
         </header>
     </div>
@@ -18,13 +18,20 @@
                     <p>Troba els teus llibres preferits! Recorda que si no el trobes, pots fer una petició.</p>
 
                     <div class="flex flex-row gap-x-2 mt-4">
-                        <div class="card flex justify-content-center">
-                            <!-- <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="items.name" (input)="onFilterChange()" [minLength]="3"></p-autoComplete> -->
-                            <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                        <div class="flex flex-col gap-y-4">
+                            <div class="card flex justify-content-center gap-x-2">
+                                <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                                
+                                <p-button severity="icon" [routerLink]="['/cercar-llibre']">
+                                    <i class="pi pi-search"></i>
+                                </p-button>
+                            </div>
+
+                            <div class="card flex justify-content-center gap-x-2 items-center">
+                                <label for="binary">Només disponibles</label>
+                                <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="binary"></p-checkbox>
+                            </div>
                         </div>
-                        <p-button severity="icon" [routerLink]="['/cercar-llibre']">
-                            <i class="pi pi-search"></i>
-                        </p-button>
                     </div>
                 </div>
 
