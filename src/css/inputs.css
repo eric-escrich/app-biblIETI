@@ -5,10 +5,17 @@ input.p-element.p-autocomplete-input.p-inputtext.p-component {
     background-color: white;
     border: 1px solid rgba(85, 105, 88, 0.5);
 }
+
 input#cif:focus-within,
 .p-inputtext:focus-within,
 input.p-element.p-autocomplete-input.p-inputtext.p-component:focus-within {
     box-shadow: 0 1px 10px rgba(85, 105, 88, 0.303);
+}
+
+label {
+    font-weight: 800;
+    font-size: 14px;
+    margin: 40px 0 4px 0;
 }
 
 /* INPUT INCORRECTE */

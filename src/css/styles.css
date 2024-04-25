@@ -8,14 +8,11 @@
 @tailwind utilities;
 
 body, html {
-    /* height: 100%; */
     margin: 0;
     padding: 0;
 }
 
-
 body, html {
-    /* height: 100%; */
     margin: 0;
     padding: 0;
 }
@@ -68,4 +65,32 @@ p {
 label {
     font-size: 14px;
     font-weight: 400;
+}
+
+.p-checkbox-box.p-highlight {
+    background-color: #59B468;
+}
+
+span.p-element.p-dropdown-label.p-inputtext.ng-star-inserted.p-placeholder {
+    border: none;
+    box-shadow: none;
+}
+
+.p-dropdown-items-wrapper {
+    text-align: left;
+}
+
+.p-panel .p-panel-header {
+    background-color: #59b4684e;
+    border: #556958;
+    border-radius: 8px 8px 0 0;
+    color: #556958;
+}
+
+.panelAcordeon {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }

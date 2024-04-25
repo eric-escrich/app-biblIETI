@@ -91,3 +91,19 @@
     border-color: #E03131;
     color: #E03131;
 }
+
+/* SELECT BUTTON
+TO DO: */
+.p-ripple.p-element.p-button.p-component.p-highlight.ng-star-inserted {
+    background-color: #59B468;
+    border: 4px solid white;
+    border-radius: 8px;
+    color: white;
+}
+
+.p-ripple.p-element.p-button.p-component.ng-star-inserted {
+    background-color: #338240;
+    border: 4px solid white;
+    border-radius: 8px;
+    color: white;
+}
