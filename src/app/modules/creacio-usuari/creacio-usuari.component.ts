@@ -51,32 +51,25 @@ export class CreacioUsuariComponent implements OnInit{
   repeatPassword: string = '';
 
   loginError: boolean = false;
-  errorMessage: string = "L'usuari o la contrasenya són incorrectes.";
+  errorMessage: string = 'Les contrasenyes no coincideixen.';
   loginForm!: FormGroup;
 
 
+  // TODO: Que funcione al comprar la contraseña y repetir contraseña.
   async onConfirm() {
-    if (this.loginForm.status == 'INVALID') {
+    if (this.loginForm.status === 'INVALID') {
+      const passwordControl = this.loginForm.get('password');
+      const repeatPasswordControl = this.loginForm.get('repeatPassword');
+  
+      if (passwordControl && repeatPasswordControl && passwordControl.value !== repeatPasswordControl.value) {
         this._logService.logWarning(
-            'password o repeatPassword incorrectas',
-            `LoginComponent - onConfirm | Un usuario ha intentado acceder con el usuario ${this.loginForm.get(
-                'password',
-            )} pero ha introducido incorrectamente o el password o la contraseña: ${this.errorMessage}`,
+          'Les contrasenyes no coincideixen.',
+          `CreacioUsuariComponent - onConfirm | Un bibliotecari ha intenta crear un usuari, però ha introduït incorrectamente la contraseña: ${this.errorMessage}`,
         );
-        const keys = Object.keys(this.loginForm.controls);
-
-        for (const key of keys) {
-            const controlErrors: ValidationErrors | null = this.loginForm.get(key)!.errors;
-            if (!controlErrors) continue;
-            const error = Object.keys(controlErrors)[0];
-            // TO DO, REPLACE DEFAULT ALERT WHEN CUSTOM ALERTS ARE AVAILABLE
-            if (error) {
-                this.loginError = true;
-                this.errorMessage = "L'usuari o la contrasenya són incorrectes.";
-
-                return;
-            }
-        }
+        this.loginError = true;
+        this.errorMessage = 'Les contrasenyes no coincideixen.';
+        return;
+      }
     }
   }
 }

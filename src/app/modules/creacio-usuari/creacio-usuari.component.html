@@ -2,7 +2,6 @@
     <header class="w-4/5">
         <div class="flex flex-col items-center justify-center ">
             <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
-            <p class="text-white font-semibold">Text de subtítol</p>
         </div>
     </header>
 </div>
@@ -25,7 +24,7 @@
                     </div>
 
                     <div class="card flex flex-col justify-content-center">
-                        <label for="password">Contrasenya</label>
+                        <label for="password" [class]="{'ng-invalid': loginError}">Contrasenya</label>
                         <p-password 
                             formControlName="password"
                             name="password"
@@ -34,7 +33,8 @@
                             [feedback]="true"
                             [toggleMask]="true"
                             [style]="{'width':'100%', 'height':'3rem'}"
-                            [inputStyle]="{'width':'100%'}">
+                            [inputStyle]="{'width':'100%'}"
+                            [class]="{'ng-invalid': loginError}">
                             <ng-template pTemplate="footer">
                                 <p class="mt-2 font-semibold">Ha de contenir</p>
                                 <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="card flex flex-col justify-content-center">
-                        <label for="repeatPassword">Repetir contrasenya</label>
+                        <label for="repeatPassword" [class]="{'ng-invalid': loginError}">Repetir contrasenya</label>
                         <p-password
                             formControlName="password"
                             name="password"
@@ -57,21 +57,23 @@
                             [feedback]="false"
                             [toggleMask]="true"
                             [style]="{'width':'100%', 'height':'3rem'}"
-                            [inputStyle]="{'width':'100%'}">
+                            [inputStyle]="{'width':'100%'}"
+                            [class]="{'ng-invalid': loginError}">
                         </p-password>
                     </div>
                 </div>
             </fieldset>
             
             <div class="w-2/4 flex flex-col items-start justify-self-center">
-                <h2>Explicació</h2>
-                <p>Explicació de lo de la contrasenya.</p>
+                <h2>Contrasenya predeterminada</h2>
+                <p>Per garantir la protecció del compte, és essencial que aquesta contrasenya inicial sigui temporal
+                   i que l'usuari sigui incentivat a canviar-la per una de més segura i personalitzada.</p>
                 
                 <hr>
                 
                 <div class="flex flex-row gap-x-4 items-start">
                     <p-button severity="dangeroutlined" [routerLink]="['/dashboard']">Cancelar</p-button>
-                    <p-button severity="fill-rounded" (click)="onConfirm()">Guardar canvis</p-button>
+                    <p-button severity="fill-rounded">Guardar canvis</p-button>
                 </div>
             </div>
         </div>
