@@ -21,7 +21,6 @@
 }
 
 label {
-    margin: 40px 0 4px 0;
     font-weight: 800;
     font-size: 14px;
     color: #556958;
@@ -30,5 +29,6 @@ label {
 :host ::ng-deep .p-panel {
     display: flex;
     flex-direction: column;
+    padding: 40px;
     margin: 0 0 40px 0;
 }
