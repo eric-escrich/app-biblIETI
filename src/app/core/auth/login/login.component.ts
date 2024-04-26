@@ -5,7 +5,6 @@ import { AbstractControl, FormControl, FormGroup, FormsModule, ValidationErrors,
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputOtpModule } from 'primeng/inputotp';
 
 import { AuthService } from '../auth.service';
 import { ProfileService } from '../../../services/profile.service';
@@ -16,7 +15,7 @@ import { LogService } from '../../../services/log.service';
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [FormsModule, PasswordModule, ButtonModule, InputTextModule, ReactiveFormsModule, InputOtpModule, DialogModule],
+    imports: [FormsModule, PasswordModule, ButtonModule, InputTextModule, ReactiveFormsModule, DialogModule],
     templateUrl: './login.component.html',
     styleUrl: './login.component.css',
 })

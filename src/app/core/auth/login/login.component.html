@@ -53,15 +53,8 @@
         <div class="forgottenPwdContainer gap-y-4">
             <p class="closePopUp" (click)="togglePopup()">X</p>
             <i class="pi pi-envelope"></i>
-            <h3>T'hem enviat un correu</h3>
-            <p>Introduïu els cinc dígits indicats al vostre correu. Si no el trobes, revisa a la safata de Spam o espera per poder-lo reenviar.</p>
-            
-            <div class="card flex justify-content-center">
-                <p-inputOtp [(ngModel)]="value"></p-inputOtp>
-            </div>
-
-            <p-button severity="fill">Següent</p-button>
-            <p class="forgottenPwd">Reenviar codi en 20 segons</p>
+            <h3>Correu enviat!</h3>
+            <p>T'hem enviat un correu per a confirmar que ets tú. Si no el trobes, revisa a la safata de Spam o espera per poder-lo reenviar.</p>
         </div>
     </div>
 </p-dialog>
