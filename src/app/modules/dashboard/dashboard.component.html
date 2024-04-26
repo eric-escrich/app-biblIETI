@@ -23,7 +23,7 @@
                 <div class="flex flex-row gap-x-20 justify-between items-center">
                     <div class="flex flex-col">
                         <h3>Nom</h3>
-                        @if (!isEditingName && profileData.role !== role.ALUMNE) {
+                        @if (!isEditingName && getRoleName() !== 'Alumne') {
                             <p>{{profileData.name}} {{profileData.surname}} {{profileData.surname2}}</p>
                         } @else {
                             <div class="flex flex-col gap-2">
@@ -33,26 +33,26 @@
                             </div>
                         }
                     </div>
-                    <p-button *ngIf="profileData.role !== role.ALUMNE" (click)="isEditingName = !isEditingName" severity="fill">Editar</p-button>
+                    <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingName = !isEditingName" severity="fill">Editar</p-button>
                 </div>
-    
+
                 <!-- [Claudia]: No sé si funciona. Esto es una prueba para ver si el usuario NO puede editarlo. -->
                 <div class="flex flex-row gap-x-20 justify-between items-center">
                     <div class="flex flex-col">
                         <h3>Correo</h3>
-                        @if (!isEditingEmail && profileData.role !== role.ALUMNE) {
+                        @if (!isEditingEmail && getRoleName() !== 'Alumne') {
                             <p>{{profileData.username}}</p>
                         } @else {
                             <input pInputText [(ngModel)]="newEmail" placeholder="Correo" styleClass="w-1/2">
                         }
                     </div>
-                    <p-button *ngIf="profileData.role !== role.ALUMNE" (click)="isEditingEmail = !isEditingEmail" severity="fill">Editar</p-button>
+                    <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingEmail = !isEditingEmail" severity="fill">Editar</p-button>
                 </div>                
-    
+
                 <div class="flex flex-row gap-x-20 justify-between items-center">
                     <div class="flex flex-col">
                         <h3>Contrasenya</h3>
-                        @if (!isEditingPassword && profileData.role !== role.ALUMNE) {
+                        @if (!isEditingPassword && getRoleName() !== 'Alumne') {
                             <p>************</p>
                         } @else {
                             <div class="flex flex-col gap-2">
@@ -92,7 +92,7 @@
                             </div>
                         }
                     </div>
-                    <p-button *ngIf="profileData.role !== role.ALUMNE" (click)="isEditingPassword = !isEditingPassword" severity="fill">Editar</p-button>
+                    <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingPassword = !isEditingPassword" severity="fill">Editar</p-button>
                 </div>
             </div>
         </div>
