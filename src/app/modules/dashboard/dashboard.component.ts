@@ -13,6 +13,7 @@ import { DialogService } from '../../services/dialog.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { PasswordModule } from 'primeng/password';
 import { LogService } from '../../services/log.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
@@ -24,7 +25,8 @@ import { LogService } from '../../services/log.service';
                 InputTextModule,
                 PasswordModule,
                 FormsModule,
-                FileUploadModule
+                FileUploadModule,
+                RouterLink
             ],
     providers: [MessageService],
     templateUrl: './dashboard.component.html',
