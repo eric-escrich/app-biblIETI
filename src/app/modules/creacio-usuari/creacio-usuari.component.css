@@ -1,0 +1,29 @@
+.headerContainer {
+    padding: 300px 0;
+    margin: 0 0 40px 0;
+    width: auto;
+    height: auto;
+    background-image: url('/assets/imgs/header.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.cardUser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+fieldset {
+    padding: 40px;
+    border: 1px solid #59B468;
+    border-radius: 8px;
+}
+
+legend {
+    font-size: 20px;
+    font-weight: 700;
+    color: #59B468;
+}

@@ -1,0 +1,68 @@
+<div class="headerContainer flex flex-col items-center justify-center text-center">
+    <header class="w-4/5">
+        <div class="flex flex-col items-center justify-center ">
+            <h1>BIBLIOTECA IES ESTEVE TERRADAS I ILLA</h1>
+            <p class="text-white font-semibold">Text de subtítol</p>
+        </div>
+    </header>
+</div>
+
+<div class="p-20">
+    <div class="grid grid-cols-2 gap-x-10 items-center">
+        <fieldset>
+            <legend>Creació d'usuari:</legend>
+            <h3>Ingresa les dades per crear un nou usuari</h3>
+            <div class="grid grid-cols-2 gap-x-10">
+                <div class="card flex flex-col justify-content-center">
+                    <label for="">Nom d'usuari</label>
+                    <input id="" type="text" pInputText formControlName="text"/>
+                </div>
+                
+                <div class="card flex flex-col justify-content-center">
+                    <label for="">Correu electrònic</label>
+                    <input id="" type="text" pInputText formControlName="text"/>
+                </div>
+
+                <div class="card flex flex-col justify-content-center">
+                    <label for="">Contrasenya</label>
+                    <p-password
+                        formControlName="password"
+                        name="password"
+                        id="password"
+                        autocomplete="off"
+                        [feedback]="false"
+                        [toggleMask]="true"
+                        [style]="{'width':'100%', 'height':'3rem'}"
+                        [inputStyle]="{'width':'100%'}">
+                    </p-password>
+                </div>
+
+                <div class="card flex flex-col justify-content-center">
+                    <label for="">Repetir contrasenya</label>
+                    <p-password
+                        formControlName="password"
+                        name="password"
+                        id="password"
+                        autocomplete="off"
+                        [feedback]="false"
+                        [toggleMask]="true"
+                        [style]="{'width':'100%', 'height':'3rem'}"
+                        [inputStyle]="{'width':'100%'}">
+                    </p-password>
+                </div>
+            </div>
+        </fieldset>
+        
+        <div class="w-2/4 flex flex-col items-start justify-self-center">
+            <h2>Explicació</h2>
+            <p>Explicació de lo de la contrasenya.</p>
+            
+            <hr>
+            
+            <div class="flex flex-row gap-x-4 items-start">
+                <p-button severity="dangeroutlined">Cancelar</p-button>
+                <p-button severity="icon">Guardar canvis</p-button>
+            </div>
+        </div>
+    </div>
+</div>
