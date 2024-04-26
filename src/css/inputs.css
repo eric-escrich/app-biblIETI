@@ -3,7 +3,7 @@ input#cif,
 .p-inputtext,
 input.p-element.p-autocomplete-input.p-inputtext.p-component {
     background-color: white;
-    border: 1px solid rgba(85, 105, 88, 0.5);
+    border: 1px solid #59b4684e;
 }
 
 input#cif:focus-within,
