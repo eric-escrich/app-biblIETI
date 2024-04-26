@@ -19,3 +19,16 @@
     width: 400px;
     height: 600px;
 }
+
+label {
+    margin: 40px 0 4px 0;
+    font-weight: 800;
+    font-size: 14px;
+    color: #556958;
+}
+
+:host ::ng-deep .p-panel {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 40px 0;
+}

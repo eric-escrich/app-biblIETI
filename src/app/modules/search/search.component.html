@@ -1,54 +1,72 @@
 <div class="headerContainer flex flex-col items-center justify-center text-center">
     <header class="w-4/5">
         <div class="flex flex-col items-center justify-center ">
-            <h1>BIBLIOTECA IES ESTEVE TERRADAS I ILLA</h1>
-            <p class="text-white font-semibold">Text de subtítol</p>
+            <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
         </div>
     </header>
 </div>
 
 <div class="panelAcordeon">
-    <form [formGroup]="configuracionAcordeon" (ngSubmit)="sendconfiguracionAcordeon()" class="flex flex-col gap-4">
-        <p-panel formGroupName="cercaAvancadaAcordeon" [collapsed]="panels['cercaAvancadaAcordeon']" (collapsedChange)="detectPanelChanges($event, 'cercaAvancadaAcordeon')" [toggleable]="true" expandIcon="pi pi-chevron-up" collapseIcon="pi pi-chevron-down">
-            <ng-template pTemplate="header">
-                <div class="header-menu flex flex-row gap-2">
-                    <span class="font-bold">Cerca avançada</span>
+    <form [formGroup]="configuracionAcordeon" (ngSubmit)="sendconfiguracionAcordeon()" class="flex flex-row gap-4 justify-center">
+        <div class="w-2/4">
+            <p-panel formGroupName="cercaAvancadaAcordeon" [collapsed]="panels['cercaAvancadaAcordeon']" (collapsedChange)="detectPanelChanges($event, 'cercaAvancadaAcordeon')" [toggleable]="true" expandIcon="pi pi-chevron-up" collapseIcon="pi pi-chevron-down">
+                <ng-template pTemplate="header">
+                    <div class="header-menu flex flex-row gap-2">
+                        <span class="font-bold">Cerca avançada</span>
+                    </div>
+                </ng-template>
+
+
+                <div class="flex flex-col items-center justify-start gap-x-20 w-full">    
+                    <div class="grid grid-cols-3 gap-4 items-center">
+                        <div class="flex flex-col items-start">
+                            <label for="inputTitol">Títol</label>
+                            <input type="text" id="inputTitol" pInputText />
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <label for="inputAutorArtista">Autor/artista</label>
+                            <input type="text" id="inputAutorArtista" pInputText />
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <label for="materiaInput">Matèria</label>
+                            <input type="text" id="materiaInput" pInputText />
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <label for="tipusDeMaterial">Tipus de material</label>
+                            <input type="text" id="tipusDeMaterial" pInputText />
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <label for="inputLlengua">Llengua</label>
+                            <input type="text" id="inputLlengua" pInputText />
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <label for="inputAny">Any:</label>
+                            <input type="text" id="inputAny" pInputText />
+                        </div>
+                        
+                        <div class="flex flex-row items-end gap-x-4">
+                            <div class="flex flex-col items-start">
+                                <form [formGroup]="formGroup">
+                                    <label for="selectOrdenarPer">Ordenar per</label>
+                                    <p-selectButton id="selectOrdenarPer" [options]="stateOptions" formControlName="value" optionLabel="label" optionValue="value"></p-selectButton>
+                                </form>
+                            </div>
+
+                            <div class="flex flex-col items-start">
+                                <p-button severity="icon">
+                                    <i class="pi pi-search"></i>
+                                </p-button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </ng-template>
-
-
-            <div class="flex flex-row items-center justify-start gap-x-20 w-full">    
-                <div class="card flex flex-col justify-content-center">
-                    <label for="inputTitol">Títol</label>
-                    <input type="text" id="inputTitol" pInputText />
-
-                    <label for="inputAutorArtista">Autor/artista</label>
-                    <input type="text" id="inputAutorArtista" pInputText />
-
-                    <label for="materiaInput">Matèria</label>
-                    <input type="text" id="materiaInput" pInputText />
-
-                    <p>Limitar per:</p>
-                    <label for="tipusDeMaterial">Tipus de material</label>
-                    <input type="text" id="tipusDeMaterial" pInputText />
-
-                    <label for="inputLlengua">Llengua</label>
-                    <input type="text" id="inputLlengua" pInputText />
-
-                    <label for="inputAny">Any:</label>
-                    <input type="text" id="inputAny" pInputText />
-
-                    <label for="dropdownEditorial">Editorial</label>
-                    
-                    <label for="selectOrdenarPer">Ordenar per</label>
-                    <p-selectButton id="selectOrdenarPer" [options]="stateOptions" optionLabel="label" optionValue="ordenarPerValue"></p-selectButton>
-
-                    <p-button severity="icon">
-                        <i class="pi pi-search"></i>
-                    </p-button>
-                </div>
-            </div>
-        </p-panel>
+            </p-panel>
+        </div>
     </form>
 </div>
 
