@@ -50,7 +50,7 @@ h2 {
 }
 
 h3 {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 800;
     color: #556958;
 }
@@ -62,9 +62,10 @@ p {
     color: #556958;
 }
 
-label {
-    font-size: 14px;
-    font-weight: 400;
+hr {
+    width: 100%;
+    margin: 20px 0;
+    border: 1px solid #F5F5F5;
 }
 
 .p-checkbox-box.p-highlight {
@@ -93,4 +94,9 @@ span.p-element.p-dropdown-label.p-inputtext.ng-star-inserted.p-placeholder {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
 }
