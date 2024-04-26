@@ -4,6 +4,7 @@ import { AbstractControl, FormControl, FormGroup, FormsModule, ValidationErrors,
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { ProfileService } from '../../services/profile.service';
@@ -23,7 +24,8 @@ import { LogService } from '../../services/log.service';
             DialogModule,
             RouterLink,
             FormsModule,
-            ReactiveFormsModule
+            ReactiveFormsModule,
+            DividerModule
           ],
   templateUrl: './creacio-usuari.component.html',
   styleUrl: './creacio-usuari.component.css'
