@@ -1,7 +1,7 @@
 <div class="mainContent">
     <div class="login-container">
         <h2 class="mb-10">Inicia sessió</h2>
-        <form [formGroup]="loginForm" method="post" class="flex gap-y-10">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" method="post" class="flex gap-y-10">
             <div class="flex flex-col gap-y-10">
                 <div class="input">
                     <span class="p-float-label">
@@ -34,7 +34,7 @@
                 label="Següent"
                 styleClass="p-button-rounded"
                 severity="fill"
-                (click)="onLogin()"
+                type="submit"
             ></p-button>
         </form>
         
