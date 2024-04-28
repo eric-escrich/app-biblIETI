@@ -26,51 +26,75 @@ export class LoginComponent {
     private _logService = inject(LogService);
     private _dialogService = inject(DialogService);
 
-    username: string = '';
-    password: string = '';
-    email = new FormControl('', [Validators.required, Validators.email]);
-    mailError = false;
-    mailErrorMessage = '';
+    public username: string = '';
+    public password: string = '';
 
-    loginError: boolean = false;
-    errorMessage: string = "L'usuari o la contrasenya són incorrectes.";
-    loginForm!: FormGroup;
+    public invalidLogin: boolean = false;
+    public loginErrorMessage: string = "L'usuari o la contrasenya són incorrectes.";
 
-    ngOnInit(): void {
-        this.loginForm = new FormGroup({
-            username: new FormControl('', [Validators.required]),
-            password: new FormControl('', [Validators.required]),
-        });
-        this.loginError = false;
-    }
+    // Forget password
+    public email: string = '';
+    @Input() popupVisible: boolean = false;
 
-    async validateLoginForm() {
-        if (this.loginForm.status == 'INVALID') {
+    public invalidEmail = false;
+    public mailErrorMessage: string = '';
+
+    passwordValidator(password: string) {
+        if (password.length < 8) {
+            this.invalidLogin = true;
             this._logService.logWarning(
-                'Username or password incorrect',
-                `Un usuario ha intentado acceder con el usuario ${this.loginForm.get(
-                    'username',
-                )} pero ha introducido incorrectamente o el username o la contraseña`,
-                'LoginComponent - validateLoginForm',
+                'Password too short',
+                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña muy corta',
+                'ResetPasswordComponent - passwordValidator',
             );
-            const keys = Object.keys(this.loginForm.controls);
-
-            console.log(keys);
-
-            for (const key of keys) {
-                const controlErrors: ValidationErrors | null = this.loginForm.get(key)!.errors;
-                if (!controlErrors) continue;
-                const error = Object.keys(controlErrors)[0];
-                // TO DO, REPLACE DEFAULT ALERT WHEN CUSTOM ALERTS ARE AVAILABLE
-                if (error) {
-                    this.loginError = true;
-                    this.errorMessage = "L'usuari o la contrasenya són incorrectes.";
-
-                    return false;
-                }
-            }
+            return false;
         }
-
+        if (password.length > 16) {
+            this.invalidLogin = true;
+            this._logService.logWarning(
+                'Password too long',
+                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña muy larga',
+                'ResetPasswordComponent - passwordValidator',
+            );
+            return false;
+        }
+        if (!/[A-Z]/.test(password)) {
+            this.invalidLogin = true;
+            this._logService.logWarning(
+                'Password missing uppercase',
+                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin mayúsculas',
+                'ResetPasswordComponent - passwordValidator',
+            );
+            return false;
+        }
+        if (!/[a-z]/.test(password)) {
+            this.invalidLogin = true;
+            this._logService.logWarning(
+                'Password missing lowercase',
+                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin minúsculas',
+                'ResetPasswordComponent - passwordValidator',
+            );
+            return false;
+        }
+        if (!/\d/.test(password)) {
+            this.invalidLogin = true;
+            this._logService.logWarning(
+                'Password missing number',
+                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin números',
+                'ResetPasswordComponent - passwordValidator',
+            );
+            return false;
+        }
+        if (!/[!@#$%^&*()-_=+[\]{};:'",.<>/?\\|~]/.test(password)) {
+            this.invalidLogin = true;
+            this._logService.logWarning(
+                'Password missing special character',
+                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin caracteres especiales',
+                'ResetPasswordComponent - passwordValidator',
+            );
+            return false;
+        }
+        this.invalidLogin = false;
         return true;
     }
 
@@ -81,13 +105,13 @@ export class LoginComponent {
             console.log('profile', profile);
 
             this._logService.logInfo(
-                'Perfil de usuario',
+                'Profile data',
                 `Se han obtenido los datos de perfil del usuario`,
                 'LoginComponent - handleLoginResponse',
                 profile.username,
             );
             this._logService.logInfo(
-                'Login exitoso',
+                'Login OK',
                 `El usuario: ${JSON.stringify(profile.username)} ha iniciado sesión correctamente`,
                 'LoginComponent - handleLoginResponse',
                 profile.username,
@@ -104,61 +128,55 @@ export class LoginComponent {
     async handleError(error: any) {
         switch (error.status) {
             case 401:
-                this.loginError = true;
+                this.invalidLogin = true;
                 break;
             case 500:
+                this.invalidLogin = true;
                 this._logService.logFatal('Error del servidor', `Error 500 del servidor: ${error.message}`, 'LoginComponent - handleError');
                 this._dialogService.showDialog('ERROR', 'Error del servidor');
                 break;
             default:
-                this.loginError = true;
+                this.invalidLogin = true;
                 break;
         }
     }
 
     async onLogin() {
-        const isValid = await this.validateLoginForm();
-        if (!isValid) return;
+        const passwordValid = this.passwordValidator(this.password);
+        if (passwordValid) {
+            try {
+                const response = await this._authService.login(this.username, this.password);
+                this._logService.logInfo('Respuesta de inicio de sesión', `Token recibido`, 'LoginComponent - onLogin', response.body.token.email);
 
-        try {
-            const response = await this._authService.login(this.loginForm.get('username')?.value, this.loginForm.get('password')?.value);
-            this._logService.logInfo('Respuesta de inicio de sesión', `Token recibido`, 'LoginComponent - onLogin', response.body.token.email);
-
-            await this.handleLoginResponse(response);
-        } catch (error: any) {
-            this.handleError(error);
+                await this.handleLoginResponse(response);
+            } catch (error: any) {
+                this.handleError(error);
+            }
         }
     }
 
-    // ENVIAR CODI
-    value: any;
-    @Input() popupVisible: boolean;
-
-    constructor() {
-        this.popupVisible = false;
-    }
     togglePopup() {
         this.popupVisible = !this.popupVisible;
-        this.mailError = false;
-        this.email.reset();
+        this.invalidEmail = false;
+        this.email = '';
     }
 
     async sendMail() {
-        if (this.email.valid && this.email.value !== null) {
+        if (this.email.length > 0 && this.isValidEmail(this.email)) {
             try {
-                let response = await this._authService.sendPasswordResetEmail(this.email.value);
+                let response = await this._authService.sendPasswordResetEmail(this.email);
                 console.log('Response', response);
                 console.log('Response status', response.status);
 
                 if (response.status === 200) {
                     this.togglePopup();
-                    this._dialogService.showDialog('INFO', "S'ha enviat un correu electrònic amb un codi de verificació");
+                    this._dialogService.showDialog('INFORMACIÓ', "S'ha enviat un correu electrònic amb un codi de verificació");
                 }
             } catch (error: any) {
                 switch (error.status) {
                     case 404:
-                        this.mailErrorMessage = `No existeix cap usuari amb el correu electrònic ${this.email.value}`;
-                        this.mailError = true;
+                        this.mailErrorMessage = `No existeix cap usuari amb el correu electrònic ${this.email}`;
+                        this.invalidEmail = true;
                         break;
                     case 500:
                         this.togglePopup();
@@ -170,6 +188,14 @@ export class LoginComponent {
                         break;
                 }
             }
+        } else {
+            this.mailErrorMessage = 'El correu electrònic no és vàlid';
+            this.invalidEmail = true;
         }
+    }
+
+    isValidEmail(email: string): boolean {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     }
 }
