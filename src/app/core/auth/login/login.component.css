@@ -25,7 +25,11 @@ input {
     padding: 0.5rem;
 }
 
-:host::ng-deep input.p-inputtext.ng-dirty.ng-invalid { border-color: #e24c4c; }
+input.p-inputtext.ng-dirty.ng-invalid,
+:host::ng-deep .ng-invalid .p-inputtext {
+    border-color: #e24c4c;
+}
+
 .error { height: 52px; }
 .error p { color: red; }
 
