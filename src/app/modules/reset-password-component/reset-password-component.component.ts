@@ -8,11 +8,12 @@ import { ButtonModule } from 'primeng/button';
 import { LogService } from '../../services/log.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DialogService } from '../../services/dialog.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-reset-password-component',
     standalone: true,
-    imports: [ReactiveFormsModule, FormsModule, PasswordModule, DividerModule, ButtonModule],
+    imports: [ReactiveFormsModule, FormsModule, PasswordModule, DividerModule, ButtonModule, RouterLink],
     templateUrl: './reset-password-component.component.html',
     styleUrl: './reset-password-component.component.css',
 })
