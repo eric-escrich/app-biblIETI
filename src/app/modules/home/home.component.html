@@ -19,10 +19,17 @@
 
                     <div class="flex flex-row gap-x-2 mt-4">
                         <div class="card flex justify-content-center">
-                            <!-- <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="items.name" (input)="onFilterChange()" [minLength]="3"></p-autoComplete> -->
-                            <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                            <p-autoComplete
+                                [(ngModel)]="searchQuery"
+                                [suggestions]="items"
+                                (input)="onFilterChange()"
+                                [minLength]="3"
+                                field="name"
+                                (onSelect)="onItemSelect($event)"
+                                (keyup.enter)="viewItemDetails()"
+                            ></p-autoComplete>
                         </div>
-                        <p-button severity="icon" [routerLink]="['/cercar-llibre']">
+                        <p-button severity="icon" (click)="viewItemDetails()">
                             <i class="pi pi-search"></i>
                         </p-button>
                     </div>
