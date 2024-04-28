@@ -26,6 +26,7 @@ export class DashboardComponent {
     _logService = inject(LogService);
 
     profileData: any;
+    email: string = '';
     originalProfileData: any;
     role: any;
     roleName: string = '';
@@ -44,17 +45,16 @@ export class DashboardComponent {
     repeatPassword!: string;
 
     async ngOnInit() {
-        this._logService.logInfo('Inicializando DashboardComponent', 'DashboardComponent - ngOnInit() | Inicializando DashboardComponent');
+        this._logService.logInfo('Initializing DashboardComponent', 'Inicializando DashboardComponent', 'DashboardComponent - ngOnInit()');
         this.profileData = await this._profileService.getSelfProfileDataWithoutLoading();
-        this._logService.logInfo(
-            'Datos de perfil',
-            `DashboardComponent - ngOnInit() | Datos de perfil obtenidos: ${JSON.stringify(this.profileData)}`,
-        );
+        this.email = this.profileData.username;
+
+        this._logService.logInfo('Profile data', `Datos de perfil obtenidos`, 'DashboardComponent - ngOnInit()', this.email);
 
         await this.setDefaultData();
 
         this.role = await this._profileService.getRole();
-        this._logService.logInfo('Rol obtenido', `DashboardComponent - ngOnInit() | Rol obtenido: ${this.role}`);
+        this._logService.logInfo('Rol get', `Rol obtenido: ${this.role}`, 'DashboardComponent - ngOnInit()', this.email);
         this.roleName = this.getRoleName();
         this.initials = this.getInitials();
     }
@@ -64,19 +64,21 @@ export class DashboardComponent {
         if (this.role === 2) return 'Professor';
         if (this.role === 3) return 'Alumne';
         if (this.role === 4) return 'Bibliotecària';
-        this._logService.logWarning('Rol desconocido', `DashboardComponent - getRoleName | Rol desconocido: ${this.role}`);
+        this._logService.logWarning('Rol ', `Unknown role: ${this.role}`, 'DashboardComponent - getRoleName()', this.email);
         return '';
     }
 
     getInitials() {
         if (this.profileData && this.profileData.name && this.profileData.surname) {
             let initials = this.profileData.name[0].toUpperCase() + this.profileData.surname[0].toUpperCase();
-            this._logService.logInfo('Iniciales obtenidas', `DashboardComponent - getInitials() | Iniciales obtenidas: ${initials}`);
+            this._logService.logInfo('Initials get', `Iniciales obtenidas: ${initials}`, 'DashboardComponent - getInitials()', this.email);
             return initials;
         }
         this._logService.logWarning(
-            'Faltan datos de perfil',
-            'DashboardComponent - getInitials() | No se pudieron obtener las iniciales, faltan datos de perfil',
+            'Profile data missing',
+            'No se pudieron obtener las iniciales, faltan datos de perfil',
+            'DashboardComponent - getInitials()',
+            this.email,
         );
         return '';
     }
@@ -87,8 +89,10 @@ export class DashboardComponent {
         this.isEditingEmail = false;
         this.isEditingPassword = false;
         this._logService.logInfo(
-            'Cancelando cambios',
-            'DashboardComponent - cancelChanges() | El usuario ha cancelado la modificación de datos o se han actualizado los datos correctamente',
+            'Canceling changes',
+            'El usuario ha cancelado la modificación de datos o se han actualizado los datos correctamente',
+            'DashboardComponent - cancelChanges()',
+            this.email,
         );
     }
 
@@ -106,7 +110,12 @@ export class DashboardComponent {
     async saveChanges() {
         if (this.lastPassword || this.password || this.repeatPassword) {
             await this.updatePassword();
-            this._logService.logInfo('Modificación contraseña', 'DashboardComponent - saveChanges() | El usuario ha actualizado la contraseña');
+            this._logService.logInfo(
+                'Updating password',
+                'El usuario ha actualizado la contraseña',
+                'DashboardComponent - saveChanges()',
+                this.email,
+            );
         }
 
         let updateData: any = {};
@@ -129,8 +138,10 @@ export class DashboardComponent {
             try {
                 await this._profileService.updateProfile(updateData);
                 this._logService.logInfo(
-                    'Modificación datos de usuario',
-                    `DashboardComponent - saveChanges() | El usuario ha editado us datos de perfil: ${JSON.stringify(updateData)}`,
+                    'Updating profile',
+                    `El usuario ha editado sus datos de perfil`,
+                    'DashboardComponent - saveChanges()',
+                    this.email,
                 );
 
                 // Actualizar la interfaz de usuario con los nuevos valores
@@ -147,8 +158,10 @@ export class DashboardComponent {
                 this._dialogService.showDialog('INFORMACIÓ', 'Perfil actualitzat correctament');
             } catch (error: any) {
                 this._logService.logError(
-                    'ERROR modificación datos de usuario',
-                    `DashboardComponent - saveChanges | Error al actualizar el perfil: ${error}`,
+                    'Error updating profile',
+                    `Error al actualizar el perfil: ${error}`,
+                    'DashboardComponent - saveChanges()',
+                    this.email,
                 );
                 console.error('Error updating profile:', error);
                 this._dialogService.showDialog('ERROR', 'Error actualitzant el perfil');
@@ -157,41 +170,51 @@ export class DashboardComponent {
     }
 
     async updatePassword() {
-        this._logService.logInfo('Actualizando contraseña', 'DashboardComponent - updatePassword() | El usuario va a modificar su contraseña');
+        this._logService.logInfo('Updating password', 'El usuario va a modificar su contraseña', 'DashboardComponent - updatePassword()', this.email);
         try {
             const response = await this._authService.isValidPassword(this.profileData.username, this.lastPassword);
             if (response) {
                 if (this.password.length < 8 || this.repeatPassword.length < 8) {
                     this._logService.logWarning(
-                        'Longitud contraseña',
-                        'DashboardComponent - updatePassword() | La contraseña debe tener al menos 8 caracteres',
+                        'Wrong password length',
+                        'La contraseña debe tener al menos 8 caracteres',
+                        'DashboardComponent - updatePassword()',
+                        this.email,
                     );
                     this._dialogService.showDialog('ERROR', 'La contrasenya ha de tenir com a mínim 8 caràcters');
                 } else if (this.password === this.repeatPassword) {
                     await this._authService.saveNewPassword(this.profileData.username, this.password);
                     this._dialogService.showDialog('INFORMACIÓ', "S'ha actualitzat la contrasenya correctament");
                 } else {
-                    this._logService.logWarning('Contraseñas no coinciden', 'DashboardComponent - updatePassword() | Las contraseñas no coinciden');
+                    this._logService.logWarning(
+                        'Passwords do not match',
+                        'Las contraseñas no coinciden',
+                        'DashboardComponent - updatePassword()',
+                        this.email,
+                    );
                     this._dialogService.showDialog('ERROR', 'Les contrasenyes no coincideixen');
                 }
             } else {
                 this._logService.logError(
-                    'Contraseña incorrecta',
-                    'DashboardComponent - updatePassword() | El usuario ha introducido incorrectamente su contraseña actual',
+                    'Incorrect password',
+                    'El usuario ha introducido incorrectamente su contraseña actual',
+                    'DashboardComponent - updatePassword()',
+                    this.email,
                 );
                 throw new Error('Contrasenya incorrecta');
             }
         } catch (error: any) {
             this._logService.logFatal(
-                'Error al actualizar la contraseña',
-                `DashboardComponent - updatePassword() | Error al actualizar la contraseña: ${error.message}`,
+                'Error updating password',
+                `Error al actualizar la contraseña: ${error.message}`,
+                'DashboardComponent - updatePassword()',
+                this.email,
             );
             this._dialogService.showDialog('ERROR', error.message);
         }
     }
 
     logout() {
-        this._logService.logInfo('Cerrando sesión', `DashboardComponent - logout() | El usuario ${this.profileData.username} ha cerrado sesión`);
         this._profileService.logout();
     }
 }
