@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { StorageService } from './storage.service';
 import { LogService } from './log.service';
+import { DialogService } from './dialog.service';
 
 @Injectable({
     providedIn: 'root',
@@ -14,6 +15,7 @@ export class ProfileService {
     private _router = inject(Router);
     private _storageService = inject(StorageService);
     private _logService = inject(LogService);
+    private _dialogService = inject(DialogService);
 
     private baseUrl: string = environment.apiUrl;
     selfProfileData: any;
@@ -82,6 +84,8 @@ export class ProfileService {
             this.selfProfileData = null;
             this._logService.logInfo('User data delete', 'Se ha seteado la variable selfProfileData en null', 'ProfileService - logout', mail);
             this._logService.logInfo('Redirect landing', 'Redirigiendo a la página de inicio', 'ProfileService - logout');
+
+            this._dialogService.showDialog('INFORMACIÓ', 'Sesió tancada correctament');
             this._router.navigateByUrl('/landing');
         } else {
             this._storageService.removeItem('token');
@@ -91,6 +95,8 @@ export class ProfileService {
             this.selfProfileData = null;
             this._logService.logInfo('User data delete', 'Se ha seteado la variable selfProfileData en null', 'ProfileService - logout');
             this._logService.logInfo('Redirect landing', 'Redirigiendo a la página de inicio', 'ProfileService - logout');
+
+            this._dialogService.showDialog('INFORMACIÓ', 'Sesió tancada correctament');
             this._router.navigateByUrl('/landing');
         }
     }

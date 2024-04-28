@@ -30,8 +30,17 @@ input.p-inputtext.ng-dirty.ng-invalid,
     border-color: #e24c4c;
 }
 
-.error { height: 52px; }
-.error p { color: red; }
+.error {
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.error p {
+    color: red;
+    text-align: center;
+    margin: 0;
+}
 
 label.ng-invalid { color: #e24c4c; }
 
@@ -54,12 +63,10 @@ label.ng-invalid { color: #e24c4c; }
     text-decoration: underline;
     color: #556958;
     cursor: pointer;
+    text-align: center;
 }
 
 .closePopUp {
-    position: absolute;
-    top: 10px;
-    right: 10px;
     width: 20px;
     height: 20px;
     padding: 15px;
@@ -108,9 +115,14 @@ label.ng-invalid { color: #e24c4c; }
 .mailError {
     color: red;
     display: none;
-    text-align: center;
 }
 
 .mailError.invalid {
     display: block;
+}
+
+.negrita {
+    font-weight: 600;
+    font-size: large;
+
 }
