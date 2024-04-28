@@ -1,0 +1,81 @@
+<div class="headerContainer flex flex-col items-center justify-center text-center">
+    <header class="w-4/5">
+        <div class="flex flex-col items-center justify-center ">
+            <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
+        </div>
+    </header>
+</div>
+
+<form [formGroup]="loginForm">
+    <div class="p-20">
+        <div class="grid grid-cols-2 gap-x-10 items-center">
+            <fieldset>
+                <legend>Creació d'usuari:</legend>
+                <h3>Ingresa les dades per crear un nou usuari</h3>
+                <div class="grid grid-cols-2 gap-x-10">
+                    <div class="card flex flex-col justify-content-center">
+                        <label for="nomUsuariInput">Nom d'usuari</label>
+                        <input id="nomUsuariInput" type="text" pInputText formControlName="text"/>
+                    </div>
+                    
+                    <div class="card flex flex-col justify-content-center">
+                        <label for="correuElectronicUsuari">Correu electrònic</label>
+                        <input id="correuElectronicUsuari" type="text" pInputText formControlName="text"/>
+                    </div>
+
+                    <div class="card flex flex-col justify-content-center">
+                        <label for="password" [class]="{'ng-invalid': loginError}">Contrasenya</label>
+                        <p-password 
+                            formControlName="password"
+                            name="password"
+                            id="password"
+                            autocomplete="off"
+                            [feedback]="true"
+                            [toggleMask]="true"
+                            [style]="{'width':'100%', 'height':'3rem'}"
+                            [inputStyle]="{'width':'100%'}"
+                            [class]="{'ng-invalid': loginError}">
+                            <ng-template pTemplate="footer">
+                                <p class="mt-2 font-semibold">Ha de contenir</p>
+                                <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                                    <li>Al menys una minúscula</li>
+                                    <li>Al menys una mayúscula</li>
+                                    <li>Al menys un caràcter numèric</li>
+                                    <li>Un mínim de 8 caràcters</li>
+                                </ul>
+                            </ng-template>
+                        </p-password>
+                    </div>
+
+                    <div class="card flex flex-col justify-content-center">
+                        <label for="repeatPassword" [class]="{'ng-invalid': loginError}">Repetir contrasenya</label>
+                        <p-password
+                            formControlName="password"
+                            name="password"
+                            id="repeatPassword"
+                            autocomplete="off"
+                            [feedback]="false"
+                            [toggleMask]="true"
+                            [style]="{'width':'100%', 'height':'3rem'}"
+                            [inputStyle]="{'width':'100%'}"
+                            [class]="{'ng-invalid': loginError}">
+                        </p-password>
+                    </div>
+                </div>
+            </fieldset>
+            
+            <div class="w-2/4 flex flex-col items-start justify-self-center">
+                <h2>Contrasenya predeterminada</h2>
+                <p>Per garantir la protecció del compte, és essencial que aquesta contrasenya inicial sigui temporal
+                   i que l'usuari sigui incentivat a canviar-la per una de més segura i personalitzada.</p>
+                
+                <hr>
+                
+                <div class="flex flex-row gap-x-4 items-start">
+                    <p-button severity="dangeroutlined" [routerLink]="['/dashboard']">Cancelar</p-button>
+                    <p-button severity="fill-rounded">Guardar canvis</p-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

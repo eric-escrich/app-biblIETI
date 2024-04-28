@@ -1,3 +1,10 @@
+.p-button {
+    width: 150px;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    text-wrap: nowrap;
+}
 
 /* BOTÓN PRINCIPAL (fill) */
 .p-button-fill {
@@ -48,6 +55,8 @@
 
 /* BOTÓN QUE SOLO CONTIENE ICONO (icon) */
 .p-button-icon {
+    width: 50px;
+    height: 50px;
     padding: 14px;
     background-color: #59B468;
     border: 1px solid #59B468;
@@ -81,7 +90,7 @@
 .p-button-dangeroutlined {
     background-color: white;
     border: 1px solid #e02222;
-    border-radius: 14px;
+    border-radius: 100px;
     color: #e02222;
     transition-duration: 1s;
 }
@@ -90,4 +99,17 @@
     transition-duration: 1s;
     border-color: #E03131;
     color: #E03131;
+}
+
+/* SELECT BUTTON
+TO DO: */
+.p-ripple.p-element.p-button.p-component.p-highlight.ng-star-inserted {
+    background-color: #338240;
+    color: white;
+}
+
+.p-ripple.p-element.p-button.p-component.ng-star-inserted {
+    background-color: white;
+    border: 1px solid #59B468;
+    color: #59B468;
 }

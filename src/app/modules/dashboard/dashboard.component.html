@@ -2,8 +2,7 @@
     <div class="headerContainer flex flex-col items-center justify-center text-center">
         <header class="w-4/5">
             <div class="flex flex-col items-center justify-center ">
-                <h1>BIBLIOTECA IES ESTEVE TERRADAS I ILLA</h1>
-                <!-- <p class="text-white font-semibold">Text de subtítol</p> -->
+                <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
             </div>
         </header>
     </div>
@@ -24,7 +23,7 @@
                 <div class="flex flex-row gap-x-20 justify-between items-center">
                     <div class="flex flex-col">
                         <h3>Nom</h3>
-                        @if (!isEditingName) {
+                        @if (!isEditingName && getRoleName() !== 'Alumne') {
                             <p>{{profileData.name}} {{profileData.surname}} {{profileData.surname2}}</p>
                         } @else {
                             <div class="flex flex-col gap-2">
@@ -34,25 +33,26 @@
                             </div>
                         }
                     </div>
-                    <p-button (click)="isEditingName = !isEditingName" severity="fill">Editar</p-button>
+                    <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingName = !isEditingName" severity="fill">Editar</p-button>
                 </div>
-    
+
+                <!-- [Claudia]: No sé si funciona. Esto es una prueba para ver si el usuario NO puede editarlo. -->
                 <div class="flex flex-row gap-x-20 justify-between items-center">
                     <div class="flex flex-col">
                         <h3>Correo</h3>
-                        @if (!isEditingEmail) {
+                        @if (!isEditingEmail && getRoleName() !== 'Alumne') {
                             <p>{{profileData.username}}</p>
                         } @else {
                             <input pInputText [(ngModel)]="newEmail" placeholder="Correo" styleClass="w-1/2">
                         }
                     </div>
-                    <p-button (click)="isEditingEmail = !isEditingEmail" severity="fill">Editar</p-button>
-                </div>
-    
+                    <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingEmail = !isEditingEmail" severity="fill">Editar</p-button>
+                </div>                
+
                 <div class="flex flex-row gap-x-20 justify-between items-center">
                     <div class="flex flex-col">
                         <h3>Contrasenya</h3>
-                        @if (!isEditingPassword) {
+                        @if (!isEditingPassword && getRoleName() !== 'Alumne') {
                             <p>************</p>
                         } @else {
                             <div class="flex flex-col gap-2">
@@ -92,7 +92,7 @@
                             </div>
                         }
                     </div>
-                    <p-button (click)="isEditingPassword = !isEditingPassword" severity="fill">Editar</p-button>
+                    <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingPassword = !isEditingPassword" severity="fill">Editar</p-button>
                 </div>
             </div>
         </div>
@@ -108,6 +108,19 @@
                     <p-button (click)="cancelChanges()" severity="min">Cancelar</p-button>
                     <p-button (click)="saveChanges()" severity="fill-rounded">Guardar canvis</p-button>
                 </div>
+            </div>
+        </div>
+
+        <div class="flex flex-row gap-x-4">      
+            <div class="card flex justify-content-center">
+                <p-fileUpload
+                    mode="basic"
+                    chooseLabel="Puja un CSV"
+                    name="demo[]" 
+                    url="https://www.primefaces.org/cdn/api/upload.php"
+                    accept="csv/*"
+                    maxFileSize="1000000">
+                </p-fileUpload>
             </div>
         </div>
     </div>

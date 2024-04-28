@@ -15,4 +15,9 @@ export class DialogService {
     hideDialog() {
         this._showDialog.next({ isVisible: false, header: '', message: '' });
     }
+
+    updateDialogMessage(message: string) {
+        const currentDialog = this._showDialog.getValue();
+        this._showDialog.next({ ...currentDialog, message });
+    }
 }

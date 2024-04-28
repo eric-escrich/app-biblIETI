@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { StorageService } from './storage.service';
+import { LogService } from './log.service';
 
 @Injectable({
     providedIn: 'root',
@@ -12,15 +13,12 @@ import { StorageService } from './storage.service';
 export class ProfileService {
     private _router = inject(Router);
     private _storageService = inject(StorageService);
+    private _logService = inject(LogService);
 
     private baseUrl: string = environment.apiUrl;
     selfProfileData: any;
 
     constructor(private http: HttpClient) {}
-
-    async ngOnInit() {
-        this.selfProfileData = await this.getSelfProfileData();
-    }
 
     async getSelfProfileData() {
         try {
@@ -29,12 +27,10 @@ export class ProfileService {
                     observe: 'response',
                 }),
             );
-            console.log('ProfileService | getSelfProfileData - response -> ', response.body);
 
             this.selfProfileData = response.body;
             return this.selfProfileData;
         } catch (error: any) {
-            console.error('Error fetching profile data', error);
             this.logout();
             throw error;
         }
@@ -50,6 +46,11 @@ export class ProfileService {
         return this.selfProfileData.role;
     }
 
+    async getEmail() {
+        if (!this.selfProfileData) await this.getSelfProfileData();
+        return this.selfProfileData.email;
+    }
+
     async getUserID() {
         if (!this.selfProfileData) await this.getSelfProfileData();
         return this.selfProfileData.id;
@@ -58,7 +59,6 @@ export class ProfileService {
     async updateProfile(data: any) {
         try {
             const response: any = await firstValueFrom(this.http.post(`${this.baseUrl}/user/update/`, { data: data }));
-            console.log('ProfileService | updateProfile - response -> ', response);
 
             return response;
         } catch (error: any) {
@@ -67,10 +67,31 @@ export class ProfileService {
         }
     }
 
-    logout() {
-        this.selfProfileData = null;
-        this._storageService.removeItem('token');
-        this._storageService.removeItem('refresh');
-        this._router.navigateByUrl('/landing');
+    async getUsername() {
+        if (!this.selfProfileData) await this.getSelfProfileData();
+        return this.selfProfileData.username;
+    }
+
+    async logout() {
+        if (this._storageService.getItem('token') != null && this.selfProfileData != null) {
+            let mail = await this.getEmail();
+            this._storageService.removeItem('token');
+            this._logService.logInfo('Token delete', 'Se ha eliminado el token del localStorage', 'ProfileService - logout', mail);
+            this._storageService.removeItem('refresh');
+            this._logService.logInfo('Token refresh delete', 'Se ha eliminado el token refresh del localStorage', 'ProfileService - logout', mail);
+            this.selfProfileData = null;
+            this._logService.logInfo('User data delete', 'Se ha seteado la variable selfProfileData en null', 'ProfileService - logout', mail);
+            this._logService.logInfo('Redirect landing', 'Redirigiendo a la página de inicio', 'ProfileService - logout');
+            this._router.navigateByUrl('/landing');
+        } else {
+            this._storageService.removeItem('token');
+            this._logService.logInfo('Token delete', 'Se ha eliminado el token del localStorage', 'ProfileService - logout');
+            this._storageService.removeItem('refresh');
+            this._logService.logInfo('Token refresh delete', 'Se ha eliminado el token refresh del localStorage', 'ProfileService - logout');
+            this.selfProfileData = null;
+            this._logService.logInfo('User data delete', 'Se ha seteado la variable selfProfileData en null', 'ProfileService - logout');
+            this._logService.logInfo('Redirect landing', 'Redirigiendo a la página de inicio', 'ProfileService - logout');
+            this._router.navigateByUrl('/landing');
+        }
     }
 }

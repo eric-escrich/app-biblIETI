@@ -1,14 +1,16 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ToastModule } from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
-import { Router, RouterLink } from '@angular/router';
+import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from 'primeng/api';
 import { LoginComponent } from '../../core/auth/login/login.component';
 import { ItemService } from '../../services/item.service';
 import { DialogService } from '../../services/dialog.service';
+import { LogService } from '../../services/log.service';
 
 interface AutoCompleteCompleteEvent {
     originalEvent: Event;
@@ -18,7 +20,7 @@ interface AutoCompleteCompleteEvent {
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [ButtonModule, AutoCompleteModule, FormsModule, MenuModule, RouterLink, ToastModule, LoginComponent],
+    imports: [ButtonModule, AutoCompleteModule, FormsModule, MenuModule, RouterLink, ToastModule, LoginComponent, CheckboxModule],
     providers: [MessageService],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
@@ -27,6 +29,7 @@ export class HomeComponent {
     router = inject(Router);
     _itemService = inject(ItemService);
     _dialogService = inject(DialogService);
+    _logService = inject(LogService);
 
     filterChangeTimeout: any;
 
@@ -36,14 +39,22 @@ export class HomeComponent {
         this.popupVisible = true;
     }
 
+    checked: boolean = false;
+
     items: any[] = [];
 
-    selectedItem: string = '';
+    selectedItem: any;
 
-    async searchItems(item: string) {
+    searchQuery: string = '';
+
+    ngOnInit() {
+        this._logService.logInfo('Initializing HomeComponent', 'Inicializando HomeComponent', 'HomeComponent - ngOnInit()');
+    }
+
+    async searchItems(query: string) {
         try {
-            const response: any = await this._itemService.searchItems(item);
-            console.log('HomeComponent | searchItems - response -> ', response);
+            this._logService.logInfo('Search query', `Consulta de búsqueda: "${this.searchQuery}"`, 'HomeComponent - searchItems');
+            const response: any = await this._itemService.searchQuery(query);
 
             this.items = response;
             suggestions: [] = this.items.map((item) => item.name);
@@ -56,8 +67,8 @@ export class HomeComponent {
     onFilterChange() {
         clearTimeout(this.filterChangeTimeout);
         this.filterChangeTimeout = setTimeout(() => {
-            if (this.selectedItem.length >= 3) {
-                this.searchItems(this.selectedItem);
+            if (this.searchQuery.length >= 3) {
+                this.searchItems(this.searchQuery);
             } else {
                 this.items = [];
             }
@@ -69,7 +80,34 @@ export class HomeComponent {
     }
 
     onItemSelect(event: any) {
-        const itemId = event.value.id;
-        console.log('HomeComponent | onItemSelect - itemId -> ', itemId);
+        this.selectedItem = event.value;
+        console.log('Item selected', this.selectedItem);
+
+        this._logService.logInfo(
+            'Item selected',
+            `Item with id ${this.selectedItem.id} has been selected ('${this.selectedItem.name}')`,
+            'HomeComponent - onItemSelect',
+        );
+    }
+
+    viewItemDetails() {
+        console.log('View item details');
+
+        if (this.selectedItem) {
+            this._logService.logInfo(
+                'View item details',
+                `Viewing details of item with id = ${this.selectedItem.id} ('${this.selectedItem.name}')`,
+                'HomeComponent - viewItemDetails',
+            );
+            this._logService.logInfo('Redirect', `Redirección a la página de /itemDetails`, 'HomeComponent - viewItemDetails');
+            this.router.navigate(['/itemDetails', this.selectedItem.id]);
+        } else {
+            this._dialogService.showDialog('ERROR', "No s'ha seleccionat cap element");
+            this._logService.logWarning(
+                'View item details',
+                'It was not possible to view the details of the items because no items were selected.',
+                'HomeComponent - viewItemDetails',
+            );
+        }
     }
 }
