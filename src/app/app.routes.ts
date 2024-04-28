@@ -12,6 +12,8 @@ export const routes: Routes = [
         component: HomeComponent,
     },
     { path: 'cercar-llibre', component: SearchComponent },
+    { path: 'itemDetails/:id', component: SearchComponent },
+    // { path: 'reset-password/:uid/:token', component: ResetPasswordComponent },
     {
         path: '',
         component: LayoutComponent,

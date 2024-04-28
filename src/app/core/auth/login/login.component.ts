@@ -30,7 +30,6 @@ export class LoginComponent {
     username: string = '';
     password: string = '';
     email = new FormControl('', [Validators.required, Validators.email]);
-    emailSend = false;
     mailError = false;
     mailErrorMessage = '';
 
@@ -143,7 +142,6 @@ export class LoginComponent {
     togglePopup() {
         this.popupVisible = !this.popupVisible;
         this.mailError = false;
-        this.emailSend = false;
         this.email.reset();
     }
 
