@@ -4,3 +4,11 @@
     width: 100%;
     background-color: #EFF5F6;
 }
+
+:host::ng-deep .p-ripple.p-element.p-button.p-component.ng-star-inserted {
+    border: none;
+    color: gray;
+    width: auto;
+    height: auto;
+    margin: 1rem 1rem 0 0;
+}
