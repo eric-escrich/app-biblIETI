@@ -29,6 +29,10 @@ export class LoginComponent {
 
     username: string = '';
     password: string = '';
+    email = new FormControl('', [Validators.required, Validators.email]);
+    emailSend = false;
+    mailError = false;
+    mailErrorMessage = '';
 
     loginError: boolean = false;
     errorMessage: string = "L'usuari o la contrasenya són incorrectes.";
@@ -114,6 +118,8 @@ export class LoginComponent {
     }
 
     async onLogin() {
+        console.log('LoginComponent | onLogin - loginForm -> ');
+
         const isValid = await this.validateLoginForm();
         if (!isValid) return;
 
@@ -136,5 +142,38 @@ export class LoginComponent {
     }
     togglePopup() {
         this.popupVisible = !this.popupVisible;
+        this.mailError = false;
+        this.emailSend = false;
+        this.email.reset();
+    }
+
+    async sendMail() {
+        if (this.email.valid && this.email.value !== null) {
+            try {
+                let response = await this._authService.sendPasswordResetEmail(this.email.value);
+                console.log('Response', response);
+                console.log('Response status', response.status);
+
+                if (response.status === 200) {
+                    this.togglePopup();
+                    this._dialogService.showDialog('INFO', "S'ha enviat un correu electrònic amb un codi de verificació");
+                }
+            } catch (error: any) {
+                switch (error.status) {
+                    case 404:
+                        this.mailErrorMessage = `No existeix cap usuari amb el correu electrònic ${this.email.value}`;
+                        this.mailError = true;
+                        break;
+                    case 500:
+                        this.togglePopup();
+                        this._dialogService.showDialog('ERROR', 'Hi ha hagut un error intern del servidor. Si us plau, torna-ho a provar més tard');
+                        break;
+                    default:
+                        this.togglePopup();
+                        this._dialogService.showDialog('ERROR', 'Hi ha hagut un error desconegut. Si us plau, torna-ho a provar més tard');
+                        break;
+                }
+            }
+        }
     }
 }

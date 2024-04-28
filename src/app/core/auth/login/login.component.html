@@ -48,20 +48,49 @@
     </div>
 </div>
 
-<p-dialog [(visible)]="popupVisible" [modal]="true" [style]="{ width: '20%' }" [draggable]="false" [resizable]="false">
+<p-dialog
+    [(visible)]="popupVisible"
+    [modal]="true"
+    [style]="{ width: '25rem' }"
+    [draggable]="false"
+    [resizable]="false"
+>
     <div class="popup-container">
-        <div class="forgottenPwdContainer gap-y-4">
-            <p class="closePopUp" (click)="togglePopup()">X</p>
-            <i class="pi pi-envelope"></i>
-            <h3>T'hem enviat un correu</h3>
-            <p>Introduïu els cinc dígits indicats al vostre correu. Si no el trobes, revisa a la safata de Spam o espera per poder-lo reenviar.</p>
-            
-            <div class="card flex justify-content-center">
-                <p-inputOtp [(ngModel)]="value"></p-inputOtp>
+        @if (!emailSend) {
+            <form class="forgottenPwdContainer gap-6" (ngSubmit)="sendMail()">
+                <div class="flex justify-end w-full"><i class="closePopUp pi pi-times" (click)="togglePopup()"></i></div>
+                <div class="flex flex-col text-center gap-2">
+                    <p>Has oblidat la teva contrasenya?<br>No et preocupis!</p>
+                    <p>Si us plau, introdueix la teva adreça de correu electrònic a continuació.</p>
+                    <p>T'enviarem un correu electrònic perquè puguis restablir la teva contrasenya.</p>
+                </div>
+                <input [class]="{'ng-invalid': mailError}" pInputText type="email" name="email" [formControl]="email">
+                <p class="mailError" [class]="{'invalid': mailError}">{{ mailErrorMessage }}</p>
+                <p-button
+                    label="Enviar"
+                    severity="fill"
+                    type="submit"
+                ></p-button>
+            </form>
+        } @else {
+            <div class="forgottenPwdContainer gap-y-4">
+                <div class="flex justify-end w-full"><i class="closePopUp pi pi-times" (click)="togglePopup()"></i></div>
+                <i class="pi pi-envelope"></i>
+                <h3>T'hem enviat un correu</h3>
+                <p>Introduïu els cinc dígits indicats al vostre correu. Si no el trobes, revisa a la safata de Spam o espera per poder-lo reenviar.</p>
+                
+                <div class="card flex justify-content-center">
+                    <p-inputOtp [(ngModel)]="value"></p-inputOtp>
+                </div>
+    
+                <p-button
+                    label="Següent"
+                    severity="fill"
+                    type="submit"
+                ></p-button>
+                <p class="forgottenPwd">Reenviar codi en 20 segons</p>
             </div>
+        }
 
-            <p-button severity="fill">Següent</p-button>
-            <p class="forgottenPwd">Reenviar codi en 20 segons</p>
-        </div>
     </div>
 </p-dialog>

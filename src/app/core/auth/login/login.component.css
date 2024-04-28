@@ -51,6 +51,9 @@ label.ng-invalid {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(245, 245, 245);
 }
 
 .forgottenPwd {
@@ -63,6 +66,7 @@ label.ng-invalid {
     width: 20px;
     height: 20px;
     padding: 15px;
+    margin: -15px -15px 0 0; 
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -97,4 +101,18 @@ label.ng-invalid {
     backdrop-filter: blur(8px); /* Aplica un desenfoque al fondo */
     z-index: 999; /* Asegura que el fondo esté detrás del popup */
     display: none; /* Por defecto oculto */
+}
+
+:host::ng-deep .p-dialog {
+    background-color: rgb(245, 245, 245) !important;
+}
+
+.mailError {
+    color: red;
+    display: none;
+    text-align: center;
+}
+
+.mailError.invalid {
+    display: block;
 }
