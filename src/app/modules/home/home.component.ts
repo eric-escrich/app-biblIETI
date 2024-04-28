@@ -1,10 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ToastModule } from 'primeng/toast';
 import { MenuModule } from 'primeng/menu';
-import { Router, RouterLink } from '@angular/router';
+import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from 'primeng/api';
 import { LoginComponent } from '../../core/auth/login/login.component';
 import { ItemService } from '../../services/item.service';
@@ -19,7 +20,7 @@ interface AutoCompleteCompleteEvent {
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [ButtonModule, AutoCompleteModule, FormsModule, MenuModule, RouterLink, ToastModule, LoginComponent],
+    imports: [ButtonModule, AutoCompleteModule, FormsModule, MenuModule, RouterLink, ToastModule, LoginComponent, CheckboxModule],
     providers: [MessageService],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
@@ -37,6 +38,8 @@ export class HomeComponent {
     showPopup() {
         this.popupVisible = true;
     }
+
+    checked: boolean = false;
 
     items: any[] = [];
 

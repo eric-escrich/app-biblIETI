@@ -5,6 +5,7 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { HomeComponent } from './modules/home/home.component';
 import { JwtGuard } from './guards/jwt.guard';
 import { SearchComponent } from './modules/search/search.component';
+import { CreacioUsuariComponent } from './modules/creacio-usuari/creacio-usuari.component';
 
 export const routes: Routes = [
     {
@@ -18,7 +19,10 @@ export const routes: Routes = [
         path: '',
         component: LayoutComponent,
         canActivate: [JwtGuard],
-        children: [{ path: '', pathMatch: 'full', component: DashboardComponent }],
+        children: [
+            { path: '', pathMatch: 'full', component: DashboardComponent },
+            { path: 'creacio-usuari', component: CreacioUsuariComponent },
+        ],
     },
     { path: '**', redirectTo: '' },
 ];

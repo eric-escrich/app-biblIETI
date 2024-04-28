@@ -8,14 +8,11 @@
 @tailwind utilities;
 
 body, html {
-    /* height: 100%; */
     margin: 0;
     padding: 0;
 }
 
-
 body, html {
-    /* height: 100%; */
     margin: 0;
     padding: 0;
 }
@@ -31,6 +28,10 @@ body::-webkit-scrollbar-track {
 
 body::-webkit-scrollbar-thumb {
     border-radius: 100px;
+}
+
+h2, h3 {
+    text-wrap: nowrap;
 }
 
 h1 {
@@ -53,7 +54,7 @@ h2 {
 }
 
 h3 {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 800;
     color: #556958;
 }
@@ -65,7 +66,48 @@ p {
     color: #556958;
 }
 
-label {
-    font-size: 14px;
-    font-weight: 400;
+hr {
+    width: 100%;
+    margin: 20px 0;
+    border: 1px solid #F5F5F5;
+}
+
+.p-checkbox-box.p-highlight {
+    background-color: #59B468;
+}
+
+span.p-element.p-dropdown-label.p-inputtext.ng-star-inserted.p-placeholder {
+    border: none;
+    box-shadow: none;
+}
+
+.p-dropdown-items-wrapper {
+    text-align: left;
+}
+
+.p-panel .p-panel-header {
+    background-color: #59b4684e;
+    border: #556958;
+    border-radius: 8px 8px 0 0;
+    color: #556958;    
+}
+
+.panelAcordeon {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.p-panel .p-panel-content {
+    padding: 60px;
+    background-color: transparent;
+    border: 1px solid #59b4684e;
+    color: #556958;
 }

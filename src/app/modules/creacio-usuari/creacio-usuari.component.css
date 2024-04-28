@@ -1,6 +1,6 @@
 .headerContainer {
     padding: 300px 0;
-    margin: 0 0 40px 0;
+    margin: 0 0 10px 0;
     width: auto;
     height: auto;
     background-image: url('/assets/imgs/header.png');
@@ -9,26 +9,28 @@
     background-attachment: fixed;
 }
 
-.grid {
+.cardUser {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
 }
 
-.bentoBox img {
-    width: 400px;
-    height: 600px;
+fieldset {
+    padding: 40px;
+    border: 1px solid #59b4684e;
+    border-radius: 8px;
+}
+
+legend {
+    font-size: 20px;
+    font-weight: 700;
+    color: #59B468;
 }
 
 label {
+    margin: 40px 0 4px 0;
     font-weight: 800;
     font-size: 14px;
     color: #556958;
-}
-
-:host ::ng-deep .p-panel {
-    display: flex;
-    flex-direction: column;
-    padding: 40px;
-    margin: 0 0 40px 0;
 }

@@ -1,21 +1,34 @@
 import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { InputTextModule } from 'primeng/inputtext';
+import { FileUploadModule } from 'primeng/fileupload';
+import { MessageService } from 'primeng/api';
 
 import { ProfileService } from '../../services/profile.service';
 import { DialogService } from '../../services/dialog.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { PasswordModule } from 'primeng/password';
-import { FormsModule } from '@angular/forms';
 import { LogService } from '../../services/log.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [ButtonModule, AvatarModule, AvatarGroupModule, InputTextModule, PasswordModule, FormsModule],
+    imports: [
+                ButtonModule,
+                AvatarModule,
+                AvatarGroupModule,
+                InputTextModule,
+                PasswordModule,
+                FormsModule,
+                FileUploadModule,
+                RouterLink
+            ],
+    providers: [MessageService],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.css',
 })
@@ -217,4 +230,7 @@ export class DashboardComponent {
     logout() {
         this._profileService.logout();
     }
+
+    // FILE UPLOAD
+    constructor(private messageService: MessageService) {}
 }

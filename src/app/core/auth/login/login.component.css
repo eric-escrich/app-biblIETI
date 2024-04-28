@@ -25,21 +25,11 @@ input {
     padding: 0.5rem;
 }
 
-input.p-inputtext.ng-dirty.ng-invalid {
-    border-color: #e24c4c;
-}
+:host::ng-deep input.p-inputtext.ng-dirty.ng-invalid { border-color: #e24c4c; }
+.error { height: 52px; }
+.error p { color: red; }
 
-.error {
-    height: 52px;
-}
-
-.error p {
-    color: red;
-}
-
-label.ng-invalid {
-    color: #e24c4c;
-}
+label.ng-invalid { color: #e24c4c; }
 
 :host::ng-deep .p-button .p-button-label {
     display: flex;
@@ -63,6 +53,9 @@ label.ng-invalid {
 }
 
 .closePopUp {
+    position: absolute;
+    top: 10px;
+    right: 10px;
     width: 20px;
     height: 20px;
     padding: 15px;
@@ -73,8 +66,9 @@ label.ng-invalid {
     align-items: center;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 100px;
-    cursor: pointer;
+    font-size: 15px;
     color: #556958;
+    cursor: pointer;
 }
 
 .popup-container {
