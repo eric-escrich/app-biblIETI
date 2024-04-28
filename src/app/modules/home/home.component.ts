@@ -48,7 +48,7 @@ export class HomeComponent {
     searchQuery: string = '';
 
     ngOnInit() {
-        // this._logService.logInfo('Initializing HomeComponent', 'Inicializando HomeComponent', 'HomeComponent - ngOnInit()');
+        this._logService.logInfo('Initializing HomeComponent', 'Inicializando HomeComponent', 'HomeComponent - ngOnInit()');
     }
 
     async searchItems(query: string) {

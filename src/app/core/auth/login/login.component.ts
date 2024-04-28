@@ -116,8 +116,6 @@ export class LoginComponent {
     }
 
     async onLogin() {
-        console.log('LoginComponent | onLogin - loginForm -> ');
-
         const isValid = await this.validateLoginForm();
         if (!isValid) return;
 
