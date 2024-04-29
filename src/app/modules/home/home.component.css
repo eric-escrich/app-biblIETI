@@ -34,3 +34,9 @@
 .libroImgContainer {
     margin-bottom: -70px;
 }
+
+label[for="binary"] {
+    font-size: 14px;
+    font-weight: 500;
+    color: #556958;
+}
