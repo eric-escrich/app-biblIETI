@@ -7,26 +7,7 @@ import { JwtGuard } from './guards/jwt.guard';
 import { SearchComponent } from './modules/search/search.component';
 import { CreacioUsuariComponent } from './modules/creacio-usuari/creacio-usuari.component';
 import { ResetPasswordComponent } from './modules/reset-password-component/reset-password-component.component';
-
-// export const routes: Routes = [
-//     {
-//         path: 'landing',
-//         component: HomeComponent,
-//     },
-//     { path: 'cercar-llibre', component: SearchComponent },
-//     { path: 'itemDetails/:id', component: SearchComponent },
-//     { path: 'reset-password/:uid/:token', component: ResetPasswordComponent },
-//     {
-//         path: '',
-//         component: LayoutComponent,
-//         canActivate: [JwtGuard],
-//         children: [
-//             { path: '', pathMatch: 'full', component: DashboardComponent },
-//             { path: 'creacio-usuari', component: CreacioUsuariComponent },
-//         ],
-//     },
-//     { path: '**', redirectTo: '' },
-// ];
+import { ProfileDataComponent } from './modules/profile-data/profile-data.component';
 
 export const routes: Routes = [
     {
@@ -36,13 +17,19 @@ export const routes: Routes = [
             {
                 path: 'dashboard',
                 component: DashboardComponent,
-                canActivate: [JwtGuard], // Protege la ruta con el guardia de autenticación
+                canActivate: [JwtGuard],
             },
             {
                 path: 'creacio-usuari',
                 component: CreacioUsuariComponent,
-                canActivate: [JwtGuard], // Protege la ruta con el guardia de autenticación
+                canActivate: [JwtGuard],
             },
+            {
+                path: 'perfil',
+                component: ProfileDataComponent,
+                canActivate: [JwtGuard],
+            },
+
             { path: 'landing', component: HomeComponent },
             { path: 'cercar-llibre', component: SearchComponent },
             { path: 'itemDetails/:id', component: SearchComponent },

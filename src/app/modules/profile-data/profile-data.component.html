@@ -1,0 +1,7 @@
+@if (profileData) {
+    <div class="card flex justify-content-center">
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput style="display: none" />
+        <img [src]="profileImage" (click)="fileInput.click()" alt="profile image" />
+    </div>
+}
+
