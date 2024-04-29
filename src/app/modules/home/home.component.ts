@@ -111,12 +111,11 @@ export class HomeComponent {
             );
         }
     }
+
     filterAvailableItems() {
         if (this.onlyAvailable) {
             this.items = this.items.filter(item => item.available);
         } else {
-            // Si no se selecciona la opción de mostrar solo disponibles,
-            // restauramos la lista original de items
             this.searchItems(this.selectedItem);
         }
     }
