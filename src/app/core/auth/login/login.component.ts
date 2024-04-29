@@ -71,7 +71,7 @@ export class LoginComponent {
             this.invalidLogin = true;
             this._logService.logWarning(
                 'Password missing lowercase',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin minúsculas',
+                "No s'ha pogut modificar la contrasenya de l'usuari perquè ha introduït una contrasenya sense minúscules.",
                 'ResetPasswordComponent - passwordValidator',
             );
             return false;
@@ -80,7 +80,7 @@ export class LoginComponent {
             this.invalidLogin = true;
             this._logService.logWarning(
                 'Password missing number',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin números',
+                "No s'ha pogut modificar la contrasenya de l'usuari perquè ha introduït una contrasenya sense números.",
                 'ResetPasswordComponent - passwordValidator',
             );
             return false;
@@ -89,7 +89,7 @@ export class LoginComponent {
             this.invalidLogin = true;
             this._logService.logWarning(
                 'Password missing special character',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin caracteres especiales',
+                "No s'ha pogut modificar la contrasenya de l'usuari perquè ha introduït una contrasenya sense caràcters especials.",
                 'ResetPasswordComponent - passwordValidator',
             );
             return false;
@@ -106,21 +106,21 @@ export class LoginComponent {
 
             this._logService.logInfo(
                 'Profile data',
-                `Se han obtenido los datos de perfil del usuario`,
+                `S'han obtingut les dades de perfil de l'usuari`,
                 'LoginComponent - handleLoginResponse',
                 profile.username,
             );
             this._logService.logInfo(
                 'Login OK',
-                `El usuario: ${JSON.stringify(profile.username)} ha iniciado sesión correctamente`,
+                `L'usuario: ${JSON.stringify(profile.username)} ha iniciat sessió correctament.`,
                 'LoginComponent - handleLoginResponse',
                 profile.username,
             );
 
-            this._logService.logInfo('Redirect', `Redirección a la página de dashboard`, 'LoginComponent - handleLoginResponse', profile.username);
+            this._logService.logInfo('Redirect', `Redirecció a la pàgina de Dashboard`, 'LoginComponent - handleLoginResponse', profile.username);
             this._router.navigateByUrl('/dashboard');
         } else {
-            this._logService.logError('Error de inicio de sesión', 'CIF o contraseña incorrectos', 'LoginComponent - handleLoginResponse');
+            this._logService.logError("Error d'inici de sessin", "CIF o contrasenya incorrectes", "LoginComponent - handleLoginResponse");
             throw new Error('CIF or password are incorrect');
         }
     }
@@ -146,7 +146,7 @@ export class LoginComponent {
         if (passwordValid) {
             try {
                 const response = await this._authService.login(this.username, this.password);
-                this._logService.logInfo('Respuesta de inicio de sesión', `Token recibido`, 'LoginComponent - onLogin', response.body.token.email);
+                this._logService.logInfo("Resposta d'inicio de sesión", "Token rebut", 'LoginComponent - onLogin', response.body.token.email);
 
                 await this.handleLoginResponse(response);
             } catch (error: any) {

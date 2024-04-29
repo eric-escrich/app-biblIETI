@@ -52,9 +52,9 @@ export class ResetPasswordComponent {
             this.invalidPassword = true;
             this.errorMessage = `La contrasenya és massa curta (${password.length})`;
             this._logService.logWarning(
-                'Password too short',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña muy corta',
-                'ResetPasswordComponent - passwordValidator',
+                "Password too short",
+                "No s'ha pogut modificar la contrasenya de l'usuari perquè ha introduït una contrasenya muy corta",
+                "ResetPasswordComponent - passwordValidator",
             );
             return false;
         }
@@ -63,7 +63,7 @@ export class ResetPasswordComponent {
             this.errorMessage = 'La contrasenya és massa llarga (${password.length})';
             this._logService.logWarning(
                 'Password too long',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña muy larga',
+                "No s'ha pogut modificar la contrasenya de l'usuari perquè ha introduït una contrasenya molt llarga",
                 'ResetPasswordComponent - passwordValidator',
             );
             return false;
@@ -73,7 +73,7 @@ export class ResetPasswordComponent {
             this.errorMessage = 'La contrasenya ha de contenir almenys una lletra majúscula.';
             this._logService.logWarning(
                 'Password missing uppercase',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin mayúsculas',
+                "No s'ha pogut modificar la contrasenya de l'usuari perquè ha introduït una contrasenya sense mayúscules",
                 'ResetPasswordComponent - passwordValidator',
             );
             return false;
@@ -83,7 +83,7 @@ export class ResetPasswordComponent {
             this.errorMessage = 'La contrasenya ha de contenir almenys una lletra minúscula.';
             this._logService.logWarning(
                 'Password missing lowercase',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin minúsculas',
+                "No s'ha pogut modificar la contrasenya de l'usuari perquè ha introduït una contrasenya sin minúsculas",
                 'ResetPasswordComponent - passwordValidator',
             );
             return false;
@@ -93,7 +93,7 @@ export class ResetPasswordComponent {
             this.errorMessage = 'La contrasenya ha de contenir almenys un número.';
             this._logService.logWarning(
                 'Password missing number',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin números',
+                "No s'ha pogut modificar la contrasenya de l'usuari perquè ha introduït una contrasenya sin números",
                 'ResetPasswordComponent - passwordValidator',
             );
             return false;
@@ -103,7 +103,7 @@ export class ResetPasswordComponent {
             this.errorMessage = 'La contrasenya ha de contenir almenys un caràcter especial.';
             this._logService.logWarning(
                 'Password missing special character',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin caracteres especiales',
+                "No s'ha pogut modificar la contrasenya de l'usuari perquè ha introduït una contrasenya sin caracteres especiales",
                 'ResetPasswordComponent - passwordValidator',
             );
             return false;
@@ -119,7 +119,7 @@ export class ResetPasswordComponent {
             this.errorMessage = 'Les contrasenyes no coincideixen';
             this._logService.logWarning(
                 'Passwords do not match',
-                'No se ha podido modificar la contraseña del usuario porque las contraseñas no coinciden',
+                "No s'ha pogut modificar la contrasenya de l'usuari perquè les contrasenyes no coincideixen",
                 'ResetPasswordComponent - onSubmit',
             );
             return;
@@ -138,8 +138,8 @@ export class ResetPasswordComponent {
             await this._authService.resetPassword(password, this.uid, this.token);
             this._dialogService.showDialog('INFORMACIÓ', 'Contrasenya modificada correctament. Ja pots iniciar sessió amb la nova contrasenya.');
 
-            this._logService.logInfo('Password reset', "La contrasenya s'ha modificat correctament", 'ResetPasswordComponent - resetPassword');
-            this._logService.logInfo('Redirect landing', 'Redirigiendo a la página de inicio', 'ResetPasswordComponent - resetPassword');
+            this._logService.logInfo("Password reset", "La contrasenya s'ha modificat correctament", "ResetPasswordComponent - resetPassword");
+            this._logService.logInfo("Redirect landing", "Redirigint a la pàgina d'inici", "ResetPasswordComponent - resetPassword");
             this._router.navigateByUrl('/landing');
         } catch (error: any) {
             console.error('Error during password reset', error);
@@ -168,14 +168,14 @@ export class ResetPasswordComponent {
                     console.log('ERROR UNDEFINED', error.error.error);
 
                     this._logService.logError('ERROR UNDEFINED', error.error.error, 'ResetPasswordComponent - resetPassword');
-                    this._dialogService.showDialog('ERROR', error.error.error || 'Error desconocido');
+                    this._dialogService.showDialog('ERROR', error.error.error || 'Error deseconegut');
                     break;
             }
         }
     }
 
     goToLanding() {
-        this._logService.logInfo('Redirect landing', 'Redirigiendo a la página de inicio', 'ProfileService - logout');
+        this._logService.logInfo('Redirect landing', "Redirigint a la pàgina d'inici", 'ProfileService - logout');
         this._router.navigateByUrl('/landing');
     }
 }
