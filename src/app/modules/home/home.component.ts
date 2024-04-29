@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { LoginComponent } from '../../core/auth/login/login.component';
 import { ItemService } from '../../services/item.service';
 import { DialogService } from '../../services/dialog.service';
+import { LogService } from '../../services/log.service';
 
 interface AutoCompleteCompleteEvent {
     originalEvent: Event;
@@ -19,16 +20,7 @@ interface AutoCompleteCompleteEvent {
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [
-                ButtonModule,
-                AutoCompleteModule,
-                FormsModule,
-                MenuModule,
-                RouterLink,
-                ToastModule,
-                LoginComponent,
-                CheckboxModule
-            ],
+    imports: [ButtonModule, AutoCompleteModule, FormsModule, MenuModule, RouterLink, ToastModule, LoginComponent, CheckboxModule],
     providers: [MessageService],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
@@ -37,6 +29,7 @@ export class HomeComponent {
     router = inject(Router);
     _itemService = inject(ItemService);
     _dialogService = inject(DialogService);
+    _logService = inject(LogService);
 
     filterChangeTimeout: any;
 
@@ -45,12 +38,8 @@ export class HomeComponent {
     showPopup() {
         this.popupVisible = true;
     }
-    
-    items: any[] = [];
-    selectedItem: string = '';
-    
-    onlyAvailable: boolean = false;
 
+    onlyAvailable: boolean = false;
     checked: boolean = false;
 
     items: any[] = [];
@@ -79,8 +68,8 @@ export class HomeComponent {
     onFilterChange() {
         clearTimeout(this.filterChangeTimeout);
         this.filterChangeTimeout = setTimeout(() => {
-            if (this.selectedItem.length >= 3) {
-                this.searchItems(this.selectedItem);
+            if (this.searchQuery.length >= 3) {
+                this.searchItems(this.searchQuery);
             } else {
                 this.items = [];
             }
@@ -111,7 +100,7 @@ export class HomeComponent {
                 `Viewing details of item with id = ${this.selectedItem.id} ('${this.selectedItem.name}')`,
                 'HomeComponent - viewItemDetails',
             );
-            this._logService.logInfo('Redirect', `Redirección a la página de /itemDetails`, 'HomeComponent - viewItemDetails');
+            this._logService.logInfo('Redirect', `Redirecció a la pàgina de /itemDetails`, 'HomeComponent - viewItemDetails');
             this.router.navigate(['/itemDetails', this.selectedItem.id]);
         } else {
             this._dialogService.showDialog('ERROR', "No s'ha seleccionat cap element");
@@ -122,12 +111,12 @@ export class HomeComponent {
             );
         }
     }
-
-    // FILTRO "AVAILABLE"
     filterAvailableItems() {
         if (this.onlyAvailable) {
             this.items = this.items.filter(item => item.available);
         } else {
+            // Si no se selecciona la opción de mostrar solo disponibles,
+            // restauramos la lista original de items
             this.searchItems(this.selectedItem);
         }
     }
