@@ -43,10 +43,10 @@ export class LoginComponent {
     async onLogin() {
         if (this.loginForm.status == 'INVALID') {
             this._logService.logWarning(
-                'Username o password incorrectas',
-                `LoginComponent - onLogin | Un usuario ha intentado acceder con el usuario ${this.loginForm.get(
+                'Usuari o contrasenya incorrectes',
+                `LoginComponent - onLogin | Un usuari ha tratat d'accedir amb l'usuari ${this.loginForm.get(
                     'username',
-                )} pero ha introducido incorrectamente o el username o la contraseña: ${this.errorMessage}`,
+                )}, però ha introduït incorrectament l'usuari o la contrasenya: ${this.errorMessage}.`,
             );
             const keys = Object.keys(this.loginForm.controls);
 
@@ -67,25 +67,25 @@ export class LoginComponent {
         try {
             const response = await this._authService.login(this.loginForm.get('username')?.value, this.loginForm.get('password')?.value);
             this._logService.logInfo(
-                'Respuesta de inicio de sesión',
-                `LoginComponent - onLogin | Respuesta de inicio de sesión recibida: ${JSON.stringify(response)}`,
+                "Resposta d'inici de sessió",
+                `LoginComponent - onLogin | Respoesta d'inici de sessió rebuda: ${JSON.stringify(response)}.`,
             );
 
             if (response.body.token.access) {
                 const profile = await this._profileService.getSelfProfileData();
                 this._profileService.selfProfileData = profile;
                 console.log('login.component | onLogin - profile -> ', profile);
-                this._logService.logInfo('Perfil de usuario', `Se han obtenido los datos de perfil del usuario: ${JSON.stringify(profile)}`);
+                this._logService.logInfo("Perfil d'usuari", "S'han obtingut les dades de perfil de l'usuari: ${JSON.stringify(profile)}");
                 this._logService.logInfo(
-                    'Login exitoso',
-                    `LoginComponent - onLogin | El usuario: ${JSON.stringify(profile.username)} ha iniciado sesión correctamente`,
+                    'Inici de sessió exitós',
+                    `LoginComponent - onLogin | L'usuari: ${JSON.stringify(profile.username)} ha iniciat sessió correctament.`,
                 );
 
-                this._logService.logInfo('Redirect', `LoginComponent - onLogin | Redirección a la página de dashboard`);
+                this._logService.logInfo('Redirect', `LoginComponent - onLogin | Redirecció a la pàgina de Dashboard.`);
                 this._router.navigateByUrl('/dashboard');
             } else {
-                this._logService.logError('Error de inicio de sesión', 'LoginComponent - onLogin | CIF o contraseña incorrectos');
-                throw new Error('CIF or password are incorrect');
+                this._logService.logError("Error d'inici de sessió", 'LoginComponent - onLogin | CIF o contrasenya incorrectes.');
+                throw new Error('CIF o contrasenya incorrectes.');
             }
         } catch (error: any) {
             switch (error.status) {
