@@ -2,7 +2,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
-    background-color: #EFF5F6;
+    background-color: white;
 }
 
 :host::ng-deep .p-ripple.p-element.p-button.p-component.ng-star-inserted {
