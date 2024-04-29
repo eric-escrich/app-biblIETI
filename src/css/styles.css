@@ -30,8 +30,15 @@ body::-webkit-scrollbar-thumb {
     border-radius: 100px;
 }
 
-h2, h3 {
-    text-wrap: nowrap;
+.headerContainer {
+    padding: 80px 0;
+    margin: 0 0 40px 0;
+    width: auto;
+    height: auto;
+    background-image: url('/assets/imgs/header.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 h1 {
@@ -57,6 +64,10 @@ h3 {
     font-size: 18px;
     font-weight: 800;
     color: #556958;
+}
+
+h2, h3 {
+    text-wrap: nowrap;
 }
 
 p {
