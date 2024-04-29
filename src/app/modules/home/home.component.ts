@@ -33,7 +33,6 @@ interface AutoCompleteCompleteEvent {
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
 })
-
 export class HomeComponent {
     router = inject(Router);
     _itemService = inject(ItemService);
@@ -43,7 +42,6 @@ export class HomeComponent {
 
     // POP UP OLVIDAR CONTRASEÑA
     popupVisible = false;
-    
     showPopup() {
         this.popupVisible = true;
     }
@@ -55,11 +53,20 @@ export class HomeComponent {
 
     checked: boolean = false;
 
-    // BÚSQUEDA
-    async searchItems(item: string) {
+    items: any[] = [];
+
+    selectedItem: any;
+
+    searchQuery: string = '';
+
+    ngOnInit() {
+        this._logService.logInfo('Initializing HomeComponent', 'Inicializando HomeComponent', 'HomeComponent - ngOnInit()');
+    }
+
+    async searchItems(query: string) {
         try {
-            const response: any = await this._itemService.searchItems(item);
-            console.log('HomeComponent | searchItems - response -> ', response);
+            this._logService.logInfo('Search query', `Consulta de búsqueda: "${this.searchQuery}"`, 'HomeComponent - searchItems');
+            const response: any = await this._itemService.searchQuery(query);
 
             this.items = response;
             suggestions: [] = this.items.map((item) => item.name);
@@ -85,8 +92,35 @@ export class HomeComponent {
     }
 
     onItemSelect(event: any) {
-        const itemId = event.value.id;
-        console.log('HomeComponent | onItemSelect - itemId -> ', itemId);
+        this.selectedItem = event.value;
+        console.log('Item selected', this.selectedItem);
+
+        this._logService.logInfo(
+            'Item selected',
+            `Item with id ${this.selectedItem.id} has been selected ('${this.selectedItem.name}')`,
+            'HomeComponent - onItemSelect',
+        );
+    }
+
+    viewItemDetails() {
+        console.log('View item details');
+
+        if (this.selectedItem) {
+            this._logService.logInfo(
+                'View item details',
+                `Viewing details of item with id = ${this.selectedItem.id} ('${this.selectedItem.name}')`,
+                'HomeComponent - viewItemDetails',
+            );
+            this._logService.logInfo('Redirect', `Redirección a la página de /itemDetails`, 'HomeComponent - viewItemDetails');
+            this.router.navigate(['/itemDetails', this.selectedItem.id]);
+        } else {
+            this._dialogService.showDialog('ERROR', "No s'ha seleccionat cap element");
+            this._logService.logWarning(
+                'View item details',
+                'It was not possible to view the details of the items because no items were selected.',
+                'HomeComponent - viewItemDetails',
+            );
+        }
     }
 
     // FILTRO "AVAILABLE"

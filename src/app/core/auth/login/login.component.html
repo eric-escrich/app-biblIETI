@@ -1,31 +1,47 @@
 <div class="mainContent">
     <div class="login-container">
         <h2 class="mb-10">Inicia sessió</h2>
-        <form [formGroup]="loginForm" method="post" class="flex gap-y-10">
+        <form (ngSubmit)="onLogin()" method="post" class="flex gap-y-4">
             <div class="flex flex-col gap-y-10">
                 <div class="input">
                     <span class="p-float-label">
-                        <input pInputText formControlName="username" name="username" id="username" autocomplete="off" [class]="{'ng-invalid': loginError}"/>
-                        <label for="username" [class]="{'ng-invalid': loginError}">Nom d'usuari o correu electònic</label>
+                        <input
+                            pInputText
+                            [(ngModel)]="username"
+                            name="username"
+                            id="username"
+                            (input)="invalidLogin = false"
+                            [class]="{'ng-invalid': invalidLogin}"
+                        />
+                        <label for="username" [class]="{'ng-invalid': invalidLogin}">Nom d'usuari o correu electònic</label>
                     </span>
                 </div>
                     
                 <div class="input">
                     <span class="p-float-label">
                         <p-password
-                            formControlName="password"
+                            [(ngModel)]="password"
                             name="password"
                             id="password"
-                            autocomplete="off"
+                            [toggleMask]="true"
                             [feedback]="false"
                             [toggleMask]="true"
+                            (input)="invalidLogin = false"
                             [style]="{'width':'100%', 'height':'3rem'}"
-                            [class]="{'ng-invalid': loginError}"
+                            [class]="{'ng-invalid': invalidLogin}"
                             [inputStyle]="{'width':'100%'}"
                         ></p-password>
-                        <label for="password" [class]="{'ng-invalid': loginError}">Contrasenya</label>
+                        <label for="password" [class]="{'ng-invalid': invalidLogin}">Contrasenya</label>
                     </span>
                 </div>
+            </div>
+
+            <div class="error">
+                <p>
+                    @if (invalidLogin) {
+                        {{ loginErrorMessage }}
+                    }
+                </p>
             </div>
 
             <p class="forgottenPwd" (click)="togglePopup()">Has oblidat la contrasenya?</p>
@@ -34,27 +50,43 @@
                 label="Següent"
                 styleClass="p-button-rounded"
                 severity="fill"
-                (click)="onLogin()"
+                type="submit"
+                class="w-full mx-auto flex justify-center"
             ></p-button>
         </form>
-        
-        <div class="error">
-            <p>
-                @if (loginError) {
-                    {{ errorMessage }}
-                }
-            </p>
-        </div>
     </div>
 </div>
 
-<p-dialog [(visible)]="popupVisible" [modal]="true" [style]="{ width: '20%' }" [draggable]="false" [resizable]="false">
+<p-dialog
+    [(visible)]="popupVisible"
+    [modal]="true"
+    [style]="{ width: '25rem' }"
+    [draggable]="false"
+    [resizable]="false"
+>
     <div class="popup-container">
-        <div class="forgottenPwdContainer gap-y-4">
-            <p class="closePopUp" (click)="togglePopup()">X</p>
-            <i class="pi pi-envelope"></i>
-            <h3>Correu enviat!</h3>
-            <p>T'hem enviat un correu per a confirmar que ets tú. Si no el trobes, revisa a la safata de Spam o espera per poder-lo reenviar.</p>
-        </div>
+        <form class="forgottenPwdContainer gap-6" (ngSubmit)="sendMail()">
+            <div class="flex justify-end w-full"><i class="closePopUp pi pi-times" (click)="togglePopup()"></i></div>
+            <div class="flex flex-col text-center gap-2">
+                <p class="negrita">Has oblidat la teva contrasenya?<br>No et preocupis!</p>
+                <p>Si us plau, introdueix la teva adreça de correu electrònic a continuació.</p>
+                <p>T'enviarem un correu electrònic perquè puguis restablir la teva contrasenya.</p>
+            </div>
+            <input
+                [(ngModel)]="email"
+                pInputText
+                type="email"
+                name="email"
+                id="email"
+                (input)="invalidEmail = false"
+                [class]="{'ng-invalid': invalidEmail}"
+            >
+            <p class="mailError" [class]="{'invalid': invalidEmail}">{{ mailErrorMessage }}</p>
+            <p-button
+                label="Enviar"
+                severity="fill"
+                type="submit"
+            ></p-button>
+        </form>
     </div>
 </p-dialog>
