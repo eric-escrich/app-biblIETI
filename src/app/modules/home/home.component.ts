@@ -33,6 +33,7 @@ interface AutoCompleteCompleteEvent {
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
 })
+
 export class HomeComponent {
     router = inject(Router);
     _itemService = inject(ItemService);
@@ -42,17 +43,19 @@ export class HomeComponent {
 
     // POP UP OLVIDAR CONTRASEÑA
     popupVisible = false;
+    
     showPopup() {
         this.popupVisible = true;
     }
-
+    
     items: any[] = [];
-
     selectedItem: string = '';
+    
     onlyAvailable: boolean = false;
 
     checked: boolean = false;
 
+    // BÚSQUEDA
     async searchItems(item: string) {
         try {
             const response: any = await this._itemService.searchItems(item);
@@ -85,4 +88,14 @@ export class HomeComponent {
         const itemId = event.value.id;
         console.log('HomeComponent | onItemSelect - itemId -> ', itemId);
     }
+
+    // FILTRO "AVAILABLE"
+    filterAvailableItems() {
+        if (this.onlyAvailable) {
+            this.items = this.items.filter(item => item.available);
+        } else {
+            this.searchItems(this.selectedItem);
+        }
+    }
+    
 }
