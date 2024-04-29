@@ -65,7 +65,6 @@ export class HomeComponent {
             this._dialogService.showDialog('ERROR', "No s'han pogut carregar els resultats de la cerca. Si us plau, torna-ho a provar més tard.");
         }
     }
-    
 
     onFilterChange() {
         clearTimeout(this.filterChangeTimeout);
