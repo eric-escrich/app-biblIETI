@@ -54,7 +54,6 @@ export class CreacioUsuariComponent implements OnInit{
   errorMessage: string = 'Les contrasenyes no coincideixen.';
   loginForm!: FormGroup;
 
-
   // TODO: Que funcione al comprar la contraseña y repetir contraseña.
   async onConfirm() {
     if (this.loginForm.status === 'INVALID') {
@@ -64,7 +63,7 @@ export class CreacioUsuariComponent implements OnInit{
       if (passwordControl && repeatPasswordControl && passwordControl.value !== repeatPasswordControl.value) {
         this._logService.logWarning(
           'Les contrasenyes no coincideixen.',
-          `CreacioUsuariComponent - onConfirm | Un bibliotecari ha intenta crear un usuari, però ha introduït incorrectamente la contraseña: ${this.errorMessage}`,
+          `CreacioUsuariComponent - onConfirm | Un bibliotecari ha intenta crear un usuari, però ha introduït incorrectament la contrasenya: ${this.errorMessage}`,
         );
         this.loginError = true;
         this.errorMessage = 'Les contrasenyes no coincideixen.';
