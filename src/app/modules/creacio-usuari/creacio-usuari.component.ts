@@ -13,6 +13,7 @@ import { DialogModule } from 'primeng/dialog';
 import { LogService } from '../../services/log.service';
 import { FormValidationService } from '../../services/validations-service.service';
 import { CalendarModule } from 'primeng/calendar';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
     selector: 'app-creacio-usuari',
@@ -39,6 +40,7 @@ export class CreacioUsuariComponent {
     private _logService = inject(LogService);
     private _dialogService = inject(DialogService);
     private _formValidationService = inject(FormValidationService);
+    private config = inject(PrimeNGConfig);
 
     public username: string = '';
     public name: string = '';
@@ -68,6 +70,8 @@ export class CreacioUsuariComponent {
 
     private userEmail: string = '';
 
+    public ca: any = {};
+
     async ngOnInit() {
         this.userEmail = await this._profileService.getEmail();
         this._logService.logInfo(
@@ -76,6 +80,16 @@ export class CreacioUsuariComponent {
             'CreacioUsuariComponent - ngOnInit',
             this.email,
         );
+
+        this.config.setTranslation({
+            dayNames: ['Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte', 'Diumenge'],
+            dayNamesShort: ['dil', 'dmt', 'dmc', 'djs', 'div', 'dis', 'dug'],
+            dayNamesMin: ['Dl', 'Dm', 'Dc', 'Dj', 'Dv', 'Ds', 'Dg'],
+            monthNames: ['gener', 'febrer', 'març', 'abril', 'maig', 'juny', 'juliol', 'agost', 'setembre', 'octubre', 'novembre', 'desembre'],
+            monthNamesShort: ['gen', 'feb', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'oct', 'nov', 'des'],
+            today: 'Avui',
+            clear: 'Netejar',
+        });
     }
 
     async onSubmit() {
@@ -208,6 +222,27 @@ export class CreacioUsuariComponent {
         }
 
         if (!this.verifyPassword()) return;
+
+        let existsUser = await this._authService.checkUserExists(this.username, this.email);
+        if (existsUser.username_exists || existsUser.email_exists) {
+            this.invalidForm = true;
+            let errorMessage = 'Ja existeix un usuari amb aquest ';
+            if (existsUser.username_exists) {
+                errorMessage += "nom d'usuari";
+                this.invalidUsername = true;
+            } else if (existsUser.email_exists) {
+                errorMessage += 'correu electronic';
+                this.invalidEmail = true;
+            }
+            this._logService.logWarning(
+                'User already exists',
+                'No se ha podido crear el usuario porque ya existe un usuario con ese nombre o email',
+                'CreacioUsuariComponent - onSubmit',
+            );
+            this.errorMessage = errorMessage;
+            this._dialogService.showDialog('ERROR', errorMessage);
+            return;
+        }
 
         await this.register();
     }
