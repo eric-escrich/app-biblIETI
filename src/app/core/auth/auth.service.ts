@@ -166,4 +166,31 @@ export class AuthService {
             throw error;
         }
     }
+
+    async checkUserExists(username: string, email: string): Promise<{ username_exists: boolean; email_exists: boolean }> {
+        try {
+            const response: any = await firstValueFrom(
+                this._http.get(`${this.baseUrl}/auth/check-user-exists/`, {
+                    params: {
+                        username: username,
+                        email: email,
+                    },
+                }),
+            );
+            this._logService.logInfo(
+                'checkUserExists results',
+                `Los resultados de la comprovacion de si el usuario existe son: ${JSON.stringify(response)}`,
+                'AuthService - checkUserExists',
+            );
+            return response;
+        } catch (error: any) {
+            this._logService.logInfo(
+                'Error checkin if user exists',
+                `Ha ocurrido un error mientras se comprobaba si el usuario existe: ${error.message}`,
+                'AuthService - checkUserExists',
+            );
+            console.error('Error checking if user exists', error);
+            throw error;
+        }
+    }
 }
