@@ -123,5 +123,16 @@
                 </p-fileUpload>
             </div>
         </div>
+
+        @if (role === Role.ADMIN || role === Role.BIBLIO) {
+            <p-button
+                label="CREA UN NOU ALUMNE"
+                styleClass="p-button-rounded"
+                severity="fill"
+                routerLink="/creacio-usuari"
+                class="w-fit"
+            ></p-button>
+
+        }
     </div>
 }

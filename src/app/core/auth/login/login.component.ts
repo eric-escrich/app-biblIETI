@@ -11,6 +11,7 @@ import { ProfileService } from '../../../services/profile.service';
 import { DialogService } from '../../../services/dialog.service';
 import { DialogModule } from 'primeng/dialog';
 import { LogService } from '../../../services/log.service';
+import { FormValidationService } from '../../../services/validations-service.service';
 
 @Component({
     selector: 'app-login',
@@ -25,6 +26,7 @@ export class LoginComponent {
     private _profileService = inject(ProfileService);
     private _logService = inject(LogService);
     private _dialogService = inject(DialogService);
+    private _formValidationService = inject(FormValidationService);
 
     public username: string = '';
     public password: string = '';
@@ -39,65 +41,6 @@ export class LoginComponent {
     public invalidEmail = false;
     public mailErrorMessage: string = '';
 
-    passwordValidator(password: string) {
-        if (password.length < 8) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password too short',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña muy corta',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        if (password.length > 16) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password too long',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña muy larga',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        if (!/[A-Z]/.test(password)) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password missing uppercase',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin mayúsculas',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        if (!/[a-z]/.test(password)) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password missing lowercase',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin minúsculas',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        if (!/\d/.test(password)) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password missing number',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin números',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        if (!/[!@#$%^&*()-_=+[\]{};:'",.<>/?\\|~]/.test(password)) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password missing special character',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin caracteres especiales',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        this.invalidLogin = false;
-        return true;
-    }
-
     async handleLoginResponse(response: any) {
         if (response.body.token.access) {
             const profile = await this._profileService.getSelfProfileDataWithoutLoading();
@@ -106,21 +49,21 @@ export class LoginComponent {
 
             this._logService.logInfo(
                 'Profile data',
-                `Se han obtenido los datos de perfil del usuario`,
+                `S'han obtingut les dades de perfil de l'usuari`,
                 'LoginComponent - handleLoginResponse',
                 profile.username,
             );
             this._logService.logInfo(
                 'Login OK',
-                `El usuario: ${JSON.stringify(profile.username)} ha iniciado sesión correctamente`,
+                `L'usuario: ${JSON.stringify(profile.username)} ha iniciat sessió correctament.`,
                 'LoginComponent - handleLoginResponse',
                 profile.username,
             );
 
-            this._logService.logInfo('Redirect', `Redirección a la página de dashboard`, 'LoginComponent - handleLoginResponse', profile.username);
+            this._logService.logInfo('Redirect', `Redirecció a la pàgina de Dashboard`, 'LoginComponent - handleLoginResponse', profile.username);
             this._router.navigateByUrl('/dashboard');
         } else {
-            this._logService.logError('Error de inicio de sesión', 'CIF o contraseña incorrectos', 'LoginComponent - handleLoginResponse');
+            this._logService.logError("Error d'inici de sessin", 'CIF o contrasenya incorrectes', 'LoginComponent - handleLoginResponse');
             throw new Error('CIF or password are incorrect');
         }
     }
@@ -142,17 +85,25 @@ export class LoginComponent {
     }
 
     async onLogin() {
-        const passwordValid = this.passwordValidator(this.password);
-        if (passwordValid) {
+        const passwordValidation = this._formValidationService.validatePassword(this.password);
+        if (passwordValidation.isValid) {
             try {
                 const response = await this._authService.login(this.username, this.password);
-                this._logService.logInfo('Respuesta de inicio de sesión', `Token recibido`, 'LoginComponent - onLogin', response.body.token.email);
+                this._logService.logInfo("Resposta d'inicio de sesión", 'Token rebut', 'LoginComponent - onLogin', response.body.token.email);
 
                 await this.handleLoginResponse(response);
             } catch (error: any) {
                 this.handleError(error);
             }
+        } else {
+            this._logService.logWarning(
+                'Invalid password',
+                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña inválida',
+                'ResetPasswordComponent - onSubmit',
+            );
+            return;
         }
+        return;
     }
 
     togglePopup() {
