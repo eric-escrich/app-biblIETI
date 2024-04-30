@@ -39,6 +39,7 @@ export class HomeComponent {
         this.popupVisible = true;
     }
 
+    onlyAvailable: boolean = false;
     checked: boolean = false;
 
     items: any[] = [];
@@ -99,7 +100,7 @@ export class HomeComponent {
                 `Viewing details of item with id = ${this.selectedItem.id} ('${this.selectedItem.name}')`,
                 'HomeComponent - viewItemDetails',
             );
-            this._logService.logInfo('Redirect', `Redirección a la página de /itemDetails`, 'HomeComponent - viewItemDetails');
+            this._logService.logInfo('Redirect', `Redirecció a la pàgina de /itemDetails`, 'HomeComponent - viewItemDetails');
             this.router.navigate(['/itemDetails', this.selectedItem.id]);
         } else {
             this._dialogService.showDialog('ERROR', "No s'ha seleccionat cap element");
@@ -110,4 +111,13 @@ export class HomeComponent {
             );
         }
     }
+
+    filterAvailableItems() {
+        if (this.onlyAvailable) {
+            this.items = this.items.filter(item => item.available);
+        } else {
+            this.searchItems(this.selectedItem);
+        }
+    }
+    
 }

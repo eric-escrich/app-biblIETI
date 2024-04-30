@@ -13,11 +13,11 @@
                 
                 <div class="items-start">
                     <h2>Cercar catàleg</h2>
-                    <p>Troba els teus llibres preferits! Recorda que si no el trobes, pots fer una petició.</p>
+                    <p>Troba els teus llibres preferits!</p>
 
                     <div class="flex flex-row gap-x-2 mt-4">
                         <div class="flex flex-col gap-y-4">
-                            <div class="card flex items-center justify-between">
+                            <div class="card flex justify-content-center gap-x-2">
                                 <p-autoComplete
                                     [(ngModel)]="searchQuery"
                                     [suggestions]="items"
@@ -27,21 +27,21 @@
                                     (onSelect)="onItemSelect($event)"
                                     (keyup.enter)="viewItemDetails()"
                                 ></p-autoComplete>
-                                <p-button severity="icon" [routerLink]="['/cercar-llibre']">
+                                <p-button severity="icon" (click)="viewItemDetails()">
                                     <i class="pi pi-search"></i>
                                 </p-button>
                             </div>
 
                             <div class="card flex justify-content-center gap-x-2 items-center">
                                 <label for="binary">Només disponibles</label>
-                                <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="binary"></p-checkbox>
-                            </div>
+                                <p-checkbox  [(ngModel)]="onlyAvailable" (ngModelChange)="filterAvailableItems()" binary="true" inputId="binary"></p-checkbox>
+                            </div>                            
                         </div>
                     </div>
                 </div>
 
                 <div class="libroImgContainer">
-                    <img src="/assets/imgs/libros3D.png" alt="">
+                    <img src="/assets/imgs/libros3D.png" alt="Il·lustració d'un munt de llibres amb forma 3D.">
                 </div>
             </div>
         </div>
@@ -49,4 +49,5 @@
         <div class="bentoBox">
             <app-login [popupVisible]="popupVisible"></app-login>
         </div>
+    </div>
 </div>
