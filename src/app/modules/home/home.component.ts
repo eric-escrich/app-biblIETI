@@ -54,6 +54,7 @@ export class HomeComponent {
 
     async searchItems(query: string) {
         try {
+            
             this._logService.logInfo('Search query', `Consulta de búsqueda: "${this.searchQuery}"`, 'HomeComponent - searchItems');
             const response: any = await this._itemService.searchQuery(query);
 
@@ -93,7 +94,6 @@ export class HomeComponent {
 
     viewItemDetails() {
         console.log('View item details');
-
         if (this.selectedItem) {
             this._logService.logInfo(
                 'View item details',
@@ -119,5 +119,4 @@ export class HomeComponent {
             this.searchItems(this.selectedItem);
         }
     }
-    
 }
