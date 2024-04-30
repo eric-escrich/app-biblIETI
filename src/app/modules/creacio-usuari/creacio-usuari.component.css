@@ -34,3 +34,22 @@ label {
     font-size: 14px;
     color: #556958;
 }
+
+.error {
+    color: red;
+    display: none;
+    text-align: center;
+}
+
+.error.invalid {
+    display: block;
+}
+
+:host::ng-deep .ng-invalid .p-inputtext,
+.p-inputtext.ng-invalid {
+    border-color: red;
+}
+
+label.ng-invalid {
+    color: red;
+}

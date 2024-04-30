@@ -4,14 +4,18 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { StorageService } from '../../services/storage.service';
 import { Router } from '@angular/router';
+import { ProfileService } from '../../services/profile.service';
+import { LogService } from '../../services/log.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-    _http = inject(HttpClient);
-    _storage = inject(StorageService);
-    _router = inject(Router);
+    private _http = inject(HttpClient);
+    private _storage = inject(StorageService);
+    private _router = inject(Router);
+    private _profileService = inject(ProfileService);
+    private _logService = inject(LogService);
 
     private baseUrl: string = environment.apiUrl;
 
@@ -112,5 +116,54 @@ export class AuthService {
             this._http.post(`${this.baseUrl}/auth/reset-password/`, { newPassword: newPassword, uid: uid, token: token }, { observe: 'response' }),
         );
         return response;
+    }
+
+    async registerUser(
+        email_admin: string,
+        username: string,
+        name: string,
+        surname: string,
+        surname2: string,
+        dni: string,
+        phone: string,
+        birth: string,
+        cycle: string,
+        email: string,
+        password: string,
+    ) {
+        try {
+            const response: any = await firstValueFrom(
+                this._http.post(
+                    `${this.baseUrl}/auth/create-user/`,
+                    { email_admin, username, name, surname, surname2, dni, phone, birth, cycle, email, password },
+                    { observe: 'response' },
+                ),
+            );
+
+            console.log('response --> ', response);
+
+            if (response.status === 201) {
+                return response.body;
+            } else {
+                throw new Error("Error al registrar l'usuari");
+            }
+        } catch (error: any) {
+            console.error('Error registering user', error);
+            if (
+                error.error &&
+                error.error.error &&
+                error.error.error.includes('Duplicate entry') &&
+                error.error.error.includes('auth_user.username')
+            ) {
+                this._logService.logError(
+                    'Error creating user',
+                    'El nombre de usuario ya existe. Por favor, elige otro',
+                    'AuthService - registerUser',
+                    email_admin,
+                );
+                throw new Error("El nom d'usuari ja existeix. Si us plau, escull un altre.");
+            }
+            throw error;
+        }
     }
 }

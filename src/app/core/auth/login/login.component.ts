@@ -11,6 +11,7 @@ import { ProfileService } from '../../../services/profile.service';
 import { DialogService } from '../../../services/dialog.service';
 import { DialogModule } from 'primeng/dialog';
 import { LogService } from '../../../services/log.service';
+import { FormValidationService } from '../../../services/validations-service.service';
 
 @Component({
     selector: 'app-login',
@@ -25,6 +26,7 @@ export class LoginComponent {
     private _profileService = inject(ProfileService);
     private _logService = inject(LogService);
     private _dialogService = inject(DialogService);
+    private _formValidationService = inject(FormValidationService);
 
     public username: string = '';
     public password: string = '';
@@ -38,65 +40,6 @@ export class LoginComponent {
 
     public invalidEmail = false;
     public mailErrorMessage: string = '';
-
-    passwordValidator(password: string) {
-        if (password.length < 8) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password too short',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña muy corta',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        if (password.length > 16) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password too long',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña muy larga',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        if (!/[A-Z]/.test(password)) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password missing uppercase',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin mayúsculas',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        if (!/[a-z]/.test(password)) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password missing lowercase',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin minúsculas',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        if (!/\d/.test(password)) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password missing number',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin números',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        if (!/[!@#$%^&*()-_=+[\]{};:'",.<>/?\\|~]/.test(password)) {
-            this.invalidLogin = true;
-            this._logService.logWarning(
-                'Password missing special character',
-                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña sin caracteres especiales',
-                'ResetPasswordComponent - passwordValidator',
-            );
-            return false;
-        }
-        this.invalidLogin = false;
-        return true;
-    }
 
     async handleLoginResponse(response: any) {
         if (response.body.token.access) {
@@ -142,8 +85,8 @@ export class LoginComponent {
     }
 
     async onLogin() {
-        const passwordValid = this.passwordValidator(this.password);
-        if (passwordValid) {
+        const passwordValidation = this._formValidationService.validatePassword(this.password);
+        if (passwordValidation.isValid) {
             try {
                 const response = await this._authService.login(this.username, this.password);
                 this._logService.logInfo('Respuesta de inicio de sesión', `Token recibido`, 'LoginComponent - onLogin', response.body.token.email);
@@ -152,7 +95,15 @@ export class LoginComponent {
             } catch (error: any) {
                 this.handleError(error);
             }
+        } else {
+            this._logService.logWarning(
+                'Invalid password',
+                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña inválida',
+                'ResetPasswordComponent - onSubmit',
+            );
+            return;
         }
+        return;
     }
 
     togglePopup() {

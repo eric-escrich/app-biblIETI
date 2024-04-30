@@ -17,7 +17,7 @@
 
                     <div class="flex flex-row gap-x-2 mt-4">
                         <div class="flex flex-col gap-y-4">
-                            <div class="card flex justify-content-center">
+                            <div class="card flex items-center justify-between">
                                 <p-autoComplete
                                     [(ngModel)]="searchQuery"
                                     [suggestions]="items"
@@ -27,10 +27,15 @@
                                     (onSelect)="onItemSelect($event)"
                                     (keyup.enter)="viewItemDetails()"
                                 ></p-autoComplete>
+                                <p-button severity="icon" [routerLink]="['/cercar-llibre']">
+                                    <i class="pi pi-search"></i>
+                                </p-button>
                             </div>
-                            <p-button severity="icon" (click)="viewItemDetails()">
-                                <i class="pi pi-search"></i>
-                            </p-button>
+
+                            <div class="card flex justify-content-center gap-x-2 items-center">
+                                <label for="binary">Només disponibles</label>
+                                <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="binary"></p-checkbox>
+                            </div>
                         </div>
                     </div>
                 </div>
