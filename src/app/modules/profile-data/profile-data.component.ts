@@ -22,13 +22,17 @@ export class ProfileDataComponent {
     public profileData: any;
     private email!: string;
     public file!: any;
-    profileImage = '../../../assets/imgs/noiallegint.png';
+    profileImage = '';
+    public role!: any;
 
     async ngOnInit() {
         this._logService.logInfo('Initializing ProfileDataComponent', 'Inicializando ProfileDataComponent', 'ProfileDataComponent - ngOnInit()');
 
         this.profileData = await this._profileService.getSelfProfileDataWithoutLoading();
         this._logService.logInfo('Profile data', `Datos de perfil obtenidos`, 'ProfileDataComponent - ngOnInit()', this.profileData.email);
+
+        this.role = await this._profileService.getRole();
+        console.log('Role:', this.role);
 
         this.email = this.profileData.email;
         console.log('Profile data:', this.profileData);

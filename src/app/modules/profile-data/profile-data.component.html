@@ -3,5 +3,56 @@
         <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput style="display: none" />
         <img [src]="profileImage" (click)="fileInput.click()" alt="profile image" />
     </div>
+
+    <ul>
+        <li>
+            <span>Nom: </span>
+            <span>{{ profileData.name }}</span>
+        </li>
+        <li>
+            <span>Cognom: </span>
+            <span>{{ profileData.surname }}</span>
+        </li>
+        <li>
+            <span>Cognom 2: </span>
+            <span>{{ profileData.surname2 }}</span>
+        </li>
+        <li>
+            <span>Nom d'usuari: </span>
+            <span>{{ profileData.username }}</span>
+        </li>
+        <li>
+            <span>Correu: </span>
+            <span>{{ profileData.email }}</span>
+        </li>
+        <li>
+            <span>DNI/NIE: </span>
+            <span>{{ profileData.dni }}</span>
+        </li>
+        <li>
+            <span>Data de neixament: </span>
+            <span>{{ profileData.date_of_birth }}</span>
+        </li>
+        <li>
+            <span>Institut: </span>
+            <span>{{ profileData.center }}</span>
+        </li>
+        <li>
+            <span>Curs: </span>
+            <span>{{ profileData.cycle }}</span>
+        </li>
+        <li>
+            <span>Rol: </span>
+            @if (role == 1) {
+                <span>Administrador</span>
+            } @else if (role == 2) {
+                <span>Alumne</span>
+            } @else if (role == 3) {
+                <span>Professor</span>
+            } @else if (role == 4) {
+                <span>Bibliotecaria</span>
+            }
+        </li>
+    </ul>
 }
 
