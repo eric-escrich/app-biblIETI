@@ -21,32 +21,32 @@
                     <div class="grid grid-cols-3 gap-4 items-end">
                         <div class="flex flex-col items-start">
                             <label for="inputTitol">Títol</label>
-                            <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
                         </div>
 
                         <div class="flex flex-col items-start">
                             <label for="inputAutorArtista">Autor/artista</label>
-                            <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
                         </div>
 
                         <div class="flex flex-col items-start">
                             <label for="materiaInput">Matèria</label>
-                            <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
                         </div>
 
                         <div class="flex flex-col items-start">
                             <label for="tipusDeMaterial">Tipus de material</label>
-                            <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
                         </div>
 
                         <div class="flex flex-col items-start">
                             <label for="inputLlengua">Llengua</label>
-                            <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
                         </div>
 
                         <div class="flex flex-col items-start">
                             <label for="inputAny">Any:</label>
-                            <p-autoComplete [(ngModel)]="selectedItem" [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
                         </div>
                         
                         <div class="flex flex-row items-end gap-x-4">
@@ -73,9 +73,7 @@
 <div class="searchContainer">
     <div class="grid grid-cols-3 px-10 mb-40 justify-center gap-x-20">
         <ng-container *ngFor="let book of books">
-            <app-libros 
-                [bookImg]="book.image">
-            </app-libros>
+            <app-libros [bookImg]="book.image" (bookClicked)="showPopup()"></app-libros>
         </ng-container>
     </div>
 </div>

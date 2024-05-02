@@ -21,6 +21,15 @@
     border-color: #338240;
 }
 
+.p-button.p-fileupload-choose {
+    padding: 0 10px;
+    background-color: #59B468;
+    border: 1px solid #59B468;
+    border-radius: 14px;
+    color: white;
+    transition-duration: 1s;
+}
+
 /* BOTÓN PRINCIPAL REDONDEADO (fill-rounded) */
 .p-button-fill-rounded {
     background-color: #59B468;

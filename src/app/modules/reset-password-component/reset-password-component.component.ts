@@ -52,9 +52,9 @@ export class ResetPasswordComponent {
             this.invalidPassword = true;
             this.errorMessage = `La contrasenya és massa curta (${password.length})`;
             this._logService.logWarning(
-                "Password too short",
+                'Password too short',
                 "No s'ha pogut modificar la contrasenya de l'usuari perquè ha introduït una contrasenya muy corta",
-                "ResetPasswordComponent - passwordValidator",
+                'ResetPasswordComponent - passwordValidator',
             );
             return false;
         }
@@ -138,9 +138,9 @@ export class ResetPasswordComponent {
             await this._authService.resetPassword(password, this.uid, this.token);
             this._dialogService.showDialog('INFORMACIÓ', 'Contrasenya modificada correctament. Ja pots iniciar sessió amb la nova contrasenya.');
 
-            this._logService.logInfo("Password reset", "La contrasenya s'ha modificat correctament", "ResetPasswordComponent - resetPassword");
-            this._logService.logInfo("Redirect landing", "Redirigint a la pàgina d'inici", "ResetPasswordComponent - resetPassword");
-            this._router.navigateByUrl('/landing');
+            this._logService.logInfo('Password reset', "La contrasenya s'ha modificat correctament", 'ResetPasswordComponent - resetPassword');
+            this._logService.logInfo('Redirect landing', "Redirigint a la pàgina d'inici", 'ResetPasswordComponent - resetPassword');
+            this._router.navigateByUrl('/');
         } catch (error: any) {
             console.error('Error during password reset', error);
             switch (error.status) {
@@ -176,6 +176,6 @@ export class ResetPasswordComponent {
 
     goToLanding() {
         this._logService.logInfo('Redirect landing', "Redirigint a la pàgina d'inici", 'ProfileService - logout');
-        this._router.navigateByUrl('/landing');
+        this._router.navigateByUrl('/');
     }
 }

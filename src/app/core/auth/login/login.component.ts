@@ -12,6 +12,7 @@ import { DialogService } from '../../../services/dialog.service';
 import { DialogModule } from 'primeng/dialog';
 import { LogService } from '../../../services/log.service';
 import { FormValidationService } from '../../../services/validations-service.service';
+import { StorageService } from '../../../services/storage.service';
 
 @Component({
     selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginComponent {
     private _logService = inject(LogService);
     private _dialogService = inject(DialogService);
     private _formValidationService = inject(FormValidationService);
+    private _storageService = inject(StorageService);
 
     public username: string = '';
     public password: string = '';
@@ -45,6 +47,7 @@ export class LoginComponent {
         if (response.body.token.access) {
             const profile = await this._profileService.getSelfProfileDataWithoutLoading();
             this._profileService.selfProfileData = profile;
+            this._storageService.setItem('profile', JSON.stringify(profile));
             console.log('profile', profile);
 
             this._logService.logInfo(
@@ -85,6 +88,7 @@ export class LoginComponent {
     }
 
     async onLogin() {
+        console.log('onLogin');
         const passwordValidation = this._formValidationService.validatePassword(this.password);
         if (passwordValidation.isValid) {
             try {
@@ -96,6 +100,8 @@ export class LoginComponent {
                 this.handleError(error);
             }
         } else {
+            this.invalidLogin = true;
+            this.loginErrorMessage = passwordValidation.errorMessage;
             this._logService.logWarning(
                 'Invalid password',
                 'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña inválida',

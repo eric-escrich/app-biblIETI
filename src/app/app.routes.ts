@@ -12,12 +12,15 @@ import { UsersImportComponent } from './modules/users-import/users-import.compon
 import { ListUsersComponent } from './modules/list-users/list-users.component';
 import { EditUserComponent } from './modules/edit-user/edit-user.component';
 import { PrestecComponent } from './modules/prestec/prestec.component';
+import { DetallLlibresComponent } from './modules/search/libros/detall-llibres/detall-llibres.component';
 
 export const routes: Routes = [
     {
         path: '',
         component: LayoutComponent,
         children: [
+            { path: '', component: HomeComponent },
+
             {
                 path: 'dashboard',
                 component: DashboardComponent,
@@ -53,14 +56,10 @@ export const routes: Routes = [
                 component: PrestecComponent,
                 canActivate: [JwtGuard],
             },
-
-            { path: 'landing', component: HomeComponent },
             { path: 'cercar-llibre', component: SearchComponent },
-            { path: 'itemDetails/:id', component: SearchComponent },
             { path: 'reset-password/:uid/:token', component: ResetPasswordComponent },
+            { path: 'detall-llibre/:id', component: DetallLlibresComponent },
         ],
     },
-    { path: '**', redirectTo: 'landing' },
-
-    // Agrega aquí otras rutas que no desciendan de LayoutComponent
+    { path: '**', redirectTo: '' },
 ];

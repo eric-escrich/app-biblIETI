@@ -39,8 +39,13 @@ export class ProfileService {
     }
 
     async getSelfProfileDataWithoutLoading() {
-        if (!this.selfProfileData) await this.getSelfProfileData();
-        return this.selfProfileData;
+        if (this.selfProfileData) return this.selfProfileData;
+        else if (this._storageService.getItem('profile')) {
+            this.selfProfileData = JSON.parse(this._storageService.getItem('profile')!);
+            return this.selfProfileData;
+        } else {
+            this.getSelfProfileData();
+        }
     }
 
     async getRole() {
@@ -60,7 +65,7 @@ export class ProfileService {
 
     async updateProfile(data: any) {
         try {
-            const response: any = await firstValueFrom(this.http.post(`${this.baseUrl}/user/update/`, { data: data }));
+            const response: any = await firstValueFrom(this.http.post(`${this.baseUrl}/user/update/`, data));
 
             return response;
         } catch (error: any) {
@@ -147,7 +152,7 @@ export class ProfileService {
         this._logService.logInfo('Redirect landing', 'Redirigiendo a la página de inicio', 'ProfileService - logout');
 
         this._dialogService.showDialog('INFORMACIÓ', 'Sesió tancada correctament');
-        this._router.navigateByUrl('/landing');
+        this._router.navigateByUrl('/');
     }
 
     async getUsersByAdminEmail(adminEmail: string) {
@@ -203,6 +208,22 @@ export class ProfileService {
             return response;
         } catch (error: any) {
             console.error('Error updating profile data', error);
+            throw error;
+        }
+    }
+
+    async searchUsers(email: string) {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.get(`${this.baseUrl}/user/search/${email}`, {
+                    observe: 'response',
+                }),
+            );
+            console.log('emails --->', response.body);
+
+            return response.body;
+        } catch (error: any) {
+            console.error('Error fetching items', error);
             throw error;
         }
     }

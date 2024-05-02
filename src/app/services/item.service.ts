@@ -32,19 +32,53 @@ export class ItemService {
         }
     }
 
-    async makeLoan(email: string, itemCopyId: number, returnDate: string) {
+    async makeLoan(email: string, itemCopyId: number, returnDate: Date) {
         try {
             const response: any = await firstValueFrom(
-                this.http.post(`${this.baseUrl}/items/make-loan/`, {
-                    email,
-                    item_copy_id: itemCopyId,
-                    return_date: returnDate,
-                }),
+                this.http.post(
+                    `${this.baseUrl}/items/make-loan/`,
+                    {
+                        email,
+                        item_copy_id: itemCopyId,
+                        return_date: returnDate.toISOString().split('T')[0],
+                    },
+                    { observe: 'response' },
+                ),
             );
 
             return response;
         } catch (error: any) {
             console.error('Error making loan', error);
+            throw error;
+        }
+    }
+
+    async getInfoItemById(itemId: string) {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.get(`${this.baseUrl}/items/search/${itemId}`, {
+                    observe: 'response',
+                }),
+            );
+
+            return response.body;
+        } catch (error: any) {
+            console.error('Error fetching item info', error);
+            throw error;
+        }
+    }
+
+    async getItemsCopis(itemId: string) {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.get(`${this.baseUrl}/items/search-item-copies/${itemId}`, {
+                    observe: 'response',
+                }),
+            );
+
+            return response.body;
+        } catch (error: any) {
+            console.error('Error fetching item copies', error);
             throw error;
         }
     }

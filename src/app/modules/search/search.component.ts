@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
@@ -48,6 +48,8 @@ export class SearchComponent implements OnInit {
 
     // INPUT
     inputTitol: string = '';
+
+    @Input('id') itemId: string = '';
 
     books: {
         image: string;
@@ -141,6 +143,18 @@ export class SearchComponent implements OnInit {
             ]);
     }
 
+    itemInfo: any;
+
+    isPopupVisible = false;
+
+    showPopup() {
+        this.isPopupVisible = true;
+    }
+
+    hidePopup() {
+        this.isPopupVisible = false;
+    }
+
     // AUTOCOMPLETE
     items: any[] = [];
 
@@ -229,9 +243,18 @@ export class SearchComponent implements OnInit {
         { label: 'Data', value: 'Data' },
     ];
 
-    ngOnInit() {
+    async ngOnInit() {
         this.formGroup = new FormGroup({
             value: new FormControl('Títol'),
         });
+
+        console.log('HomeComponent | ngOnInit - idItem -> ', this.itemId);
+        try {
+            this.itemInfo = await this._itemService.getInfoItemById(this.itemId);
+            console.log('HomeComponent | ngOnInit - itemInfo -> ', this.itemInfo);
+        } catch (error: any) {
+            console.error('Error fetching item info', error);
+            this._dialogService.showDialog('ERROR', "No s'ha pogut carregar la informació de l'element. Si us plau, torna-ho a provar més tard.");
+        }
     }
 }

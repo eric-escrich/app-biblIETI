@@ -1,58 +1,107 @@
-@if (profileData) {
-    <div class="card flex justify-content-center">
-        <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput style="display: none" />
-        <img [src]="profileImage" (click)="fileInput.click()" alt="profile image" />
+<div class="headerContainer flex flex-col items-center justify-center text-center">
+    <header class="w-4/5">
+        <div class="flex flex-col items-center justify-center ">
+            <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
+        </div>
+    </header>
+</div>
+
+<div class="flex flex-col items-center justify-center gap-y-4 m-10">
+    <div class="confCompteContainer w-full" routerLink="/perfil">
+        <div class="flex flex-row items-center">
+            @if (profileData) {
+                <div class="card flex justify-content-center">
+                    <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput style="display: none" />
+                    <img [src]="profileImage" (click)="fileInput.click()" alt="profile image" />
+                </div>
+            }
+
+            <div class="flex flex-col items-start">
+                <p class="font-bold">IETI</p>
+                <p>{{roleName}}</p>
+            </div>
+        </div>
+
+        <div class="edicioCompteContainer">
+            <div class="flex flex-row gap-x-20 justify-between items-center">
+                <div class="flex flex-col">
+                    <h3>Nom</h3>
+                    @if (!isEditingName && getRoleName() !== 'Alumne') {
+                        <p>{{profileData.name}} {{profileData.surname}} {{profileData.surname2}}</p>
+                    } @else {
+                        <div class="flex flex-col gap-2">
+                            <input pInputText [(ngModel)]="newName" placeholder="Nom" styleClass="w-1/2">
+                            <input pInputText [(ngModel)]="newSurname" placeholder="Primer cognom" styleClass="w-1/2">
+                            <input pInputText [(ngModel)]="newSurname2" placeholder="Segon cognom" styleClass="w-1/2">
+                        </div>
+                    }
+                </div>
+                <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingName = !isEditingName" severity="fill">Editar</p-button>
+            </div>
+
+            <div class="flex flex-row gap-x-20 justify-between items-center">
+                <div class="flex flex-col">
+                    <h3>Correo</h3>
+                    @if (!isEditingEmail && getRoleName() !== 'Alumne') {
+                        <p>{{profileData.email}}</p>
+                    } @else {
+                        <input pInputText [(ngModel)]="newEmail" placeholder="Correo" styleClass="w-1/2">
+                    }
+                </div>
+                <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingEmail = !isEditingEmail" severity="fill">Editar</p-button>
+            </div>                
+
+            <div class="flex flex-row gap-x-20 justify-between items-center">
+                <div class="flex flex-col">
+                    <h3>Contrasenya</h3>
+                    @if (!isEditingPassword && getRoleName() !== 'Alumne') {
+                        <p>************</p>
+                    } @else {
+                        <div class="flex flex-col gap-2">
+                            <p-password
+                                [(ngModel)]="lastPassword"
+                                placeholder="Contrasenya actual"
+                                name="password"
+                                id="password"
+                                autocomplete="off"
+                                [feedback]="false"
+                                [toggleMask]="true"
+                                [style]="{'width':'100%', 'height':'3rem'}"
+                                [inputStyle]="{'width':'100%'}"
+                            ></p-password>
+                            <p-password
+                                [(ngModel)]="password"
+                                placeholder="Nova contrasenya"
+                                name="password"
+                                id="password"
+                                autocomplete="off"
+                                [feedback]="false"
+                                [toggleMask]="true"
+                                [style]="{'width':'100%', 'height':'3rem'}"
+                                [inputStyle]="{'width':'100%'}"
+                            ></p-password>
+                            <p-password
+                                [(ngModel)]="repeatPassword"
+                                placeholder="Repetir contrasenya"
+                                name="password"
+                                id="password"
+                                autocomplete="off"
+                                [feedback]="false"
+                                [toggleMask]="true"
+                                [style]="{'width':'100%', 'height':'3rem'}"
+                                [inputStyle]="{'width':'100%'}"
+                            ></p-password>
+                        </div>
+                    }
+                </div>
+                <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingPassword = !isEditingPassword" severity="fill">Editar</p-button>
+            </div>
+        </div>
     </div>
 
-    <ul>
-        <li>
-            <span>Nom: </span>
-            <span>{{ profileData.name }}</span>
-        </li>
-        <li>
-            <span>Cognom: </span>
-            <span>{{ profileData.surname }}</span>
-        </li>
-        <li>
-            <span>Cognom 2: </span>
-            <span>{{ profileData.surname2 }}</span>
-        </li>
-        <li>
-            <span>Nom d'usuari: </span>
-            <span>{{ profileData.username }}</span>
-        </li>
-        <li>
-            <span>Correu: </span>
-            <span>{{ profileData.email }}</span>
-        </li>
-        <li>
-            <span>DNI/NIE: </span>
-            <span>{{ profileData.dni }}</span>
-        </li>
-        <li>
-            <span>Data de neixament: </span>
-            <span>{{ profileData.date_of_birth }}</span>
-        </li>
-        <li>
-            <span>Institut: </span>
-            <span>{{ profileData.center }}</span>
-        </li>
-        <li>
-            <span>Curs: </span>
-            <span>{{ profileData.cycle }}</span>
-        </li>
-        <li>
-            <span>Rol: </span>
-            @if (role == 1) {
-                <span>Administrador</span>
-            } @else if (role == 2) {
-                <span>Alumne</span>
-            } @else if (role == 3) {
-                <span>Professor</span>
-            } @else if (role == 4) {
-                <span>Bibliotecaria</span>
-            }
-        </li>
-    </ul>
-}
-
+    <div class="flex flex-row items-center gap-x-4">
+        <p-button severity="dangeroutlined" (onClick)="logout()">Tancar sessió</p-button>
+        <p-button (click)="cancelChanges()" severity="min">Cancelar</p-button>
+        <p-button (click)="saveChanges()" severity="fill-rounded">Guardar canvis</p-button>
+    </div>
+</div>

@@ -6,15 +6,14 @@
     </div>
     <div>
         <label for="itemCopyId">Item:</label>
-        <input type="text" id="itemCopy" [(ngModel)]="query">
+        <input type="text" id="itemCopy" [(ngModel)]="searchQuery">
         <p-autoComplete
-            [(ngModel)]="query"
+            [(ngModel)]="searchQuery"
             [suggestions]="items"
             (input)="onFilterChange()"
             [minLength]="3"
             field="name"
             (onSelect)="onItemSelect($event)"
-            (keyup.enter)="viewItemDetails()"
         ></p-autoComplete>
     </div>
     <div>
