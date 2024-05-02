@@ -141,6 +141,16 @@ export class SearchComponent implements OnInit {
             ]);
     }
 
+    isPopupVisible = false;
+
+    showPopup() {
+      this.isPopupVisible = true;
+    }
+  
+    hidePopup() {
+      this.isPopupVisible = false;
+    }
+
     // AUTOCOMPLETE
     items: any[] = [];
 

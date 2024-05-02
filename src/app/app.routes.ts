@@ -8,6 +8,7 @@ import { SearchComponent } from './modules/search/search.component';
 import { CreacioUsuariComponent } from './modules/creacio-usuari/creacio-usuari.component';
 import { ResetPasswordComponent } from './modules/reset-password-component/reset-password-component.component';
 import { ProfileDataComponent } from './modules/profile-data/profile-data.component';
+import { DetallLlibresComponent } from './modules/search/libros/detall-llibres/detall-llibres.component';
 
 export const routes: Routes = [
     {
@@ -34,9 +35,8 @@ export const routes: Routes = [
             { path: 'cercar-llibre', component: SearchComponent },
             { path: 'itemDetails/:id', component: SearchComponent },
             { path: 'reset-password/:uid/:token', component: ResetPasswordComponent },
+            { path: 'detall-llibre', component: DetallLlibresComponent },
         ],
     },
-    { path: '**', redirectTo: 'landing' },
-
-    // Agrega aquí otras rutas que no desciendan de LayoutComponent
+    { path: '**', redirectTo: 'landing' }
 ];

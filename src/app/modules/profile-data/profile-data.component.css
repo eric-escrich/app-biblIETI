@@ -1,0 +1,27 @@
+.confCompteContainer {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 40px;
+    height: auto;
+    align-items: start;
+    justify-content: center;
+    justify-self: center;
+    background-color: #C6EDCC;
+    border-radius: 10px;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
+}
+
+.edicioCompteContainer {
+    width: 100%;
+    display: flex;
+    padding: 20px;
+    margin: 20px 0 0 0;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-around;
+    align-items: stretch;
+    border-radius: 10px;
+    background-color: rgba(251, 255, 251, 0.7);
+}

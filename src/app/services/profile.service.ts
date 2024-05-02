@@ -60,7 +60,7 @@ export class ProfileService {
 
     async updateProfile(data: any) {
         try {
-            const response: any = await firstValueFrom(this.http.post(`${this.baseUrl}/user/update/`, { data: data }));
+            const response: any = await firstValueFrom(this.http.post(`${this.baseUrl}/user/update/`, data ));
 
             return response;
         } catch (error: any) {

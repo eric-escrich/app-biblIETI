@@ -73,9 +73,7 @@
 <div class="searchContainer">
     <div class="grid grid-cols-3 px-10 mb-40 justify-center gap-x-20">
         <ng-container *ngFor="let book of books">
-            <app-libros 
-                [bookImg]="book.image">
-            </app-libros>
+            <app-libros [bookImg]="book.image" (bookClicked)="showPopup()"></app-libros>
         </ng-container>
     </div>
 </div>

@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
@@ -12,6 +11,9 @@ import { DialogService } from '../../services/dialog.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { PasswordModule } from 'primeng/password';
 import { LogService } from '../../services/log.service';
+import { environment } from '../../../environments/environment';
+import { TableModule } from 'primeng/table';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
@@ -24,13 +26,18 @@ import { LogService } from '../../services/log.service';
                 PasswordModule,
                 FormsModule,
                 FileUploadModule,
-                RouterLink
+                RouterLink,
+                TableModule
             ],
     providers: [MessageService],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
+    // PRUEBA
+    users: User[];    
+    // 
+    environment = environment;
     _profileService = inject(ProfileService);
     _dialogService = inject(DialogService);
     _authService = inject(AuthService);
@@ -225,10 +232,34 @@ export class DashboardComponent {
         }
     }
 
-    logout() {
-        this._profileService.logout();
+    // FILE UPLOAD
+    constructor(private messageService: MessageService,
+        // PRUEBA
+        private router: Router
+    ) {
+        // PRUEBA DE LA TABLA
+        this.users = [
+            new User('Eric', 'eric@example.com', 'Bibliotecaria'),
+            new User('Martí', 'marti@example.com', 'Alumne'),
+            new User('Claudia', 'marti@example.com', 'Alumne'),
+            new User('Marc', 'marti@example.com', 'Admin')
+          ];
     }
 
-    // FILE UPLOAD
-    constructor(private messageService: MessageService) {}
+    onRowSelect(user: User) {
+        this.router.navigate(['/perfil']); 
+    }
+}
+
+
+export class User {
+    nombre: string;
+    email: string;
+    rol: string;
+  
+    constructor(nombre: string, email: string, rol: string) {
+      this.nombre = nombre;
+      this.email = email;
+      this.rol = rol;
+    }
 }

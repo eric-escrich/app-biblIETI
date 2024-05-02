@@ -1,0 +1,54 @@
+<div class="headerContainer flex flex-col items-center justify-center text-center">
+    <header class="w-4/5">
+        <div class="flex flex-col items-center justify-center ">
+            <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
+        </div>
+    </header>
+</div>
+
+<div class="flex flex-col p-10">
+    <h2>Lisístrata</h2>
+    <p>Aristófanes</p>
+    <p>411 a.C.</p>
+    <p>Lisístrata (en grec Λυσιστράτη "la que dissol l'exèrcit") és una comèdia de
+        Aristòfanes, autor de la Grècia Clàssica. Les comèdies d'Aristòfanes són d'un gran
+        interès històric, a més del seu valor literari, ja que gràcies a elles es pot
+        conèixer la vida quotidiana dels atenesos. L'autor va protestar sovint contra
+        la guerra. A les seves obres Lisístrata, Los acarnienses i La paz, va defensar les solucions
+        pacífiques contra els demagogs que impulsaven el poble a la guerra. A Lisístrata
+        la vaga sexual de les dones. També l'obra ha estat interpretada com una
+        ridiculització de la dona.</p>
+        
+
+        <div>
+            <h3>A la biblioteca</h3>
+            <div class="card">
+                <p-table [value]="datosTabla">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>ID</th>
+                            <th>Estado</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body">
+                        @for (item of datosTabla; track item ) {
+                            <tr>
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.estado }}</td>
+                            </tr>
+                        }
+                        </ng-template>
+                </p-table>
+            </div>
+            
+    <div class="flex flex-row gap-x-4 mt-10">
+        <p-button severity="min" [routerLink]="['/landing']">Retorna</p-button>
+        <p-button severity="fill-rounded" (click)="toggleFormulario()">Reservar</p-button>
+    </div>
+    @if (mostrarFormulario) {
+        <div class="flex-auto mt-10">
+            <label for="icondisplay" class="font-bold block mb-2">Fecha de retorno</label>
+            <p-calendar [(ngModel)]="fechaReserva" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"></p-calendar>
+        </div>
+    }
+</div>
