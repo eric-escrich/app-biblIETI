@@ -1,0 +1,76 @@
+@if (role && (this.role === Role.ADMIN || this.role === Role.BIBLIO) && userId && newUserData) {
+    <main>
+        <div class="headerContainer flex flex-col items-center justify-center text-center">
+            <header class="w-4/5">
+                <div class="flex flex-col items-center justify-center ">
+                    <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
+                </div>
+            </header>
+        </div>
+        
+        <form method="post" (ngSubmit)="onSubmit()">
+            <div class="p-20 flex flex-col gap-6">
+                <div class="grid grid-cols-2 gap-x-10 items-center">
+                    <fieldset>
+                        <legend>Edició d'usuari:</legend>
+                        <h3>Modifica les dades</h3>
+                        <div class="grid grid-cols-2 gap-x-10">        
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="name" [class]="{'ng-invalid': invalidName}">Nom *</label>
+                                <input [(ngModel)]="newUserData.name" (input)="invalidName = false" [class]="{'ng-invalid': invalidName}"name="name" id="name" type="text" pInputText/>
+                            </div>
+        
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="lastName" [class]="{'ng-invalid': invalidLastName}">Primer cognom *</label>
+                                <input [(ngModel)]="newUserData.surname" (input)="invalidLastName = false" [class]="{'ng-invalid': invalidLastName}"name="lastName" id="lastName" type="text" pInputText/>
+                            </div>
+        
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="secondLastName">Segon cognom</label>
+                                <input [(ngModel)]="newUserData.surname2" name="secndLastName" id="secondLastName" type="text" pInputText/>
+                            </div>
+        
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="birth" [class]="{'ng-invalid': invalidBirthDate}">Data de neixament *</label>
+                                <p-calendar [(ngModel)]="newUserData.date_of_birth" (input)="invalidBirthDate = false" [class]="{'ng-invalid': invalidBirthDate}"name="birth" id="birth"></p-calendar>
+                            </div>
+        
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="course" [class]="{'ng-invalid': invalidCourse}">Curs acual *</label>
+                                <input [(ngModel)]="newUserData.cycle" (input)="invalidCourse = false" [class]="{'ng-invalid': invalidCourse}"name="course" id="course" type="text" pInputText/>
+                            </div>
+        
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="dni" [class]="{'ng-invalid': invalidDni}">DNI/NIE</label>
+                                <input [(ngModel)]="newUserData.dni" (input)="invalidDni = false" [class]="{'ng-invalid': invalidDni}"name="dni" id="dni" type="text" pInputText/>
+                            </div>
+        
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="phone" [class]="{'ng-invalid': invalidTlfn}">Telèfon</label>
+                                <input [(ngModel)]="newUserData.phone" (input)="invalidTlfn = false" [class]="{'ng-invalid': invalidTlfn}"name="phone" id="phone" type="text" pInputText/>
+                            </div>
+                        </div>
+                        <div class="mt-10">
+                            <p class="error" [class]="{'invalid': invalidForm}">{{ errorMessage }}</p>
+                        </div>
+                    </fieldset>
+                    
+                    <div class="w-2/4 flex flex-col items-start justify-self-center">
+                        <h2>Contrasenya predeterminada</h2>
+                        <p>Per garantir la protecció del compte, és essencial que aquesta contrasenya inicial sigui temporal
+                           i que l'usuari sigui incentivat a canviar-la per una de més segura i personalitzada.</p>
+                        
+                        <hr>
+                        
+                        <div class="flex flex-row gap-x-4 items-start">
+                            <p-button severity="dangeroutlined" (click)="reset()">Cancelar</p-button>
+                            <p-button type="submit" severity="fill-rounded">Guardar canvis</p-button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </form>
+    </main>
+    
+}

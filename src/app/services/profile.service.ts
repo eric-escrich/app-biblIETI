@@ -149,4 +149,61 @@ export class ProfileService {
         this._dialogService.showDialog('INFORMACIÓ', 'Sesió tancada correctament');
         this._router.navigateByUrl('/landing');
     }
+
+    async getUsersByAdminEmail(adminEmail: string) {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.post(
+                    `${this.baseUrl}/user/show-users/`,
+                    { email_admin: adminEmail },
+                    {
+                        observe: 'response',
+                    },
+                ),
+            );
+
+            return response.body;
+        } catch (error: any) {
+            console.error('Error getting users by center id', error);
+            throw error;
+        }
+    }
+
+    async getUserProfileDataById(userId: number) {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.post(
+                    `${this.baseUrl}/user/get-data/`,
+                    { id: userId },
+                    {
+                        observe: 'response',
+                    },
+                ),
+            );
+            console.log(response.body);
+
+            this.selfProfileData = response.body;
+            return this.selfProfileData;
+        } catch (error: any) {
+            this.logout();
+            throw error;
+        }
+    }
+
+    async updateUserDataByAdmin(adminEmail: string, userEmail: string, data: any) {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.post(`${this.baseUrl}/user/change-data-admin/`, {
+                    email_admin: adminEmail,
+                    email_user: userEmail,
+                    ...data,
+                }),
+            );
+
+            return response;
+        } catch (error: any) {
+            console.error('Error updating profile data', error);
+            throw error;
+        }
+    }
 }

@@ -193,4 +193,18 @@ export class AuthService {
             throw error;
         }
     }
+
+    async uploadUsers(users: any) {
+        try {
+            const response: any = await firstValueFrom(
+                this._http.post(`${this.baseUrl}/user/save-users-csv/`, users, {
+                    observe: 'response',
+                }),
+            );
+            return response;
+        } catch (error: any) {
+            console.error('Error uploading users', error);
+            throw error;
+        }
+    }
 }

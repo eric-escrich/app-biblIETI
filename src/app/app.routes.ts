@@ -8,6 +8,10 @@ import { SearchComponent } from './modules/search/search.component';
 import { CreacioUsuariComponent } from './modules/creacio-usuari/creacio-usuari.component';
 import { ResetPasswordComponent } from './modules/reset-password-component/reset-password-component.component';
 import { ProfileDataComponent } from './modules/profile-data/profile-data.component';
+import { UsersImportComponent } from './modules/users-import/users-import.component';
+import { ListUsersComponent } from './modules/list-users/list-users.component';
+import { EditUserComponent } from './modules/edit-user/edit-user.component';
+import { PrestecComponent } from './modules/prestec/prestec.component';
 
 export const routes: Routes = [
     {
@@ -27,6 +31,26 @@ export const routes: Routes = [
             {
                 path: 'perfil',
                 component: ProfileDataComponent,
+                canActivate: [JwtGuard],
+            },
+            {
+                path: 'importacio-usuaris',
+                component: UsersImportComponent,
+                canActivate: [JwtGuard],
+            },
+            {
+                path: 'llista-usuaris',
+                component: ListUsersComponent,
+                canActivate: [JwtGuard],
+            },
+            {
+                path: 'editar-usuari/:userID',
+                component: EditUserComponent,
+                canActivate: [JwtGuard],
+            },
+            {
+                path: 'prestec',
+                component: PrestecComponent,
                 canActivate: [JwtGuard],
             },
 

@@ -1,0 +1,44 @@
+.cardUser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+fieldset {
+    padding: 40px;
+    border: 1px solid #59b4684e;
+    border-radius: 8px;
+}
+
+legend {
+    font-size: 20px;
+    font-weight: 700;
+    color: #59B468;
+}
+
+label {
+    margin: 40px 0 4px 0;
+    font-weight: 800;
+    font-size: 14px;
+    color: #556958;
+}
+
+.error {
+    color: red;
+    display: none;
+    text-align: center;
+}
+
+.error.invalid {
+    display: block;
+}
+
+:host::ng-deep .ng-invalid .p-inputtext,
+.p-inputtext.ng-invalid {
+    border-color: red;
+}
+
+label.ng-invalid {
+    color: red;
+}
