@@ -1,21 +1,17 @@
-.bentoBox {
+article {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     padding: 20px;
-}
-
-img {
-    width: 210px;
-    height: 310px;
-    transition-duration: 1s;
-    border: 1px solid #556958;
+    background-color: rgba(221, 221, 220, 0.50);
+    border: 1px solid rgba(221, 221, 220, 0.50);
     border-radius: 8px;
+    box-shadow: 0 5px 20px #eeeeee98;
+    transition-duration: 1s;
 }
 
-img:hover {
+article:hover {
     transition-duration: 1s;
-    transform: scale(1.1);
+    transform: scale(1.01);
     box-shadow: 1px 1px 10px #b4b4b4;
 }
