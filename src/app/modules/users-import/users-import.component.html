@@ -1,0 +1,17 @@
+<p>users-import works!</p>
+<div class="form-group">
+    <input
+    class="form-control"
+    accept=".csv"
+    id="csv"
+    type="file" 
+    name="myfile"
+    (change)="onFileSelect($event.target)" 
+/>
+</div>
+<div>
+    <div *ngFor="let error of errors; let index = index">
+        <p>{{error.error}}</p>
+    </div>
+    <p>{{message}}</p>
+</div>
