@@ -9,6 +9,7 @@ import { CreacioUsuariComponent } from './modules/creacio-usuari/creacio-usuari.
 import { ResetPasswordComponent } from './modules/reset-password-component/reset-password-component.component';
 import { ProfileDataComponent } from './modules/profile-data/profile-data.component';
 import { DetallLlibresComponent } from './modules/search/libros/detall-llibres/detall-llibres.component';
+import { AdvancedSearchComponent } from './modules/search/advanced-search/advanced-search.component';
 
 export const routes: Routes = [
     {
@@ -36,6 +37,7 @@ export const routes: Routes = [
             { path: 'itemDetails/:id', component: SearchComponent },
             { path: 'reset-password/:uid/:token', component: ResetPasswordComponent },
             { path: 'detall-llibre', component: DetallLlibresComponent },
+            { path: 'cerca-avancada', component: AdvancedSearchComponent },
         ],
     },
     { path: '**', redirectTo: 'landing' }
