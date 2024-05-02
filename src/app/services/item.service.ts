@@ -31,4 +31,21 @@ export class ItemService {
             throw error;
         }
     }
+
+    async makeLoan(email: string, itemCopyId: number, returnDate: string) {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.post(`${this.baseUrl}/items/make-loan/`, {
+                    email,
+                    item_copy_id: itemCopyId,
+                    return_date: returnDate,
+                }),
+            );
+
+            return response;
+        } catch (error: any) {
+            console.error('Error making loan', error);
+            throw error;
+        }
+    }
 }
