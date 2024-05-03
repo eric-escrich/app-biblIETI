@@ -146,7 +146,7 @@ export class ProfileService {
         this._logService.logInfo('User data delete', 'Se ha seteado la variable selfProfileData en null', 'ProfileService - logout', mail);
         this._logService.logInfo('Redirect landing', 'Redirigiendo a la página de inicio', 'ProfileService - logout');
 
-        this._dialogService.showDialog('INFORMACIÓ', 'Sesió tancada correctament');
+        this._dialogService.showDialog('INFORMACIÓ', 'Sessió tancada correctament');
         this._router.navigateByUrl('/landing');
     }
 }
