@@ -16,11 +16,10 @@ export class ItemService {
 
     constructor(private http: HttpClient) {}
 
-    async searchQuery(item: string) {
+    async searchQuery(query: string) {
         try {
             const response: any = await firstValueFrom(
-                this.http.get(`${this.baseUrl}/items/search/`, {
-                    params: { item: item },
+                this.http.get(`${this.baseUrl}/items/autocompleat-search/${query}`, {
                     observe: 'response',
                 }),
             );
