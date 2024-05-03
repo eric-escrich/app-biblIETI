@@ -1,14 +1,15 @@
-<div class="homeContainer">
-    <div class="headerContainer flex flex-col items-center justify-center text-center">
-        <header class="w-4/5">
-            <div class="flex flex-col items-center justify-center ">
-                <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
-            </div>
-        </header>
-    </div>
+<div class="headerContainer flex flex-col items-center justify-center text-center">
+    <header class="w-4/5">
+        <div class="flex flex-col items-center justify-center ">
+            <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
+        </div>
+    </header>
+</div>
 
-    <div>
-        <h2>Títol</h2>
-        <p>Contingut</p>
+<div class="searchContainer">
+    <div class="booksContainer">
+        <ng-container *ngFor="let book of books">
+            <app-libros [bookImg]="book.image" (bookClicked)="showPopup()"></app-libros>
+        </ng-container>
     </div>
 </div>

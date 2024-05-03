@@ -66,10 +66,6 @@ h3 {
     color: #556958;
 }
 
-h2, h3 {
-    text-wrap: nowrap;
-}
-
 p {
     font-family: "Roboto Flex", sans-serif;
     font-size: 14px;
@@ -121,4 +117,98 @@ a {
     background-color: transparent;
     border: 1px solid #59b4684e;
     color: #556958;
+}
+
+.bentoBox {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: rgba(221, 221, 220, 0.50);
+    border: 1px solid rgba(221, 221, 220, 0.50);
+    border-radius: 8px;
+    box-shadow: 0 5px 20px #eeeeee98;
+    z-index: 1;
+    transition-duration: 1s;
+    overflow: hidden;
+}
+
+.libroImgContainer {
+    margin-bottom: -70px;
+}
+
+app-libros {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 60px;
+    width: 80%;
+}
+
+.booksContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+@media only screen and (max-width: 375px) {
+    .bentoBox {
+        width: 100%;
+    }
+
+    .bentoBoxContent {
+        padding: 20px;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 50px;
+        line-height: 45px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    label, p {
+        font-size: 14px;
+    }
+
+    .p-autocomplete-panel {
+        width: 90%;
+        font-size: 14px;
+    }
+
+    .p-button#searchItemHeader {
+        width: 10px;
+        height: 10px;
+    }
+
+    .searchContainer {
+        padding: 20px;
+    }
+
+    .booksContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .app-libros {
+        padding: 0 10px;
+    }
+
+    .p-panel {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
 }

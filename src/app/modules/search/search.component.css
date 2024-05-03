@@ -18,6 +18,5 @@ label {
 :host ::ng-deep .p-panel {
     display: flex;
     flex-direction: column;
-    padding: 40px;
-    margin: 0 0 40px 0;
+    padding: 20px;
 }

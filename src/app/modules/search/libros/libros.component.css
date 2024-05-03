@@ -1,17 +1,9 @@
-article {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    background-color: rgba(221, 221, 220, 0.50);
-    border: 1px solid rgba(221, 221, 220, 0.50);
-    border-radius: 8px;
-    box-shadow: 0 5px 20px #eeeeee98;
-    transition-duration: 1s;
-}
-
-article:hover {
+.bentoBox:hover{
     transition-duration: 1s;
     transform: scale(1.01);
     box-shadow: 1px 1px 10px #b4b4b4;
+}
+
+article {
+    max-width: 100%; /* Ajusta según tu diseño */
 }

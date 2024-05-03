@@ -18,6 +18,7 @@ interface onUpload {
     originalEvent: Event;
     files: File[];
 }
+
 @Component({
     selector: 'app-search',
     standalone: true,
