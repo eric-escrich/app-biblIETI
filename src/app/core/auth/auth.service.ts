@@ -150,8 +150,10 @@ export class AuthService {
             console.log('response --> ', response);
 
             if (response.status === 201) {
-                return response.body;
+                this._logService.logInfo('User created', 'El usuario ha sido creado con éxito', 'CreacioUsuariComponent - register');
+                return response;
             } else {
+                this._logService.logError('Error creating user', 'Error al crear el usuario', 'CreacioUsuariComponent - register');
                 throw new Error("Error al registrar l'usuari");
             }
         } catch (error: any) {
@@ -168,8 +170,14 @@ export class AuthService {
                     'AuthService - registerUser',
                     email_admin,
                 );
+                this._logService.logError(
+                    'Error creating user',
+                    `No se ha podido crear el usuario porque el nombre de usuario ya existe`,
+                    'CreacioUsuariComponent - register',
+                );
                 throw new Error("El nom d'usuari ja existeix. Si us plau, escull un altre.");
             }
+            this._logService.logError('Error creating user', `Error al crear el usuario: ${error.message}`, 'CreacioUsuariComponent - register');
             throw error;
         }
     }
