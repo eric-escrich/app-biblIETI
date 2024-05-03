@@ -46,7 +46,7 @@
     
                         <div class="card flex flex-col justify-content-center">
                             <label for="role">Rol *</label>
-                            <input id="role" type="text" pInputText formControlName="role" value="ALUMNE" readonly/>
+                            <input id="role" type="text" pInputText formControlName="role" value="ALUMNE" name="role" readonly/>
                         </div>
     
                         <div class="card flex flex-col justify-content-center">
@@ -78,6 +78,8 @@
                                 weakLabel="Insegura"
                                 mediumLabel="Bàsica"
                                 strongLabel="Molt segura"
+                                [style]="{ width: '100%' }"
+                                [inputStyle]="{'width':'100%'}"
                             >
                                 <ng-template pTemplate="footer">
                                     <p-divider></p-divider>
@@ -105,6 +107,8 @@
                                 [feedback]="false"
                                 [toggleMask]="true"
                                 [class]="{'ng-invalid': invalidPassword}"
+                                [style]="{ width: '100%' }"
+                                [inputStyle]="{'width':'100%'}"
                             ></p-password>
                         </div>
                     </div>
