@@ -10,7 +10,7 @@
     <div class="flex flex-col px-10 mb-40 justify-center items-center gap-x-20 w-full">
         <div class="flex flex-col gap-y-4 w-full">
             <h2>Modificar dades d'alumnes</h2>
-            <div class="card flex justify-content-center">
+            <!-- <div class="card flex justify-content-center">
                 <p-fileUpload
                     severity="fill"
                     mode="basic"
@@ -21,7 +21,7 @@
                     accept="text/csv"
                     maxFileSize="1000000">
                 </p-fileUpload>
-            </div>
+            </div> -->
 
             <p-table [value]="users" [paginator]="true" [rows]="10">
                 <ng-template pTemplate="header">
@@ -40,39 +40,52 @@
                 </ng-template>
             </p-table>            
         </div>
+        <div class="flex flex-row gap-24 mt-10">
+            <app-serarch-items></app-serarch-items>
 
-        <app-serarch-items></app-serarch-items>
 
+            @if (role === Role.ADMIN || role === Role.BIBLIO) {
+                <div class="flex flex-col gap-8 items-center">
+                    <p-button
+                    label="CREA UN NOU ALUMNE"
+                    styleClass="p-button-rounded"
+                    severity="fill"
+                    routerLink="/creacio-usuari"
+                    [style]="{'width': 'fit-content'}"
+                ></p-button>
+                <p-button
+                    label="IMPORTA USUARIS"
+                    styleClass="p-button-rounded"
+                    severity="fill"
+                    routerLink="/importacio-usuaris"
+                    [style]="{'width': 'fit-content'}"
+                ></p-button>
 
-        @if (role === Role.ADMIN || role === Role.BIBLIO) {
+                <p-button
+                    label="FER UN PRESTEC"
+                    styleClass="p-button-rounded"
+                    severity="fill"
+                    routerLink="/prestec"
+                    [style]="{'width': 'fit-content'}"
+                ></p-button>
+
+                <p-button
+                    label="USUARIS"
+                    styleClass="p-button-rounded"
+                    severity="fill"
+                    routerLink="/llista-usuaris"
+                    [style]="{'width': 'fit-content'}"
+                ></p-button>
+                </div>
+            }
             <p-button
-                label="CREA UN NOU ALUMNE"
+                label="SORTIR"
                 styleClass="p-button-rounded"
                 severity="fill"
-                routerLink="/creacio-usuari"
-                [style]="{'width': 'fit-content'}"
-            ></p-button>
-            <p-button
-                label="IMPORTA USUARIS"
-                styleClass="p-button-rounded"
-                severity="fill"
-                routerLink="/importacio-usuaris"
-                [style]="{'width': 'fit-content'}"
-            ></p-button>
-            <p-button
-                label="USUARIS"
-                styleClass="p-button-rounded"
-                severity="fill"
-                routerLink="/llista-usuaris"
-                [style]="{'width': 'fit-content'}"
-            ></p-button>
-            <p-button
-                label="FER UN PRESTEC"
-                styleClass="p-button-rounded"
-                severity="fill"
-                routerLink="/prestec"
-                [style]="{'width': 'fit-content'}"
-            ></p-button>
-        }
+                (click)="_profileService.logout()"
+                [style]="{'width': 'fit-content', 'background': 'red'}"
+        ></p-button>
+        </div>
+       
     </div>
 }

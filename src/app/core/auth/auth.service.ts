@@ -107,8 +107,15 @@ export class AuthService {
     }
 
     async sendPasswordResetEmail(email: string) {
-        let response: any = await firstValueFrom(this._http.post(`${this.baseUrl}/auth/send-mail/`, { email: email }, { observe: 'response' }));
-        return response;
+        try {
+            let response: any = await firstValueFrom(this._http.post(`${this.baseUrl}/auth/send-mail/`, { email: email }, { observe: 'response' }));
+            console.log('Response', response);
+
+            return response;
+        } catch (error: any) {
+            console.error('Error sending password reset email', error);
+            throw error;
+        }
     }
 
     async resetPassword(newPassword: string, uid: string, token: string) {
