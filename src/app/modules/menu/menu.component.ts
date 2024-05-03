@@ -10,6 +10,7 @@ import { ToastModule } from 'primeng/toast';
 import { ItemService } from '../../services/item.service';
 import { DialogService } from '../../services/dialog.service';
 import { LogService } from '../../services/log.service';
+import { ProfileService } from '../../services/profile.service';
 
 @Component({
   selector: 'app-menu',
@@ -32,6 +33,7 @@ export class MenuComponent {
     _itemService = inject(ItemService);
     _dialogService = inject(DialogService);
     _logService = inject(LogService);
+    _profileService = inject(ProfileService);
   
     filterChangeTimeout: any;
   
@@ -110,6 +112,11 @@ export class MenuComponent {
         }
     }
   
+    logout() {
+        this._profileService.logout();
+        this.router.navigate(['/login']);
+      }
+      
     menuItems: MenuItem[] = [];
   
     ngOnInit() {
@@ -152,7 +159,8 @@ export class MenuComponent {
         {
             label: 'Tancar sessió',
             icon: 'pi pi-fw pi-power-off',
+            command: () => this.logout()
         }
-      ];
+      ];   
     }
   }
