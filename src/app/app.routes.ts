@@ -18,26 +18,51 @@ export const routes: Routes = [
         children: [
             {
                 path: 'dashboard',
+                title: "Panell de control - BIBLIOTECA MARI CARMEN BRITO",
                 component: DashboardComponent,
                 canActivate: [JwtGuard],
             },
             {
                 path: 'creacio-usuari',
+                title: "Creació d'usuari - BIBLIOTECA MARI CARMEN BRITO",
                 component: CreacioUsuariComponent,
                 canActivate: [JwtGuard],
             },
             {
                 path: 'perfil',
+                title: "Perfil",
                 component: ProfileDataComponent,
                 canActivate: [JwtGuard],
             },
 
-            { path: 'landing', component: HomeComponent },
-            { path: 'cercar-llibre', component: SearchComponent },
-            { path: 'itemDetails/:id', component: SearchComponent },
-            { path: 'reset-password/:uid/:token', component: ResetPasswordComponent },
-            { path: 'detall-llibre', component: DetallLlibresComponent },
-            { path: 'cerca-avancada', component: AdvancedSearchComponent },
+            {
+                path: 'landing',
+                title: "Inici - BIBLIOTECA MARI CARMEN BRITO",
+                component: HomeComponent
+            },
+            {
+                path: 'cercar-llibre',
+                title: "Cercar article - BIBLIOTECA MARI CARMEN BRITO",
+                component: SearchComponent },
+            {
+                path: 'itemDetails/:id',
+                title: "Detall de l'article - BIBLIOTECA MARI CARMEN BRITO",
+                component: SearchComponent
+            },
+            {
+                path: 'reset-password/:uid/:token',
+                title: "Canviar contrasenya - BIBLIOTECA MARI CARMEN BRITO",
+                component: ResetPasswordComponent
+            },
+            {
+                path: 'detall-llibre',
+                title: "Detall de l'article - BIBLIOTECA MARI CARMEN BRITO",
+                component: DetallLlibresComponent
+            },
+            {
+                path: 'cerca-avancada',
+                title: "Cerca avançada - BIBLIOTECA MARI CARMEN BRITO",
+                component: AdvancedSearchComponent },
         ],
     },
     { path: '**', redirectTo: 'landing' }
