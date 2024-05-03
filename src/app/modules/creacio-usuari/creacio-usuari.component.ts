@@ -68,7 +68,7 @@ export class CreacioUsuariComponent {
 
     public errorMessage: string = '';
 
-    private userEmail: string = '';
+    private userEmail!: string;
 
     public ca: any = {};
 
@@ -316,16 +316,14 @@ export class CreacioUsuariComponent {
             console.log('response.status --> ', response.status);
 
             if (response.status === 201) {
-                this._logService.logInfo('User created', 'El usuario ha sido creado con éxito', 'CreacioUsuariComponent - register');
                 this._dialogService.showDialog('INFO', 'Usuari creat correctament');
             } else {
-                this._logService.logError('Error creating user', 'Error al crear el usuario', 'CreacioUsuariComponent - register');
                 this._dialogService.showDialog('ERROR', 'Error al crear el usuari');
             }
         } catch (error: any) {
             console.error('Error creating user', error.message);
             this._logService.logError('Error creating user', `Error al crear el usuario: ${error.message}`, 'CreacioUsuariComponent - register');
-            this._dialogService.showDialog('ERROR', error.message);
+            this._dialogService.showDialog('ERROR', "No s'ha pogut crear l'usauri. Torni a intentar-ho més tard.");
         }
     }
 }

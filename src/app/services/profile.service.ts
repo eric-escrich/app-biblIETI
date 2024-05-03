@@ -145,10 +145,16 @@ export class ProfileService {
         }
         this._storageService.removeItem('token');
         this._logService.logInfo('Token delete', 'Se ha eliminado el token del localStorage', 'ProfileService - logout', mail);
+
         this._storageService.removeItem('refresh');
         this._logService.logInfo('Token refresh delete', 'Se ha eliminado el token refresh del localStorage', 'ProfileService - logout', mail);
+
         this.selfProfileData = null;
         this._logService.logInfo('User data delete', 'Se ha seteado la variable selfProfileData en null', 'ProfileService - logout', mail);
+
+        this._storageService.removeItem('profile');
+        this._logService.logInfo('Profile cache delete', 'Se ha eliminado el profile del localstorage', 'ProfileService - logout', mail);
+
         this._logService.logInfo('Redirect landing', 'Redirigiendo a la página de inicio', 'ProfileService - logout');
 
         this._dialogService.showDialog('INFORMACIÓ', 'Sesió tancada correctament');
