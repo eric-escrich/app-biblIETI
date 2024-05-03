@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card sticky top-0 z-50">
     <p-menubar [model]="menuItems">
         <ng-template pTemplate="start">
             <img src="/assets/imgs/libros3D.png" height="40" class="mr-2" />
@@ -7,15 +7,14 @@
         <ng-template pTemplate="end">
             <div class="flex flex-row gap-x-4 items-center">
                 <p-autoComplete
-                    [(ngModel)]="searchQuery"
-                    [suggestions]="menuItems"
-                    (input)="onFilterChange()"
-                    [minLength]="3"
-                    field="name"
-                    (onSelect)="onItemSelect($event)"
-                    (keyup.enter)="viewItemDetails()">
-                </p-autoComplete>
-                
+                [(ngModel)]="searchQuery"
+                [suggestions]="itemsArray"
+                (input)="onFilterChange()"
+                [minLength]="3"
+                field="name"
+                (onSelect)="onItemSelect($event)"
+                (keyup.enter)="viewItemDetails()"
+                ></p-autoComplete>
                 <p-button severity="icon" (click)="viewItemDetails()">
                     <i class="pi pi-search"></i>
                 </p-button>
