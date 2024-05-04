@@ -47,7 +47,7 @@ export const routes: Routes = [
                 canActivate: [JwtGuard],
             },
             {
-                path: 'editar-usuari/:userID',
+                path: 'editar-usuari/:userId',
                 component: EditUserComponent,
                 canActivate: [JwtGuard],
             },

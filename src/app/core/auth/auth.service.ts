@@ -109,7 +109,6 @@ export class AuthService {
     async sendPasswordResetEmail(email: string) {
         try {
             let response: any = await firstValueFrom(this._http.post(`${this.baseUrl}/auth/send-mail/`, { email: email }, { observe: 'response' }));
-            console.log('Response', response);
 
             return response;
         } catch (error: any) {

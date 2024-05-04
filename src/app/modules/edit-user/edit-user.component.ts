@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { DialogModule } from 'primeng/dialog';
 import { LogService } from '../../services/log.service';
@@ -35,49 +35,67 @@ import { PrimeNGConfig } from 'primeng/api';
     styleUrl: './edit-user.component.css',
 })
 export class EditUserComponent {
-    private _profileService = inject(ProfileService);
-    private _router = inject(Router);
-    private _dialogService = inject(DialogService);
+    private route = inject(ActivatedRoute);
     private _authService = inject(AuthService);
+    private _router = inject(Router);
+    private _profileService = inject(ProfileService);
     private _logService = inject(LogService);
+    private _dialogService = inject(DialogService);
     private _formValidationService = inject(FormValidationService);
-
     private config = inject(PrimeNGConfig);
 
+    public adminRole!: number;
+    public Role = Role;
+
+    public username: string = '';
+    public name: string = '';
+    public lastName: string = '';
+    public secndLastName: string = '';
+    public birthDate: Date = new Date();
+    public course: string = '';
+    public rol: number = 2;
+    public dni: string = '';
+    public tlfn: string = '';
+    public email: string = '';
+    public password: string = '';
+    public confirmPassword: string = '';
+
     public invalidForm: boolean = false;
+    public invalidUsername: boolean = false;
     public invalidName: boolean = false;
     public invalidLastName: boolean = false;
     public invalidBirthDate: boolean = false;
     public invalidCourse: boolean = false;
     public invalidDni: boolean = false;
     public invalidTlfn: boolean = false;
+    public invalidEmail: boolean = false;
+    public invalidPassword: boolean = false;
 
     public errorMessage: string = '';
 
-    @Input('userID') userId!: number;
-    private adminEmail: string = '';
-    private originalUserData: any;
-    public newUserData: any;
-    public role!: number;
-    public Role = Role;
+    private adminEmail!: string;
+    public originalUserData: any;
+    public userId: any;
+    public roleName: any;
 
     async ngOnInit() {
-        this.role = await this._profileService.getRole();
+        this.adminRole = await this._profileService.getRole();
 
-        if (this.role !== Role.ADMIN && this.role !== Role.BIBLIO) {
+        if (this.adminRole !== Role.ADMIN && this.adminRole !== Role.BIBLIO) {
             this._router.navigate(['/dashboard']);
             this._dialogService.showDialog('ERROR', 'No tens permisos per accedir a aquesta pàgina');
         } else {
             try {
                 this.adminEmail = await this._profileService.getEmail();
             } catch (error: any) {
-                this._dialogService.showDialog('ERROR', "No s'ha pogut obtenir el teu email");
+                this._dialogService.showDialog('ERROR', "No s'ha pogut obtenir l'email de l'usuari administrador o bibliotecari");
                 this._profileService.logout();
             }
 
             try {
+                this.userId = this.route.snapshot.paramMap.get('userId')!;
                 this.originalUserData = await this._profileService.getUserProfileDataById(this.userId);
-                this.newUserData = this.originalUserData.user_profile;
+                await this.setDefaultData();
             } catch (error: any) {
                 this._dialogService.showDialog('ERROR', "No s'ha pogut obtenir la informació de l'usuari");
                 this._router.navigate(['/list-users']);
@@ -95,84 +113,310 @@ export class EditUserComponent {
         }
     }
 
-    async onSubmit() {
-        console.log('name', this.newUserData.name);
-        console.log('surname', this.newUserData.surname);
-        console.log('dni', this.newUserData.dni);
-        console.log('phone', this.newUserData.phone);
-        console.log('cycle', this.newUserData.cycle);
-        console.log('birth', this.newUserData.date_of_birth);
+    async setDefaultData() {
+        if (!this.originalUserData) this.originalUserData = await this._profileService.getUserProfileDataById(this.userId);
 
+        this.invalidForm = false;
+        this.invalidUsername = false;
+        this.invalidName = false;
+        this.invalidLastName = false;
+        this.invalidCourse = false;
+        this.invalidDni = false;
+        this.invalidTlfn = false;
+        this.invalidEmail = false;
+        this.invalidPassword = false;
+        this.invalidBirthDate = false;
+
+        this.username = this.originalUserData.username;
+        this.name = this.originalUserData.name;
+        this.lastName = this.originalUserData.surname;
+        this.secndLastName = this.originalUserData.surname2;
+        this.birthDate = new Date(this.originalUserData.date_of_birth);
+        this.course = this.originalUserData.cycle;
+        this.rol = this.originalUserData.role;
+        this.dni = this.originalUserData.dni;
+        this.tlfn = this.originalUserData.phone;
+        this.email = this.originalUserData.email;
+    }
+
+    getRoleName() {
+        switch (this.rol) {
+            case Role.ADMIN:
+                return 'ADMIN';
+            case Role.BIBLIO:
+                return 'BIBLIOTECARI';
+            case Role.USER:
+                return 'USUARI';
+            default:
+                return 'USUARI';
+        }
+    }
+
+    async onSubmit() {
         this._logService.logInfo(
-            'Verifying user creation form',
-            'Se va a revisar el formulario de creación de usuario',
+            'Verifying user edition form',
+            'Se va a revisar el formulario de edición del usuario con id: ' + this.userId,
             'CreacioUsuariComponent - onSubmit',
             this.adminEmail,
         );
 
-        this.invalidName = this._formValidationService.isEmpty(this.newUserData.name);
-        if (this.invalidName) {
-            this.invalidForm = true;
-            this._logService.logWarning(
-                'Invalid name',
-                'No se ha podido crear el usuario porque ha introducido un nombre inválido',
-                'CreacioUsuariComponent - onSubmit',
-            );
-            this.errorMessage = 'No has introduit el nom';
-            this._dialogService.showDialog('ERROR', 'El nom es obligatori');
-            return;
-        }
+        let updatedFields: any = {};
 
-        this.invalidLastName = this._formValidationService.isEmpty(this.newUserData.surname);
-        if (this.invalidLastName) {
-            this.invalidForm = true;
-            this._logService.logWarning(
-                'Invalid last name',
-                'No se ha podido crear el usuario porque ha introducido un apellido inválido',
-                'CreacioUsuariComponent - onSubmit',
-            );
-            this.errorMessage = 'No has introduit el cognom';
-            this._dialogService.showDialog('ERROR', 'El cognom és obligatori');
-            return;
-        }
+        if (this.originalUserData) {
+            if (this.username !== this.originalUserData.username) {
+                this.invalidUsername = this._formValidationService.isEmpty(this.username);
+                if (this.invalidUsername) {
+                    this.invalidForm = true;
+                    this._logService.logWarning(
+                        'Invalid username',
+                        `No se ha podido crear el usuario con id ${this.userId} porque ha introducido un nombre de usuario inválido`,
+                        'CreacioUsuariComponent - onSubmit',
+                        this.adminEmail,
+                    );
+                    this.errorMessage = "El nom d'usuari es obligatori";
+                    this._dialogService.showDialog('ERROR', "El nom d'usuari es obligatori");
+                    return;
+                }
+                updatedFields.username = this.username;
+            }
 
-        this.invalidBirthDate = this._formValidationService.isEmpty(this.newUserData.date_of_birth);
-        if (this.invalidBirthDate) {
-            const birthDate: Date = this.newUserData.date_of_birth;
-            const formattedBirthDate: string = `${('0' + birthDate.getDate()).slice(-2)}-${('0' + (birthDate.getMonth() + 1)).slice(
-                -2,
-            )}-${birthDate.getFullYear()}`;
-            this.newUserData.date_of_birth = formattedBirthDate;
-            return;
-        }
+            if (this.name !== this.originalUserData.name) {
+                this.invalidName = this._formValidationService.isEmpty(this.name);
+                if (this.invalidName) {
+                    this.invalidForm = true;
+                    this._logService.logWarning(
+                        'Invalid name',
+                        `No se ha podido modificar el usuario con id ${this.userId} porque no se ha introducido un nombre`,
+                        'CreacioUsuariComponent - onSubmit',
+                    );
+                    this.errorMessage = 'No has introduit el nom';
+                    this._dialogService.showDialog('ERROR', 'El nom es obligatori');
+                    return;
+                }
+                updatedFields.name = this.name;
+            }
 
-        this.invalidCourse = this._formValidationService.isEmpty(this.newUserData.cycle);
-        if (this.invalidCourse) {
-            this.invalidForm = true;
-            this._logService.logWarning(
-                'Invalid cycle',
-                'No se ha podido crear el usuario porque ha introducido un ciclo inválido',
-                'CreacioUsuariComponent - onSubmit',
-            );
-            this.errorMessage = 'No has introduit el curs';
-            this._dialogService.showDialog('ERROR', 'El curs es obligatori');
-            return;
-        }
+            if (this.lastName !== this.originalUserData.surname) {
+                this.invalidLastName = this._formValidationService.isEmpty(this.lastName);
+                if (this.invalidLastName) {
+                    this.invalidForm = true;
+                    this._logService.logWarning(
+                        'Invalid last name',
+                        `No se ha podido modificar el usuario con id ${this.userId} porque no se ha introducido un apellido`,
+                        'CreacioUsuariComponent - onSubmit',
+                        this.adminEmail,
+                    );
+                    this.errorMessage = 'No has introduit el cognom';
+                    this._dialogService.showDialog('ERROR', 'El cognom és obligatori');
+                    return;
+                }
+                updatedFields.surname = this.lastName;
+            }
 
-        await this.saveUser();
+            if (this.secndLastName !== this.originalUserData.surname2) {
+                updatedFields.surname2 = this.secndLastName;
+            }
+
+            if (this.birthDate instanceof Date && !isNaN(this.birthDate.getTime())) {
+                const formattedBirthDate = formatDate(this.birthDate, 'dd-MM-yyyy', 'en-US');
+                const formattedOriginalBirthDate = formatDate(this.originalUserData.date_of_birth, 'dd-MM-yyyy', 'en-US');
+
+                if (formattedBirthDate !== formattedOriginalBirthDate) {
+                    this.invalidBirthDate = this._formValidationService.isEmpty(this.birthDate.toString());
+                    if (this.invalidBirthDate) {
+                        this.invalidForm = true;
+                        this._logService.logWarning(
+                            'Invalid birth date',
+                            `No se ha podido modificar el usuario con id ${this.userId} porque no se ha introducido una fecha de nacimiento`,
+                            'CreacioUsuariComponent - onSubmit',
+                            this.adminEmail,
+                        );
+                        this.errorMessage = 'No has introduit la data de naixement';
+                        this._dialogService.showDialog('ERROR', 'La data de naixement es obligatoria');
+                        return;
+                    }
+                    updatedFields.date_of_birth = this.birthDate;
+                }
+            } else {
+                this.invalidForm = true;
+                this.invalidBirthDate = true;
+                this._logService.logWarning(
+                    'Invalid birth date',
+                    `No se ha podido modificar el usuario con id ${this.userId} porque la fecha de nacimiento no es válida`,
+                    'CreacioUsuariComponent - onSubmit',
+                    this.adminEmail,
+                );
+                this.errorMessage = 'La data de neixament no és válida';
+                this._dialogService.showDialog('ERROR', 'La data de neixament no és válida');
+                this.birthDate = this.originalUserData.date_of_birth;
+                return;
+            }
+
+            if (this.course !== this.originalUserData.cycle) {
+                this.invalidCourse = this._formValidationService.isEmpty(this.course);
+                if (this.invalidCourse) {
+                    this.invalidForm = true;
+                    this._logService.logWarning(
+                        'Invalid cycle',
+                        `No se ha podido modificar el usuario con id ${this.userId} porque no se ha introducido un cycle`,
+                        'CreacioUsuariComponent - onSubmit',
+                        this.adminEmail,
+                    );
+                    this.errorMessage = 'No has introduit el curs';
+                    this._dialogService.showDialog('ERROR', 'El curs es obligatori');
+                    return;
+                }
+                updatedFields.cycle = this.course;
+            }
+
+            if (this.dni !== this.originalUserData.dni) {
+                if (this.dni.length > 0) {
+                    this.invalidDni = this._formValidationService.isValidDni(this.dni);
+                    console.log('this.invalidDni', this.invalidDni);
+
+                    if (!this.invalidDni) {
+                        this.invalidForm = true;
+                        this._logService.logWarning(
+                            'Invalid DNI',
+                            `No se ha podido modificar el usuario con id ${this.userId} porque se ha introducido un DNI inválido`,
+                            'CreacioUsuariComponent - onSubmit',
+                            this.adminEmail,
+                        );
+                        this.invalidDni = true;
+                        this.errorMessage = 'El DNI es invalid';
+                        this._dialogService.showDialog('ERROR', 'El DNI es invalid');
+                        return;
+                    }
+                }
+                updatedFields.dni = this.dni;
+            }
+
+            if (this.tlfn !== this.originalUserData.phone) {
+                updatedFields.phone = this.tlfn;
+            }
+
+            if (this.email !== this.originalUserData.email) {
+                this.invalidEmail = this._formValidationService.isEmpty(this.email);
+                if (!this.invalidEmail) {
+                    this.invalidEmail = !this._formValidationService.isValidEmail(this.email);
+                    if (this.invalidEmail) {
+                        this.invalidForm = true;
+                        this._logService.logWarning(
+                            'Invalid email',
+                            `No se ha podido modificar el usuario con id ${this.userId} porque se ha introducido un email inválido`,
+                            'CreacioUsuariComponent - onSubmit',
+                            this.adminEmail,
+                        );
+                        this.errorMessage = 'El correu electronic es invalid';
+                        this._dialogService.showDialog('ERROR', 'El correu electronic es invalid');
+                        return;
+                    }
+                } else {
+                    this.invalidForm = true;
+                    this._logService.logWarning(
+                        'Invalid email',
+                        `No se ha podido modificar el usuario con id ${this.userId} porque no se ha introducido un email`,
+                        'CreacioUsuariComponent - onSubmit',
+                        this.adminEmail,
+                    );
+                    this.errorMessage = 'No has introduit el correu electronic';
+                    this._dialogService.showDialog('ERROR', 'El correu electronic es obligatori');
+                    return;
+                }
+                updatedFields.email = this.email;
+            }
+
+            if (this.password.length > 0) {
+                if (!this.verifyPassword()) return;
+                updatedFields.password = this.password;
+            }
+
+            if (Object.keys(updatedFields).length > 0 && this.invalidForm === false) {
+                this.errorMessage = '';
+                this.invalidForm = false;
+                try {
+                    await this.saveUser(updatedFields);
+                    this._dialogService.showDialog('INFORMACIÓ', 'Usuari modificat correctament');
+                    this._logService.logInfo(
+                        'User data updated',
+                        "S'ha modificat la informació de l'usuari",
+                        'ResetPasswordComponent - onSubmit',
+                        this.adminEmail,
+                    );
+                } catch (error: any) {
+                    this._dialogService.showDialog('ERROR', "No s'ha pogut modificar l'usuari");
+                    this._logService.logError(
+                        'Error updating user data',
+                        'No se ha podido modificar la información del usuario',
+                        'ResetPasswordComponent - onSubmit',
+                        this.adminEmail,
+                    );
+                }
+            } else {
+                this._dialogService.showDialog('INFORMACIÓ', "No s'ha modificat cap camp");
+            }
+        }
     }
 
-    reset() {
-        this.newUserData = this.originalUserData.user_profile;
-    }
-
-    async saveUser() {
-        try {
-            const response = await this._profileService.updateUserDataByAdmin(
+    verifyPassword() {
+        if (this.password != this.confirmPassword) {
+            this.invalidPassword = true;
+            this.invalidForm = true;
+            this.errorMessage = 'Les contrasenyes no coincideixen';
+            this._logService.logWarning(
+                'Passwords do not match',
+                'No se ha podido modificar la contraseña del usuario porque las contraseñas no coinciden',
+                'ResetPasswordComponent - onSubmit',
                 this.adminEmail,
-                this.originalUserData.user_profile.email,
-                this.newUserData,
             );
+            this._dialogService.showDialog('ERROR', 'Les contrasenyes no coincideixen');
+            return false;
+        }
+
+        const passwordValidation = this._formValidationService.validatePassword(this.password);
+        if (!passwordValidation.isValid) {
+            this.invalidForm = true;
+            this.invalidPassword = true;
+            this.errorMessage = passwordValidation.errorMessage;
+            this._logService.logWarning(
+                'Invalid password',
+                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña inválida: ' +
+                    passwordValidation.errorMessage,
+                'ResetPasswordComponent - onSubmit',
+                this.adminEmail,
+            );
+            this._dialogService.showDialog('ERROR', passwordValidation.errorMessage);
+            return false;
+        }
+        const confirmPasswordValidation = this._formValidationService.validatePassword(this.confirmPassword);
+        if (!confirmPasswordValidation.isValid) {
+            this.invalidForm = true;
+            this.invalidPassword = true;
+            this.errorMessage = passwordValidation.errorMessage;
+            this.errorMessage = passwordValidation.errorMessage;
+            this._logService.logWarning(
+                'Invalid password',
+                'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña inválida',
+                'ResetPasswordComponent - onSubmit',
+                this.adminEmail,
+            );
+            this._dialogService.showDialog('ERROR', passwordValidation.errorMessage);
+            return false;
+        }
+        return true;
+    }
+
+    async saveUser(newUserData: any) {
+        try {
+            console.log('this.originalUserData', this.originalUserData);
+            const response = await this._profileService.updateUserDataByAdmin(this.adminEmail, this.originalUserData.email, newUserData);
+            try {
+                this.originalUserData = await this._profileService.getUserProfileDataById(this.userId);
+                await this.setDefaultData();
+            } catch (error: any) {
+                this._dialogService.showDialog('ERROR', "No s'ha pogut obtenir la informació de l'usuari");
+                this._router.navigate(['/list-users']);
+            }
             console.log('User data updated successfully:', response);
             // Manejar la respuesta según sea necesario
         } catch (error: any) {
@@ -180,4 +424,6 @@ export class EditUserComponent {
             // Manejar el error según sea necesario
         }
     }
+
+    resetForm() {}
 }

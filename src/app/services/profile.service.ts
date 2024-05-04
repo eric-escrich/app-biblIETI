@@ -30,9 +30,17 @@ export class ProfileService {
                 }),
             );
 
-            this.selfProfileData = response.body;
-            return this.selfProfileData;
+            if (response.status === 200) {
+                this.selfProfileData = response.body;
+                return this.selfProfileData;
+            }
         } catch (error: any) {
+            console.log('Error al obtener el profileData: ', error);
+            this._logService.logError(
+                'Error getting profileData',
+                `Error al obtener el profileData, Error: ${error.error.error}`,
+                'ProfileService - getSelfProfileData',
+            );
             this.logout();
             throw error;
         }
@@ -44,7 +52,7 @@ export class ProfileService {
             this.selfProfileData = JSON.parse(this._storageService.getItem('profile')!);
             return this.selfProfileData;
         } else {
-            this.getSelfProfileData();
+            return await this.getSelfProfileData();
         }
     }
 
@@ -183,19 +191,38 @@ export class ProfileService {
     async getUserProfileDataById(userId: number) {
         try {
             const response: any = await firstValueFrom(
-                this.http.post(
-                    `${this.baseUrl}/user/get-data/`,
-                    { id: userId },
-                    {
-                        observe: 'response',
-                    },
-                ),
+                this.http.get(`${this.baseUrl}/user/get-data/${userId}`, {
+                    observe: 'response',
+                }),
             );
-            console.log(response.body);
+            console.log(response);
 
-            this.selfProfileData = response.body;
-            return this.selfProfileData;
+            if (response.status === 200) {
+                this._logService.logInfo(
+                    'Getting user data',
+                    `Se han obtenido los datos del usuario con id: ${userId}`,
+                    'ProfileService - getUserProfileDataById',
+                    this.selfProfileData.email,
+                );
+                return response.body;
+            } else {
+                this._logService.logError(
+                    'Error getting user data',
+                    `Error al obtener los datos del usuario con id: ${userId}`,
+                    'ProfileService - getUserProfileDataById',
+                    this.selfProfileData.email,
+                );
+                throw new Error('Error fetching user data');
+            }
         } catch (error: any) {
+            console.log('Error getting user data', error);
+
+            this._logService.logError(
+                'ERROR getting user DataTransfer',
+                `Error al obtener los datos del usuario con id: ${userId}, Error: ${error.error.error}`,
+                'ProfileService - getUserProfileDataById',
+                this.selfProfileData.email,
+            );
             this.logout();
             throw error;
         }
@@ -203,16 +230,29 @@ export class ProfileService {
 
     async updateUserDataByAdmin(adminEmail: string, userEmail: string, data: any) {
         try {
+            console.log('data', data);
+
             const response: any = await firstValueFrom(
                 this.http.post(`${this.baseUrl}/user/change-data-admin/`, {
                     email_admin: adminEmail,
                     email_user: userEmail,
-                    ...data,
+                    user_change: data,
                 }),
             );
-
+            this._logService.logInfo(
+                'Updating user data by admin',
+                `Se han actualizado los datos del usuario con email ${userEmail}`,
+                'ProfileService - updateUserDataByAdmin',
+                adminEmail,
+            );
             return response;
         } catch (error: any) {
+            this._logService.logError(
+                'Error updating user data by admin',
+                `Error al actualizar los datos del usuario con email ${userEmail}. Error: ${error.error.error}`,
+                'ProfileService - updateUserDataByAdmin',
+                adminEmail,
+            );
             console.error('Error updating profile data', error);
             throw error;
         }
