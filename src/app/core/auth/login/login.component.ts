@@ -30,14 +30,13 @@ export class LoginComponent {
     private _formValidationService = inject(FormValidationService);
     private _storageService = inject(StorageService);
 
-    public username: string = '';
+    public email: string = '';
     public password: string = '';
 
     public invalidLogin: boolean = false;
     public loginErrorMessage: string = "L'usuari o la contrasenya són incorrectes.";
 
     // Forget password
-    public email: string = '';
     @Input() popupVisible: boolean = false;
 
     public invalidEmail = false;
@@ -47,23 +46,24 @@ export class LoginComponent {
         if (response.body.token.access) {
             const profile = await this._profileService.getSelfProfileDataWithoutLoading();
             this._profileService.selfProfileData = profile;
-            this._storageService.setItem('profile', JSON.stringify(profile));
             console.log('profile', profile);
+
+            this._storageService.setItem('profile', JSON.stringify(profile));
 
             this._logService.logInfo(
                 'Profile data',
                 `S'han obtingut les dades de perfil de l'usuari`,
                 'LoginComponent - handleLoginResponse',
-                profile.username,
+                profile.email,
             );
             this._logService.logInfo(
                 'Login OK',
-                `L'usuario: ${JSON.stringify(profile.username)} ha iniciat sessió correctament.`,
+                `L'usuario: ${JSON.stringify(profile.email)} ha iniciat sessió correctament.`,
                 'LoginComponent - handleLoginResponse',
-                profile.username,
+                profile.email,
             );
 
-            this._logService.logInfo('Redirect', `Redirecció a la pàgina de Dashboard`, 'LoginComponent - handleLoginResponse', profile.username);
+            this._logService.logInfo('Redirect', `Redirecció a la pàgina de Dashboard`, 'LoginComponent - handleLoginResponse', profile.email);
             this._router.navigateByUrl('/dashboard');
         } else {
             this._logService.logError("Error d'inici de sessin", 'CIF o contrasenya incorrectes', 'LoginComponent - handleLoginResponse');
@@ -74,14 +74,17 @@ export class LoginComponent {
     async handleError(error: any) {
         switch (error.status) {
             case 401:
+                console.log('LoginComponent - handleError | Error 401: ', error.message);
                 this.invalidLogin = true;
                 break;
             case 500:
+                console.log('LoginComponent - handleError | Error 500: ', error.message);
                 this.invalidLogin = true;
                 this._logService.logFatal('Error del servidor', `Error 500 del servidor: ${error.message}`, 'LoginComponent - handleError');
                 this._dialogService.showDialog('ERROR', 'Error del servidor');
                 break;
             default:
+                console.log('LoginComponent - handleError | ERROR UNDEFINED: ', error.message);
                 this.invalidLogin = true;
                 break;
         }
@@ -92,7 +95,7 @@ export class LoginComponent {
         const passwordValidation = this._formValidationService.validatePassword(this.password);
         if (passwordValidation.isValid) {
             try {
-                const response = await this._authService.login(this.username, this.password);
+                const response = await this._authService.login(this.email, this.password);
                 this._logService.logInfo("Resposta d'inicio de sesión", 'Token rebut', 'LoginComponent - onLogin', response.body.token.email);
 
                 await this.handleLoginResponse(response);
@@ -122,8 +125,6 @@ export class LoginComponent {
         if (this.email.length > 0 && this.isValidEmail(this.email)) {
             try {
                 let response = await this._authService.sendPasswordResetEmail(this.email);
-                console.log('Response', response);
-                console.log('Response status', response.status);
 
                 if (response.status === 200) {
                     this.togglePopup();
