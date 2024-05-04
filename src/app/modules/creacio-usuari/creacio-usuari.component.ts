@@ -70,8 +70,6 @@ export class CreacioUsuariComponent {
 
     private userEmail!: string;
 
-    public ca: any = {};
-
     async ngOnInit() {
         this.userEmail = await this._profileService.getEmail();
         this._logService.logInfo(
