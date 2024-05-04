@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { ProfileService } from '../../services/profile.service';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-users-import',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, RouterLink],
     templateUrl: './users-import.component.html',
     styleUrl: './users-import.component.css',
 })
@@ -23,8 +24,11 @@ export class UsersImportComponent {
     properties: any = '';
     adminEmail: string = '';
     role!: number;
-    errors!: any;
-    message!: string;
+
+    messages: string[] = [];
+    totalSaves: number = 0;
+    errorsCount: number = 0;
+    totalUsers: number = 0;
 
     @Output()
     onConvert = new EventEmitter<any>();
@@ -46,10 +50,7 @@ export class UsersImportComponent {
             var extension = input.files[0].name.split('.').pop().toLowerCase(), //file extension from input file
                 //Validating type of File Uploaded
                 isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
-            //console.log(isSuccess);
-            //console.log("Filename: " + files[0].name);
-            // console.log("Type: " + files[0].type);
-            //  console.log("Size: " + files[0].size + " bytes");
+
             var that = this;
             //Flag to check the Validation Result
             if (isSuccess) {
@@ -74,23 +75,26 @@ export class UsersImportComponent {
                         let id_register = 1;
 
                         for (const line of that.csvContent.split(/[\r\n]+/)) {
-                            if (flag) {
-                                let obj: any = {};
-                                for (let k = 0; k < size; k++) {
-                                    //Dynamic Object Properties
-                                    obj[prop[k]] = line.split(',')[k];
+                            if (line.trim() !== '') {
+                                // Skip empty lines
+                                if (flag) {
+                                    let obj: any = {};
+                                    for (let k = 0; k < size; k++) {
+                                        //Dynamic Object Properties
+                                        obj[prop[k]] = line.split(',')[k];
+                                    }
+                                    obj.id_register = id_register++;
+                                    objarray.push(obj);
+                                } else {
+                                    //First Line of CSV will be having Properties
+                                    for (let k = 0; k < line.split(',').length; k++) {
+                                        size = line.split(',').length;
+                                        //Removing all the spaces to make them usefull
+                                        prop.push(line.split(',')[k].replace(/ /g, ''));
+                                    }
+                                    prop.push('id_register');
+                                    flag = true;
                                 }
-                                obj.id_register = id_register++;
-                                objarray.push(obj);
-                            } else {
-                                //First Line of CSV will be having Properties
-                                for (let k = 0; k < line.split(',').length; k++) {
-                                    size = line.split(',').length;
-                                    //Removing all the spaces to make them usefull
-                                    prop.push(line.split(',')[k].replace(/ /g, ''));
-                                }
-                                prop.push('id_register');
-                                flag = true;
                             }
                         }
                         //All the values converted from CSV to JSON Array
@@ -107,6 +111,8 @@ export class UsersImportComponent {
                         that.onConvert.emit(finalResult);
                         console.log(finalResult);
 
+                        that.totalUsers = objarray.length; // Assigning the total number of records found in the CSV to totalUsers variable
+
                         await that.uploadUsers(finalResult);
                     }
                 };
@@ -120,12 +126,13 @@ export class UsersImportComponent {
 
     async uploadUsers(users: any) {
         try {
-            let response = await this._authService.uploadUsers(users);
-            console.log('Response', response);
-            console.log('Response status', response.status);
+            const response = await this._authService.uploadUsers(users);
 
-            this.errors = response.body.errors;
-            this.message = response.body.message;
+            console.log('response ----------> ', response);
+
+            this.messages = response.body.errors;
+            this.totalSaves = response.body.saves;
+            this.errorsCount = response.body.errorsCount;
 
             if (response.status === 200) {
                 this._logService.logInfo('Users uploaded', 'Users uploaded successfully', 'UsersImportComponent - uploadUsers');
