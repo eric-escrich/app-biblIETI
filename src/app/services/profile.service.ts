@@ -56,6 +56,16 @@ export class ProfileService {
         }
     }
 
+    getSelfProfileDataFromCache() {
+        if (this.selfProfileData) return this.selfProfileData;
+        else if (this._storageService.getItem('profile')) {
+            this.selfProfileData = JSON.parse(this._storageService.getItem('profile')!);
+            return this.selfProfileData;
+        } else {
+            return null;
+        }
+    }
+
     async getRole() {
         if (!this.selfProfileData) await this.getSelfProfileData();
         return this.selfProfileData.role;
