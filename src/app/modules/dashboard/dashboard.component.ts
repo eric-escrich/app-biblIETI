@@ -15,7 +15,7 @@ import { environment } from '../../../environments/environment';
 import { TableModule } from 'primeng/table';
 import { Router, RouterLink } from '@angular/router';
 import { Role } from '../../constants/role.code';
-import { SerarchItemsComponent } from '../serarch-items/serarch-items.component';
+import { ItemSearcherComponent } from '../item-searcher/item-searcher.component';
 
 @Component({
     selector: 'app-dashboard',
@@ -30,7 +30,7 @@ import { SerarchItemsComponent } from '../serarch-items/serarch-items.component'
         FileUploadModule,
         RouterLink,
         TableModule,
-        SerarchItemsComponent,
+        ItemSearcherComponent,
     ],
     providers: [MessageService],
     templateUrl: './dashboard.component.html',

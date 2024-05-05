@@ -5,12 +5,12 @@ import { LoginComponent } from '../../core/auth/login/login.component';
 import { ItemService } from '../../services/item.service';
 import { DialogService } from '../../services/dialog.service';
 import { LogService } from '../../services/log.service';
-import { SerarchItemsComponent } from '../serarch-items/serarch-items.component';
+import { ItemSearcherComponent } from '../item-searcher/item-searcher.component';
 
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [SerarchItemsComponent, LoginComponent, RouterLink],
+    imports: [ItemSearcherComponent, LoginComponent, RouterLink],
     providers: [MessageService],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',

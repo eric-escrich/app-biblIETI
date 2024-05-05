@@ -7,41 +7,10 @@
         </header>
     </div>
     
-    <div class="flex flex-col px-10 mb-40 justify-center items-center gap-x-20 w-full">
-        <div class="flex flex-col gap-y-4 w-full">
-            <h2>Modificar dades d'alumnes</h2>
-            <!-- <div class="card flex justify-content-center">
-                <p-fileUpload
-                    severity="fill"
-                    mode="basic"
-                    chooseLabel="Puja un CSV"
-                    name="demo[]" 
-                    method="post"
-                    url="{{ environment.apiUrl }}/user/save-users-csv/"
-                    accept="text/csv"
-                    maxFileSize="1000000">
-                </p-fileUpload>
-            </div> -->
-
-            <p-table [value]="users" [paginator]="true" [rows]="10">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Rol</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-user>
-                    <tr (click)="onRowSelect(user)">
-                        <td>{{ user.nombre }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.rol }}</td>
-                    </tr>
-                </ng-template>
-            </p-table>            
-        </div>
+    <body class="flex flex-col px-10 mb-40 justify-center items-center gap-x-20 w-full">
+  
         <div class="flex flex-row gap-24 mt-10">
-            <app-serarch-items></app-serarch-items>
+            <app-item-searcher></app-item-searcher>
 
 
             @if (role === Role.ADMIN || role === Role.BIBLIO) {
@@ -62,10 +31,10 @@
                 ></p-button>
 
                 <p-button
-                    label="FER UN PRESTEC"
+                    label="PERFIL"
                     styleClass="p-button-rounded"
                     severity="fill"
-                    routerLink="/prestec"
+                    routerLink="/perfil"
                     [style]="{'width': 'fit-content'}"
                 ></p-button>
 
@@ -87,5 +56,5 @@
         ></p-button>
         </div>
        
-    </div>
+    </body>
 }
