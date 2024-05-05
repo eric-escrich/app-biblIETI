@@ -4,15 +4,14 @@ import { LayoutComponent } from './core/layout/layout.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { HomeComponent } from './modules/home/home.component';
 import { JwtGuard } from './guards/jwt.guard';
-import { SearchComponent } from './modules/search/search.component';
 import { CreacioUsuariComponent } from './modules/creacio-usuari/creacio-usuari.component';
 import { ResetPasswordComponent } from './modules/reset-password-component/reset-password-component.component';
 import { ProfileDataComponent } from './modules/profile-data/profile-data.component';
 import { UsersImportComponent } from './modules/users-import/users-import.component';
 import { ListUsersComponent } from './modules/list-users/list-users.component';
 import { EditUserComponent } from './modules/edit-user/edit-user.component';
-import { PrestecComponent } from './modules/prestec/prestec.component';
-import { DetallLlibresComponent } from './modules/search/libros/detall-llibres/detall-llibres.component';
+import { ItemDetailsComponent } from './modules/item-details/item-details.component';
+import { ItemSearchResultsComponent } from './modules/item-search-results/item-search-results.component';
 
 export const routes: Routes = [
     {
@@ -51,14 +50,9 @@ export const routes: Routes = [
                 component: EditUserComponent,
                 canActivate: [JwtGuard],
             },
-            {
-                path: 'prestec',
-                component: PrestecComponent,
-                canActivate: [JwtGuard],
-            },
-            { path: 'cercar-llibre', component: SearchComponent },
             { path: 'reset-password/:uid/:token', component: ResetPasswordComponent },
-            { path: 'detall-llibre/:id', component: DetallLlibresComponent },
+            { path: 'detall-item/:id', component: ItemDetailsComponent },
+            { path: 'resultats-cerca', component: ItemSearchResultsComponent },
         ],
     },
     { path: '**', redirectTo: '' },

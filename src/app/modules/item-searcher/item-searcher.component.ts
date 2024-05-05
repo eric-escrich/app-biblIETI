@@ -17,13 +17,13 @@ interface AutoCompleteCompleteEvent {
 }
 
 @Component({
-    selector: 'app-serarch-items',
+    selector: 'app-item-searcher',
     standalone: true,
     imports: [ButtonModule, AutoCompleteModule, FormsModule, MenuModule, RouterLink, ToastModule, LoginComponent, CheckboxModule],
-    templateUrl: './serarch-items.component.html',
-    styleUrl: './serarch-items.component.css',
+    templateUrl: './item-searcher.component.html',
+    styleUrl: './item-searcher.component.css',
 })
-export class SerarchItemsComponent {
+export class ItemSearcherComponent {
     router = inject(Router);
     _itemService = inject(ItemService);
     _dialogService = inject(DialogService);
@@ -43,7 +43,7 @@ export class SerarchItemsComponent {
     async searchItems(query: string) {
         try {
             this._logService.logInfo('Search query', `Consulta de búsqueda: "${this.searchQuery}"`, 'HomeComponent - searchItems');
-            const response: any = await this._itemService.searchQuery(query);
+            const response: any = await this._itemService.autocompleatQuery(query);
 
             this.items = response;
             suggestions: [] = this.items.map((item) => item.name);
@@ -61,7 +61,7 @@ export class SerarchItemsComponent {
             } else {
                 this.items = [];
             }
-        }, 1000);
+        }, 500);
     }
 
     getItemName(item: any) {
@@ -77,18 +77,15 @@ export class SerarchItemsComponent {
             `Item with id ${this.selectedItem.id} has been selected ('${this.selectedItem.name}')`,
             'HomeComponent - onItemSelect',
         );
+
+        this.viewItemDetails();
     }
 
     viewItemDetails() {
         console.log('View item details');
         if (this.selectedItem) {
-            this._logService.logInfo(
-                'View item details',
-                `Viewing details of item with id = ${this.selectedItem.id} ('${this.selectedItem.name}')`,
-                'HomeComponent - viewItemDetails',
-            );
             this._logService.logInfo('Redirect', `Redirecció a la pàgina de /itemDetails`, 'HomeComponent - viewItemDetails');
-            this.router.navigate(['/detall-llibre/', this.selectedItem.id]);
+            this.router.navigate(['/detall-item/', this.selectedItem.id]);
         } else {
             this._dialogService.showDialog('ERROR', "No s'ha seleccionat cap element");
             this._logService.logWarning(
@@ -104,6 +101,17 @@ export class SerarchItemsComponent {
             this.items = this.items.filter((item) => item.available);
         } else {
             this.searchItems(this.selectedItem);
+        }
+    }
+
+    onSearch() {
+        if (this.searchQuery) {
+            this._logService.logInfo('Redirect', `Redirecció a la pàgina de /resultats-cerca`, 'HomeComponent - onSearch');
+            if (this.onlyAvailable) {
+                this.router.navigate(['resultats-cerca'], { queryParams: { cerca: this.searchQuery, disponibles: this.onlyAvailable } });
+            } else {
+                this.router.navigate(['resultats-cerca'], { queryParams: { cerca: this.searchQuery } });
+            }
         }
     }
 }

@@ -9,21 +9,28 @@
 
 @if (item) {
     <div class="flex flex-col p-10">
-        <h2>{{ item.title }}</h2>
-        <p>{{ item.more_details.author }}</p>
-        <p>{{ item.more_details.edition_date }}</p>
-        <p>Lisístrata (en grec Λυσιστράτη "la que dissol l'exèrcit") és una comèdia de
-            Aristòfanes, autor de la Grècia Clàssica. Les comèdies d'Aristòfanes són d'un gran
-            interès històric, a més del seu valor literari, ja que gràcies a elles es pot
-            conèixer la vida quotidiana dels atenesos. L'autor va protestar sovint contra
-            la guerra. A les seves obres Lisístrata, Los acarnienses i La paz, va defensar les solucions
-            pacífiques contra els demagogs que impulsaven el poble a la guerra. A Lisístrata
-            la vaga sexual de les dones. També l'obra ha estat interpretada com una
-            ridiculització de la dona.</p>
+        <h2 >{{ item.title }}</h2>
+        <h3 class="mt-0">Autor: {{ item.more_details.author }}</h3>
+            @if (item.type == 'book') {
+            <p>Editorial: {{ item.more_details.publisher }}</p>
+            <p>Any de publicació: {{ item.more_details.edition_date }}</p>
+            <p>Col·lecció: {{ item.more_details.colection }}</p>
+            <p>Nùmero de pàgines: {{ item.more_details.pages }}</p>
+            <p>CDU: {{ item.more_details.CDU }}</p>
+            <p>ISBN: {{ item.more_details.ISBN }}</p>
+
+        } @else if (item.more_details.type == 'cd'){
+            <p>Discogràfica: {{ item.more_details.discoraphy }}</p>
+            <p>Duració: {{ item.more_details.duration }}</p>
+            <p>Data de llançament: {{ item.more_details.edition_date }}</p>
+            <p>Estil: {{ item.more_details.style }}</p>
+        }
+        <p>Tipus de material: {{ item.material_type }}</p>
+        <p>Signatura: {{ item.signature }}</p>
             
 
         <div>
-            <h3>A la biblioteca</h3>
+            <h4>A la biblioteca</h4>
             <div class="card">
                 <p-table [value]="itemCopis">
                     <ng-template pTemplate="header">
@@ -45,11 +52,7 @@
                 </p-table>
             </div>
         </div>
-                
-        <div class="flex flex-row gap-x-4 mt-10">
-            <p-button severity="min" [routerLink]="['/']">Retorna</p-button>
-            <p-button severity="fill-rounded" (click)="toggleFormulario()">Reservar</p-button>
-        </div>
+
         @if (role && (role == Role.BIBLIO || role == Role.ADMIN)) {
             <h3>PRESTECS</h3>
             
@@ -67,7 +70,7 @@
                     <label for="icondisplay" class="font-bold block mb-2">Fecha de retorno</label>
                     <p-calendar name="date" [(ngModel)]="fechaReserva" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"></p-calendar>
                 </div>
-                <p-button severity="fill-rounded" type="submit">Reservar</p-button>
+                <p-button severity="fill-rounded" type="submit">Fer un prestec</p-button>
             </form>
             
         }

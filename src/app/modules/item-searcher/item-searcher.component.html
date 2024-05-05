@@ -13,9 +13,9 @@
                         [minLength]="3"
                         field="name"
                         (onSelect)="onItemSelect($event)"
-                        (keyup.enter)="viewItemDetails()"
+                        (keyup.enter)="onSearch()"
                     ></p-autoComplete>
-                    <p-button severity="icon" (click)="viewItemDetails()">
+                    <p-button severity="icon" (click)="onSearch()">
                         <i class="pi pi-search"></i>
                     </p-button>
                 </div>

@@ -5,21 +5,21 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
-import { ItemService } from '../../../../services/item.service';
-import { ProfileService } from '../../../../services/profile.service';
-import { Role } from '../../../../constants/role.code';
+import { ItemService } from '../../services/item.service';
+import { ProfileService } from '../../services/profile.service';
+import { Role } from '../../constants/role.code';
 import { DropdownModule } from 'primeng/dropdown';
 import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
-import { DialogService } from '../../../../services/dialog.service';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
-    selector: 'app-detall-llibres',
+    selector: 'app-item-details',
     standalone: true,
     imports: [CommonModule, RouterLink, ButtonModule, TableModule, CalendarModule, FormsModule, DropdownModule, AutoCompleteModule],
-    templateUrl: './detall-llibres.component.html',
-    styleUrl: './detall-llibres.component.css',
+    templateUrl: './item-details.component.html',
+    styleUrl: './item-details.component.css',
 })
-export class DetallLlibresComponent implements OnInit {
+export class ItemDetailsComponent implements OnInit {
     route = inject(ActivatedRoute);
     _profileService = inject(ProfileService);
     _itemService = inject(ItemService);
@@ -56,7 +56,7 @@ export class DetallLlibresComponent implements OnInit {
 
         this.itemCopis = await this.getItemsCopis();
 
-        const profileData = await this._profileService.getSelfProfileDataWithoutLoading();
+        const profileData = await this._profileService.getSelfProfileDataFromCache();
         console.log(profileData);
 
         if (profileData) {
