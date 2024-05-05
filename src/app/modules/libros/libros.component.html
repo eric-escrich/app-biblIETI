@@ -1,7 +1,12 @@
 <div class="bentoBox">
-    <div class="headerCard">
+    <a [routerLink]="'/detall-llibre'">
         <article>
-            <a [routerLink]="'/detall-llibre'"><img class="cardCard" alt="Card" [src]="bookImg" /></a>
+            <div class="flex flex-row justify-between items-center gap-x-2">
+                <h2>Títol llibre</h2>
+                <p class="font-medium">Estat: Estat</p>
+            </div>
+            <p>Autor</p>
+            <p>Texto de la sínopsis del libro para mostrar aquí, extiendo este texto para comprobar que no hay Overflow.</p>
         </article>
-    </div>
+    </a>
 </div>

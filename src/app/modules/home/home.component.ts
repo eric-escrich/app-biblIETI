@@ -5,12 +5,13 @@ import { LoginComponent } from '../../core/auth/login/login.component';
 import { ItemService } from '../../services/item.service';
 import { DialogService } from '../../services/dialog.service';
 import { LogService } from '../../services/log.service';
+import { MenuComponent } from '../menu/menu.component';
 import { ItemSearcherComponent } from '../item-searcher/item-searcher.component';
 
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [ItemSearcherComponent, LoginComponent, RouterLink],
+    imports: [ItemSearcherComponent, LoginComponent, RouterLink, MenuComponent],
     providers: [MessageService],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',

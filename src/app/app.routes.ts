@@ -12,6 +12,7 @@ import { ListUsersComponent } from './modules/list-users/list-users.component';
 import { EditUserComponent } from './modules/edit-user/edit-user.component';
 import { ItemDetailsComponent } from './modules/item-details/item-details.component';
 import { ItemSearchResultsComponent } from './modules/item-search-results/item-search-results.component';
+import { AdvancedSearchComponent } from './modules/search/advanced-search/advanced-search.component';
 
 export const routes: Routes = [
     {
@@ -22,16 +23,19 @@ export const routes: Routes = [
 
             {
                 path: 'dashboard',
+                title: 'Panell de control - BIBLIOTECA MARI CARMEN BRITO',
                 component: DashboardComponent,
                 canActivate: [JwtGuard],
             },
             {
                 path: 'creacio-usuari',
+                title: "Creació d'usuari - BIBLIOTECA MARI CARMEN BRITO",
                 component: CreacioUsuariComponent,
                 canActivate: [JwtGuard],
             },
             {
                 path: 'perfil',
+                title: 'Perfil',
                 component: ProfileDataComponent,
                 canActivate: [JwtGuard],
             },
@@ -53,6 +57,7 @@ export const routes: Routes = [
             { path: 'reset-password/:uid/:token', component: ResetPasswordComponent },
             { path: 'detall-item/:id', component: ItemDetailsComponent },
             { path: 'resultats-cerca', component: ItemSearchResultsComponent },
+            { path: 'cerca-avancada', component: AdvancedSearchComponent },
         ],
     },
     { path: '**', redirectTo: '' },
