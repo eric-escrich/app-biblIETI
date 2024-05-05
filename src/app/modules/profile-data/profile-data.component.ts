@@ -65,7 +65,8 @@ export class ProfileDataComponent {
         this.role = await this._profileService.getRole();
         this._logService.logInfo('Rol get', `Rol obtenido: ${this.role}`, 'DashboardComponent - ngOnInit()', this.email);
         this.roleName = this.getRoleName();
-        this.initials = this.getInitials();
+
+        await this.getProfileImage();
     }
 
     async getProfileImage() {
@@ -150,9 +151,7 @@ export class ProfileDataComponent {
     roleName: string = '';
     initials: string = '';
 
-    isEditingName = false;
-    isEditingEmail = false;
-    isEditingPassword = false;
+    isEditing = false;
 
     newName!: string;
     newSurname!: string;
@@ -164,33 +163,15 @@ export class ProfileDataComponent {
 
     getRoleName() {
         if (this.role === 1) return 'Administrador';
-        if (this.role === 2) return 'Professor';
-        if (this.role === 3) return 'Alumne';
-        if (this.role === 4) return 'Bibliotecària';
+        if (this.role === 2) return 'Bibliotecari';
+        if (this.role === 3) return 'Usuari';
         this._logService.logWarning('Rol ', `Unknown role: ${this.role}`, 'DashboardComponent - getRoleName()', this.email);
-        return '';
-    }
-
-    getInitials() {
-        if (this.profileData && this.profileData.name && this.profileData.surname) {
-            let initials = this.profileData.name[0].toUpperCase() + this.profileData.surname[0].toUpperCase();
-            this._logService.logInfo('Initials get', `Iniciales obtenidas: ${initials}`, 'DashboardComponent - getInitials()', this.email);
-            return initials;
-        }
-        this._logService.logWarning(
-            'Profile data missing',
-            'No se pudieron obtener las iniciales, faltan datos de perfil',
-            'DashboardComponent - getInitials()',
-            this.email,
-        );
         return '';
     }
 
     async cancelChanges() {
         await this.setDefaultData();
-        this.isEditingName = false;
-        this.isEditingEmail = false;
-        this.isEditingPassword = false;
+        this.isEditing = false;
         this._logService.logInfo(
             'Canceling changes',
             'El usuario ha cancelado la modificación de datos o se han actualizado los datos correctamente',
