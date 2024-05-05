@@ -19,7 +19,7 @@
 
                 <div class="flex flex-col items-center justify-start gap-x-20 w-full">    
                     <div class="grid grid-cols-3 gap-4 items-end">
-                        <div class="flex flex-col items-start">
+                        <!-- <div class="flex flex-col items-start">
                             <label for="inputTitol">Títol</label>
                             <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
                         </div>
@@ -61,8 +61,8 @@
                                 <p-button severity="icon">
                                     <i class="pi pi-search"></i>
                                 </p-button>
-                            </div>
-                        </div>
+                            </div> -->
+                        <!-- </div> -->
                     </div>
                 </div>
             </p-panel>
@@ -70,10 +70,41 @@
     </form>
 </div>
 
-<div class="searchContainer">
-    <div class="grid grid-cols-3 px-10 mb-40 justify-center gap-x-20">
-        <ng-container *ngFor="let book of books">
-            <app-libros [bookImg]="book.image" (bookClicked)="showPopup()"></app-libros>
-        </ng-container>
+@if (items) {
+    <div class="searchContainer">
+        <div class="grid grid-cols-3 px-10 mb-40 justify-center gap-x-20">
+            <div
+                class="cards w-64 h-[30rem]"
+                [class.justify-center]="item.item_type != 'Book'"
+                *ngFor="let item of items"
+                (click)="onSelectItem(item)"
+            >
+                @if (item.item_type == 'Book') {
+                    <img class="bookCard" [src]="getRandomImage(booksImages)" alt="Imatge de la portada del llibre">
+                    <div class="details">
+                        <p class="title m-0 text-center">{{item.title}}</p>
+                        <p class="m-0 text-center">Escriptor: {{item.author}}</p>
+                        <p class="m-0 text-center">CDU: {{item.CDU}}</p>
+                        <p class="m-0 text-center">Exemplars disponibles: {{item.available_copies}}</p>
+                    </div>
+                } @else if (item.item_type == 'CD') {
+                    <img class="cdCard" [src]="getRandomImage(cdsImages)" alt="Imatge de la portada del CD">
+                    <div class="details">
+                        <p class="title m-0 text-center">{{item.title}}</p>
+                        <p class="m-0 text-center">Artista: {{item.author}}</p>
+                        <p class="m-0 text-center">Discografia: {{item.discography}}</p>
+                        <p class="m-0 text-center">Estil: {{item.style}}</p>
+                        <p class="m-0 text-center">Exemplars disponibles: {{item.available_copies}}</p>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-</div>
+    <p-paginator
+        (onPageChange)="onPageChange($event)"
+        [first]="first"
+        [rows]="rows"
+        [totalRecords]="totalItems"
+        [rowsPerPageOptions]="[10, 20, 30]"
+    ></p-paginator>
+}
