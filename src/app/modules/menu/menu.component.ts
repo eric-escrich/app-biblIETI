@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MenubarModule } from 'primeng/menubar';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuItem } from 'primeng/api';
@@ -13,20 +14,11 @@ import { LogService } from '../../services/log.service';
 import { ProfileService } from '../../services/profile.service';
 
 @Component({
-  selector: 'app-menu',
-  standalone: true,
-  imports: [
-            CommonModule,
-            MenubarModule,
-            InputTextModule,
-            ButtonModule,
-            AutoCompleteModule,
-            FormsModule,
-            RouterLink,
-            ToastModule
-          ],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css'
+    selector: 'app-menu',
+    standalone: true,
+    imports: [CommonModule, MenubarModule, InputTextModule, ButtonModule, AutoCompleteModule, FormsModule, RouterLink, ToastModule],
+    templateUrl: './menu.component.html',
+    styleUrl: './menu.component.css',
 })
 export class MenuComponent {
     router = inject(Router);
@@ -34,64 +26,64 @@ export class MenuComponent {
     _dialogService = inject(DialogService);
     _logService = inject(LogService);
     _profileService = inject(ProfileService);
-  
+
     filterChangeTimeout: any;
-  
+
     // POP UP OLVIDAR CONTRASEÑA
     popupVisible = false;
     showPopup() {
         this.popupVisible = true;
     }
-  
+
     onlyAvailable: boolean = false;
     checked: boolean = false;
-  
+
     itemsArray: any[] = []; // Renombrada a itemsArray
-  
+
     selectedItem: any;
-  
+
     searchQuery: string = '';
-  
+    items: any[] = [];
+
     async searchItems(query: string) {
         try {
-            
             this._logService.logInfo('Search query', `Consulta de búsqueda: "${this.searchQuery}"`, 'HomeComponent - searchItems');
-            const response: any = await this._itemService.searchQuery(query);
-  
-            this.itemsArray = response; // Asignación a itemsArray
-            suggestions: [] = this.itemsArray.map((item) => item.name);
+            const response: any = await this._itemService.autocompleatQuery(query);
+
+            this.items = response;
+            suggestions: [] = this.items.map((item) => item.name);
         } catch (error: any) {
             console.error('Error fetching items', error);
             this._dialogService.showDialog('ERROR', "No s'han pogut carregar els resultats de la cerca. Si us plau, torna-ho a provar més tard.");
         }
     }
-  
+
     onFilterChange() {
         clearTimeout(this.filterChangeTimeout);
         this.filterChangeTimeout = setTimeout(() => {
             if (this.searchQuery.length >= 3) {
                 this.searchItems(this.searchQuery);
             } else {
-                this.itemsArray = [];
+                this.items = [];
             }
-        }, 1000);
+        }, 500);
     }
-  
+
     getItemName(item: any) {
         return item.name;
     }
-  
+
     onItemSelect(event: any) {
         this.selectedItem = event.value;
         console.log('Item selected', this.selectedItem);
-  
+
         this._logService.logInfo(
             'Item selected',
             `Item with id ${this.selectedItem.id} has been selected ('${this.selectedItem.name}')`,
             'HomeComponent - onItemSelect',
         );
     }
-  
+
     viewItemDetails() {
         console.log('View item details');
         if (this.selectedItem) {
@@ -111,56 +103,56 @@ export class MenuComponent {
             );
         }
     }
-  
+
     logout() {
         this._profileService.logout();
         this.router.navigate(['/login']);
-      }
-      
-    menuItems: MenuItem[] = [];
-  
-    ngOnInit() {
-      this._logService.logInfo('Initializing HomeComponent', 'Inicializando HomeComponent', 'HomeComponent - ngOnInit()');
-  
-      this.menuItems = [
-        {
-          label: 'Inici',
-          icon: 'pi pi-home',
-          routerLink: ['/landing']
-        },
-        
-        {
-            label: 'Panel de control',
-            icon: 'pi pi-table',
-            items: [
-              {
-                  label: 'Editar dades',
-                  icon: 'pi pi-palette',
-                  items: [
-                      {
-                          label: 'Editar perfil',
-                          icon: 'pi pi-pencil',
-                          routerLink: ['/dashboard'],
-                      },
-                      {
-                          label: 'Editar usuaris',
-                          icon: 'pi pi-user',
-                          routerLink: ['/dashboard'],
-                      }
-                  ]
-              },
-              {
-                  label: 'Importar CSV',
-                  icon: 'pi pi-file',
-                  routerLink: ['/dashboard'],
-              }
-          ]
-        },
-        {
-            label: 'Tancar sessió',
-            icon: 'pi pi-fw pi-power-off',
-            command: () => this.logout()
-        }
-      ];   
     }
-  }
+
+    menuItems: MenuItem[] = [];
+
+    ngOnInit() {
+        this._logService.logInfo('Initializing HomeComponent', 'Inicializando HomeComponent', 'HomeComponent - ngOnInit()');
+
+        this.menuItems = [
+            {
+                label: 'Inici',
+                icon: 'pi pi-home',
+                routerLink: ['/landing'],
+            },
+
+            {
+                label: 'Panel de control',
+                icon: 'pi pi-table',
+                items: [
+                    {
+                        label: 'Editar dades',
+                        icon: 'pi pi-palette',
+                        items: [
+                            {
+                                label: 'Editar perfil',
+                                icon: 'pi pi-pencil',
+                                routerLink: ['/dashboard'],
+                            },
+                            {
+                                label: 'Editar usuaris',
+                                icon: 'pi pi-user',
+                                routerLink: ['/dashboard'],
+                            },
+                        ],
+                    },
+                    {
+                        label: 'Importar CSV',
+                        icon: 'pi pi-file',
+                        routerLink: ['/dashboard'],
+                    },
+                ],
+            },
+            {
+                label: 'Tancar sessió',
+                icon: 'pi pi-fw pi-power-off',
+                command: () => this.logout(),
+            },
+        ];
+    }
+}

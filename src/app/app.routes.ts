@@ -12,7 +12,7 @@ import { ListUsersComponent } from './modules/list-users/list-users.component';
 import { EditUserComponent } from './modules/edit-user/edit-user.component';
 import { ItemDetailsComponent } from './modules/item-details/item-details.component';
 import { ItemSearchResultsComponent } from './modules/item-search-results/item-search-results.component';
-import { AdvancedSearchComponent } from './modules/search/advanced-search/advanced-search.component';
+import { AdvancedSearchComponent } from './modules/advanced-search/advanced-search.component';
 
 export const routes: Routes = [
     {
