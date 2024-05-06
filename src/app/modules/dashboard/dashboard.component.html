@@ -9,7 +9,7 @@
     
     <body class="flex flex-col px-10 mb-40 justify-center items-center gap-x-20 w-full">
   
-        <div class="flex flex-row gap-24 mt-10">
+        <div class="dasboardContainer">
             <app-item-searcher></app-item-searcher>
 
 
@@ -41,20 +41,24 @@
                 <p-button
                     label="USUARIS"
                     styleClass="p-button-rounded"
-                    severity="fill"
+                    severity="danger"
                     routerLink="/llista-usuaris"
-                    [style]="{'width': 'fit-content'}"
                 ></p-button>
                 </div>
             }
-            <p-button
-                label="SORTIR"
-                styleClass="p-button-rounded"
-                severity="fill"
-                (click)="_profileService.logout()"
-                [style]="{'width': 'fit-content', 'background': 'red'}"
-        ></p-button>
+
+            <div class="estatContainer">
+                <h2>Estat del compte</h2>
+                
+                <hr>
+                
+                <p-button
+                    label="Tancar sessió"
+                    styleClass="p-button-rounded"
+                    severity="danger"
+                    (click)="_profileService.logout()">
+                </p-button>
+            </div>
         </div>
-       
     </body>
 }

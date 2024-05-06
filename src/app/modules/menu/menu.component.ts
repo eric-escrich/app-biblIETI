@@ -122,7 +122,7 @@ export class MenuComponent {
             },
 
             {
-                label: 'Panel de control',
+                label: 'Panell de control',
                 icon: 'pi pi-table',
                 items: [
                     {
