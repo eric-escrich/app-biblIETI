@@ -107,8 +107,14 @@ export class AuthService {
     }
 
     async sendPasswordResetEmail(email: string) {
-        let response: any = await firstValueFrom(this._http.post(`${this.baseUrl}/auth/send-mail/`, { email: email }, { observe: 'response' }));
-        return response;
+        try {
+            let response: any = await firstValueFrom(this._http.post(`${this.baseUrl}/auth/send-mail/`, { email: email }, { observe: 'response' }));
+
+            return response;
+        } catch (error: any) {
+            console.error('Error sending password reset email', error);
+            throw error;
+        }
     }
 
     async resetPassword(newPassword: string, uid: string, token: string) {
@@ -143,8 +149,10 @@ export class AuthService {
             console.log('response --> ', response);
 
             if (response.status === 201) {
-                return response.body;
+                this._logService.logInfo('User created', 'El usuario ha sido creado con éxito', 'CreacioUsuariComponent - register');
+                return response;
             } else {
+                this._logService.logError('Error creating user', 'Error al crear el usuario', 'CreacioUsuariComponent - register');
                 throw new Error("Error al registrar l'usuari");
             }
         } catch (error: any) {
@@ -161,8 +169,14 @@ export class AuthService {
                     'AuthService - registerUser',
                     email_admin,
                 );
+                this._logService.logError(
+                    'Error creating user',
+                    `No se ha podido crear el usuario porque el nombre de usuario ya existe`,
+                    'CreacioUsuariComponent - register',
+                );
                 throw new Error("El nom d'usuari ja existeix. Si us plau, escull un altre.");
             }
+            this._logService.logError('Error creating user', `Error al crear el usuario: ${error.message}`, 'CreacioUsuariComponent - register');
             throw error;
         }
     }
@@ -190,6 +204,20 @@ export class AuthService {
                 'AuthService - checkUserExists',
             );
             console.error('Error checking if user exists', error);
+            throw error;
+        }
+    }
+
+    async uploadUsers(users: any) {
+        try {
+            const response: any = await firstValueFrom(
+                this._http.post(`${this.baseUrl}/user/save-users-csv/`, users, {
+                    observe: 'response',
+                }),
+            );
+            return response;
+        } catch (error: any) {
+            console.error('Error uploading users', error);
             throw error;
         }
     }

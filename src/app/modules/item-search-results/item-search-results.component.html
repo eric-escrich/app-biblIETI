@@ -1,0 +1,110 @@
+<div class="headerContainer flex flex-col items-center justify-center text-center">
+    <header class="w-4/5">
+        <div class="flex flex-col items-center justify-center ">
+            <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
+        </div>
+    </header>
+</div>
+
+<div class="panelAcordeon">
+    <form [formGroup]="configuracionAcordeon" (ngSubmit)="sendconfiguracionAcordeon()" class="flex flex-row gap-4 justify-center">
+        <div class="w-3/4">
+            <p-panel formGroupName="cercaAvancadaAcordeon" [collapsed]="panels['cercaAvancadaAcordeon']" (collapsedChange)="detectPanelChanges($event, 'cercaAvancadaAcordeon')" [toggleable]="true" expandIcon="pi pi-chevron-up" collapseIcon="pi pi-chevron-down">
+                <ng-template pTemplate="header">
+                    <div class="header-menu flex flex-row gap-2">
+                        <span class="font-bold">Cerca avançada</span>
+                    </div>
+                </ng-template>
+
+
+                <div class="flex flex-col items-center justify-start gap-x-20 w-full">    
+                    <div class="grid grid-cols-3 gap-4 items-end">
+                        <!-- <div class="flex flex-col items-start">
+                            <label for="inputTitol">Títol</label>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <label for="inputAutorArtista">Autor/artista</label>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <label for="materiaInput">Matèria</label>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <label for="tipusDeMaterial">Tipus de material</label>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <label for="inputLlengua">Llengua</label>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <label for="inputAny">Any:</label>
+                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
+                        </div>
+                        
+                        <div class="flex flex-row items-end gap-x-4">
+                            <div class="flex flex-col items-start">
+                                <form [formGroup]="formGroup">
+                                    <label for="selectOrdenarPer">Ordenar per</label>
+                                    <p-selectButton id="selectOrdenarPer" [options]="stateOptions" formControlName="value" optionLabel="label" optionValue="value"></p-selectButton>
+                                </form>
+                            </div>
+
+                            <div class="flex flex-col items-start">
+                                <p-button severity="icon">
+                                    <i class="pi pi-search"></i>
+                                </p-button>
+                            </div> -->
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </p-panel>
+        </div>
+    </form>
+</div>
+
+@if (items) {
+    <div class="searchContainer">
+        <div class="grid grid-cols-3 px-10 mb-40 justify-center gap-x-20">
+            <div
+                class="cards w-64 h-[30rem]"
+                [class.justify-center]="item.item_type != 'Book'"
+                *ngFor="let item of items"
+                (click)="onSelectItem(item)"
+            >
+                @if (item.item_type == 'Book') {
+                    <img class="bookCard" [src]="getRandomImage(booksImages)" alt="Imatge de la portada del llibre">
+                    <div class="details">
+                        <p class="title m-0 text-center">{{item.title}}</p>
+                        <p class="m-0 text-center">Escriptor: {{item.author}}</p>
+                        <p class="m-0 text-center">CDU: {{item.CDU}}</p>
+                        <p class="m-0 text-center">Exemplars disponibles: {{item.available_copies}}</p>
+                    </div>
+                } @else if (item.item_type == 'CD') {
+                    <img class="cdCard" [src]="getRandomImage(cdsImages)" alt="Imatge de la portada del CD">
+                    <div class="details">
+                        <p class="title m-0 text-center">{{item.title}}</p>
+                        <p class="m-0 text-center">Artista: {{item.author}}</p>
+                        <p class="m-0 text-center">Discografia: {{item.discography}}</p>
+                        <p class="m-0 text-center">Estil: {{item.style}}</p>
+                        <p class="m-0 text-center">Exemplars disponibles: {{item.available_copies}}</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <p-paginator
+        (onPageChange)="onPageChange($event)"
+        [first]="first"
+        [rows]="rows"
+        [totalRecords]="totalItems"
+        [rowsPerPageOptions]="[10, 20, 30]"
+    ></p-paginator>
+}

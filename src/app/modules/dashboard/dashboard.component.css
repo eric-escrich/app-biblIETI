@@ -25,3 +25,35 @@
     border-radius: 10px;
     background-color: rgba(251, 255, 251, 0.7);
 }
+
+td:hover {
+    cursor: pointer;
+}
+
+.dasboardContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 200px;
+}
+
+@media only screen and (max-width: 375px) {
+    .dasboardContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        justify-self: center;
+        gap: 100px;
+    }
+
+    .estatContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .estatContainer hr {
+        display: none;
+    }
+}

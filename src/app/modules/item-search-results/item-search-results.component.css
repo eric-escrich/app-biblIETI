@@ -1,0 +1,68 @@
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.bentoBox img {
+    width: 400px;
+    height: 600px;
+}
+
+label {
+    font-weight: 800;
+    font-size: 14px;
+    color: #556958;
+}
+
+:host ::ng-deep .p-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    margin: 0 0 40px 0;
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 25px;
+    cursor: pointer;
+}
+
+.bookCard {
+    width: 210px;
+    height: 310px;
+    transition-duration: 1s;
+    border: 1px solid #556958;
+    border-radius: 8px;
+}
+
+.cdCard {
+    width: 210px;
+    height: 210px;
+    transition-duration: 1s;
+    border: 1px solid #556958;
+    border-radius: 8px;
+
+}
+
+.cards:hover > img {
+    transition-duration: 1s;
+    transform: scale(1.1);
+    box-shadow: 1px 1px 10px #b4b4b4;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.title {
+    font-size: 16px;
+    font-weight: 800;
+}

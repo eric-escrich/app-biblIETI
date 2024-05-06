@@ -21,6 +21,15 @@
     border-color: #338240;
 }
 
+.p-button.p-fileupload-choose {
+    padding: 0 10px;
+    background-color: #59B468;
+    border: 1px solid #59B468;
+    border-radius: 14px;
+    color: white;
+    transition-duration: 1s;
+}
+
 /* BOTÓN PRINCIPAL REDONDEADO (fill-rounded) */
 .p-button-fill-rounded {
     background-color: #59B468;
@@ -83,15 +92,15 @@
 
 .p-button-danger:hover {
     transition-duration: 1s;
-    background-color: #E03131;
-    border-color: #E03131;
+    background-color: #b12424;
+    border-color: #b12424;
 }
 
 .p-button-dangeroutlined {
     background-color: white;
-    border: 1px solid #e02222;
+    border: 1px solid #E03131;
     border-radius: 100px;
-    color: #e02222;
+    color: #E03131;
     transition-duration: 1s;
 }
 
@@ -99,6 +108,7 @@
     transition-duration: 1s;
     border-color: #E03131;
     color: #E03131;
+    background-color: #ffd2d2;
 }
 
 /* SELECT BUTTON
@@ -112,4 +122,8 @@ TO DO: */
     background-color: white;
     border: 1px solid #59B468;
     color: #59B468;
+}
+
+.p-button:focus {
+    box-shadow: none;
 }
