@@ -6,6 +6,7 @@
                 <div class="input">
                     <span class="p-float-label">
                         <input
+                            #searchMail
                             pInputText
                             [(ngModel)]="email"
                             name="username"
@@ -29,8 +30,8 @@
                             (input)="invalidLogin = false"
                             [style]="{'width':'100%', 'height':'3rem'}"
                             [class]="{'ng-invalid': invalidLogin}"
-                            [inputStyle]="{'width':'100%'}"
-                        ></p-password>
+                            [inputStyle]="{'width':'100%'}">
+                        </p-password>
                         <label for="password" [class]="{'ng-invalid': invalidLogin}">Contrasenya</label>
                     </span>
                 </div>

@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ValidationErrors, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms';
 
@@ -14,6 +14,11 @@ import { LogService } from '../../../services/log.service';
 import { FormValidationService } from '../../../services/validations-service.service';
 import { StorageService } from '../../../services/storage.service';
 
+interface mailSearchEvent {
+    originalEvent: Event;
+    query: string;
+}
+
 @Component({
     selector: 'app-login',
     standalone: true,
@@ -22,6 +27,32 @@ import { StorageService } from '../../../services/storage.service';
     styleUrl: './login.component.css',
 })
 export class LoginComponent {
+    suggestions: any[] = [];
+  
+    @ViewChild('searchMail', { read: ElementRef })
+    searchMail!: ElementRef;
+  
+    @HostListener('document:keydown.control.m', ['$event'])
+    onCtrlS(event: KeyboardEvent) {
+      if (event.key === 's' && event.ctrlKey) {
+        event.preventDefault();
+        this.focusSearchInput();
+      }
+    }
+  
+    focusSearchInput() {
+      if (this.searchMail) {
+        console.log(this.searchMail);
+        this.searchMail.nativeElement.querySelector('input').focus();
+      }
+    }
+  
+    search(event: mailSearchEvent) {
+      this.suggestions = [...Array(10).keys()].map(
+        (item) => event.query + '-' + item
+      );
+    }
+
     private _authService = inject(AuthService);
     private _router = inject(Router);
     private _profileService = inject(ProfileService);
@@ -58,7 +89,7 @@ export class LoginComponent {
             );
             this._logService.logInfo(
                 'Login OK',
-                `L'usuario: ${JSON.stringify(profile.email)} ha iniciat sessió correctament.`,
+                `L'usuari: ${JSON.stringify(profile.email)} ha iniciat sessió correctament.`,
                 'LoginComponent - handleLoginResponse',
                 profile.email,
             );

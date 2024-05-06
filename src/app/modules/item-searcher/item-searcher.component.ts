@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { LogService } from '../../services/log.service';
 import { DialogService } from '../../services/dialog.service';
 import { ItemService } from '../../services/item.service';
@@ -24,6 +24,32 @@ interface AutoCompleteCompleteEvent {
     styleUrl: './item-searcher.component.css',
 })
 export class ItemSearcherComponent {
+    suggestions: any[] = [];
+  
+    @ViewChild('searchAutoComplete', { read: ElementRef })
+    searchAutoComplete!: ElementRef;
+  
+    @HostListener('document:keydown.control.s', ['$event'])
+    onCtrlS(event: KeyboardEvent) {
+      if (event.key === 's' && event.ctrlKey) {
+        event.preventDefault();
+        this.focusSearchInput();
+      }
+    }
+  
+    focusSearchInput() {
+      if (this.searchAutoComplete) {
+        console.log(this.searchAutoComplete);
+        this.searchAutoComplete.nativeElement.querySelector('input').focus();
+      }
+    }
+  
+    search(event: AutoCompleteCompleteEvent) {
+      this.suggestions = [...Array(10).keys()].map(
+        (item) => event.query + '-' + item
+      );
+    }
+
     router = inject(Router);
     _itemService = inject(ItemService);
     _dialogService = inject(DialogService);
