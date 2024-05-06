@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 
+import { MenuComponent } from '../../modules/menu/menu.component';
+
 import { DialogService } from '../../services/dialog.service';
 
 @Component({
@@ -11,7 +13,7 @@ import { DialogService } from '../../services/dialog.service';
     standalone: true,
     templateUrl: './layout.component.html',
     styleUrl: './layout.component.css',
-    imports: [RouterModule, DialogModule, ButtonModule],
+    imports: [RouterModule, DialogModule, ButtonModule, MenuComponent],
 })
 export class LayoutComponent {
     _dialogService = inject(DialogService);
