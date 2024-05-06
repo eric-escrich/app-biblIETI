@@ -5,6 +5,7 @@ import { AuthService } from '../../core/auth/auth.service';
 import { ProfileService } from '../../services/profile.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
     selector: 'app-users-import',
@@ -18,6 +19,7 @@ export class UsersImportComponent {
     private _profileService = inject(ProfileService);
     private _router = inject(Router);
     private _logService = inject(LogService);
+    private _dialogService = inject(DialogService);
 
     csvContent: any;
     convertedArray: Array<any> = [];
@@ -130,15 +132,15 @@ export class UsersImportComponent {
 
             console.log('response ----------> ', response);
 
-            this.messages = response.body.errors;
+            this.messages = response.body.messages;
             this.totalSaves = response.body.saves;
             this.errorsCount = response.body.errorsCount;
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 this._logService.logInfo('Users uploaded', 'Users uploaded successfully', 'UsersImportComponent - uploadUsers');
-                this._router.navigate(['/dashboard']);
-            } else if (response.status === 201) {
-                throw new Error('El valor de email_admin no es correcto');
+            } else if (response.status === 404) {
+                this._dialogService.showDialog('ERROR', "L'usuari no es administrador i no pot realitzar aquesta acció");
+                this._profileService.logout();
             }
         } catch (error: any) {
             switch (error.status) {
