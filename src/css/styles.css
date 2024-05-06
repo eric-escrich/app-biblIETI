@@ -152,7 +152,6 @@ app-libros {
     align-items: center;
 }
 
-
 @media only screen and (max-width: 375px) {
     .bentoBox {
         width: 100%;
@@ -212,3 +211,4 @@ app-libros {
         margin: 0 !important;
     }
 }
+
