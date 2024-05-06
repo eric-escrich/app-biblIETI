@@ -1,4 +1,4 @@
-@if (role && (this.role === Role.ADMIN || this.role === Role.BIBLIO) && users.length > 0) {
+@if (role && (this.role === Role.ADMIN || this.role === Role.BIBLIO)) {
     <div class="container">
         <div class="row">
         <div class="col-md-12">
@@ -12,10 +12,13 @@
                         <th>Cognom</th>
                         <th>Cognom2</th>
                         <th>Data de neixament</th>
-                        <th>Curs</th>
                         <th>DNI/NIE</th>
                         <th>Correu</th>
                         <th>Telefon</th>
+                        <th>Curs</th>
+                        <th>Centre</th>
+                        <th>Role</th>
+
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-user let-i="rowIndex">
@@ -25,10 +28,19 @@
                         <td>{{ user.surname }}</td>
                         <td>{{ user.surname2 }}</td>
                         <td>{{ user.date_of_birth }}</td>
-                        <td>{{ user.cycle }}</td>
                         <td>{{ user.dni }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.phone }}</td>
+                        <td>{{ user.cycle }}</td>
+                        <td>{{ user.centerName }}</td>
+                        @if (user.role_id === Role.ADMIN) {
+                            <td>Admin</td>
+                        } @else if (user.role_id === Role.BIBLIO) {
+                            <td>Bibliotecari</td>
+                        } @else {
+                            <td>Usuari</td>
+
+                        }
                     </tr>
                 </ng-template>
             </p-table>

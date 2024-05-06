@@ -190,8 +190,22 @@ export class ProfileService {
                     },
                 ),
             );
+            const users = response.body.user_profiles;
+            const centers = await this.getCenters();
 
-            return response.body;
+            const usersWithCenters = users.map((user: any) => {
+                const centerId = user.center_id;
+                const center = centers[centerId];
+
+                return {
+                    ...user,
+                    centerName: center,
+                };
+            });
+
+            console.log('usersWithCenters', usersWithCenters);
+
+            return usersWithCenters;
         } catch (error: any) {
             console.error('Error getting users by center id', error);
             throw error;
@@ -280,6 +294,20 @@ export class ProfileService {
             return response.body;
         } catch (error: any) {
             console.error('Error fetching items', error);
+            throw error;
+        }
+    }
+
+    async getCenters() {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.get(`${this.baseUrl}/centers/get-centers/`, {
+                    observe: 'response',
+                }),
+            );
+            return response.body;
+        } catch (error: any) {
+            console.error('Error getting centers', error);
             throw error;
         }
     }

@@ -24,16 +24,32 @@ export class ListUsersComponent {
     public Role = Role;
 
     async ngOnInit() {
-        this.role = await this._profileService.getRole();
+        console.log('ListUsersComponent');
+
+        try {
+            this.role = await this._profileService.getRole();
+        } catch (error) {
+            console.error('Error getting role', error);
+        }
+        console.log('role', this.role);
 
         if (this.role !== Role.ADMIN && this.role !== Role.BIBLIO) {
             this._router.navigate(['/dashboard']);
             this._dialogService.showDialog('ERROR', 'No tens permisos per accedir a aquesta pàgina');
         } else {
-            this.adminEmail = await this._profileService.getEmail();
-            const usersData = await this._profileService.getUsersByAdminEmail(this.adminEmail);
-
-            this.users = usersData.user_profiles;
+            try {
+                this.adminEmail = await this._profileService.getEmail();
+                console.log('adminEmail', this.adminEmail);
+            } catch (error) {
+                console.error('Error getting admin email', error);
+            }
+            try {
+                const usersData = await this._profileService.getUsersByAdminEmail(this.adminEmail);
+                this.users = usersData;
+                console.log('users----------->', this.users);
+            } catch (error) {
+                console.error('Error getting users', error);
+            }
         }
     }
 }
