@@ -40,7 +40,7 @@ export const routes: Routes = [
                 canActivate: [JwtGuard],
             },
             {
-                path: 'importacio-usuaris',
+                path: 'importar-usuaris',
                 component: UsersImportComponent,
                 canActivate: [JwtGuard],
             },
