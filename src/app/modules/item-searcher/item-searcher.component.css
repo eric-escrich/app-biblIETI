@@ -29,3 +29,25 @@ label[for="binary"] {
     font-weight: 500;
     color: #556958;
 }
+
+:host::ng-deep .p-autocomplete-panel {
+    width: 17.375rem;
+}
+
+:host::ng-deep .p-autocomplete {
+    width: 100%;
+}
+
+:host::ng-deep .p-autocomplete > input {
+    width: 100%;
+}
+
+:host::ng-deep .p-autocomplete-item > span {
+    width: 17,375rem;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+

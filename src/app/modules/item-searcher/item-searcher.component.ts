@@ -64,10 +64,6 @@ export class ItemSearcherComponent {
         }, 500);
     }
 
-    getItemName(item: any) {
-        return item.name;
-    }
-
     onItemSelect(event: any) {
         this.selectedItem = event.value;
         console.log('Item selected', this.selectedItem);
