@@ -3,19 +3,23 @@
         <ng-template pTemplate="start">
             <img src="/assets/imgs/libros3D.png" height="40" class="mr-2" />
         </ng-template>
+
+        @if (email && roleName) {
+            <span>{{ email }} - {{ roleName }}</span>
+        }
         
         <ng-template pTemplate="end">
             <div class="flex flex-row gap-x-4 items-center">
                 <p-autoComplete
-                [(ngModel)]="searchQuery"
-                [suggestions]="itemsArray"
-                (input)="onFilterChange()"
-                [minLength]="3"
-                field="name"
-                (onSelect)="onItemSelect($event)"
-                (keyup.enter)="viewItemDetails()"
+                    [(ngModel)]="searchQuery"
+                    [suggestions]="items"
+                    (input)="onFilterChange()"
+                    [minLength]="3"
+                    field="name"
+                    (onSelect)="onItemSelect($event)"
+                    (keyup.enter)="onSearch()"
                 ></p-autoComplete>
-                <p-button severity="icon" (click)="viewItemDetails()">
+                <p-button severity="icon" (click)="onSearch()">
                     <i class="pi pi-search"></i>
                 </p-button>
             </div>
