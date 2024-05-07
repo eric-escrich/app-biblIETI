@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Role } from '../constants/role.code';
-import { firstValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
@@ -20,7 +20,16 @@ export class ProfileService {
     private baseUrl: string = environment.apiUrl;
     selfProfileData: any;
 
+    profileDataChanges = new BehaviorSubject<any>(null);
+
     constructor(private http: HttpClient) {}
+
+    async ngOnInit() {
+        this.selfProfileData = await this.getSelfProfileData();
+        this.profileDataChanges.subscribe((value) => {
+            this.selfProfileData = value;
+        });
+    }
 
     async getSelfProfileData() {
         try {
@@ -32,6 +41,7 @@ export class ProfileService {
 
             if (response.status === 200) {
                 this.selfProfileData = response.body;
+                this.profileDataChanges.next(this.selfProfileData);
                 return this.selfProfileData;
             }
         } catch (error: any) {
@@ -67,17 +77,17 @@ export class ProfileService {
     }
 
     async getRole() {
-        if (!this.selfProfileData) await this.getSelfProfileData();
+        if (!this.selfProfileData) await this.getSelfProfileDataWithoutLoading();
         return this.selfProfileData.role;
     }
 
     async getEmail() {
-        if (!this.selfProfileData) await this.getSelfProfileData();
+        if (!this.selfProfileData) await this.getSelfProfileDataWithoutLoading();
         return this.selfProfileData.email;
     }
 
     async getUserID() {
-        if (!this.selfProfileData) await this.getSelfProfileData();
+        if (!this.selfProfileData) await this.getSelfProfileDataWithoutLoading();
         return this.selfProfileData.id;
     }
 
@@ -93,7 +103,7 @@ export class ProfileService {
     }
 
     async getUsername() {
-        if (!this.selfProfileData) await this.getSelfProfileData();
+        if (!this.selfProfileData) await this.getSelfProfileDataWithoutLoading();
         return this.selfProfileData.username;
     }
 
@@ -168,6 +178,7 @@ export class ProfileService {
         this._logService.logInfo('Token refresh delete', 'Se ha eliminado el token refresh del localStorage', 'ProfileService - logout', mail);
 
         this.selfProfileData = null;
+        this.profileDataChanges = new BehaviorSubject<any>(null);
         this._logService.logInfo('User data delete', 'Se ha seteado la variable selfProfileData en null', 'ProfileService - logout', mail);
 
         this._storageService.removeItem('profile');
@@ -179,12 +190,16 @@ export class ProfileService {
         this._router.navigateByUrl('/');
     }
 
-    async getUsersByAdminEmail(adminEmail: string) {
+    async getUsersByAdminEmailPaginator(adminEmail: string, page: number, pageSize: number) {
         try {
             const response: any = await firstValueFrom(
                 this.http.post(
                     `${this.baseUrl}/user/show-users/`,
-                    { email_admin: adminEmail },
+                    {
+                        email_admin: adminEmail,
+                        pageSize: pageSize,
+                        page: page,
+                    },
                     {
                         observe: 'response',
                     },
@@ -203,7 +218,33 @@ export class ProfileService {
                 };
             });
 
-            console.log('usersWithCenters', usersWithCenters);
+            return usersWithCenters;
+        } catch (error: any) {
+            console.error('Error getting users by center id', error);
+            throw error;
+        }
+    }
+
+    async getUsersByUserId(userId: number) {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.get(`${this.baseUrl}/user/list-users/${userId}/`, {
+                    observe: 'response',
+                }),
+            );
+
+            const users = response.body.users;
+            const centers = await this.getCenters();
+
+            const usersWithCenters = users.map((user: any) => {
+                const centerId = user.center_id;
+                const center = centers[centerId];
+
+                return {
+                    ...user,
+                    centerName: center,
+                };
+            });
 
             return usersWithCenters;
         } catch (error: any) {
@@ -308,6 +349,29 @@ export class ProfileService {
             return response.body;
         } catch (error: any) {
             console.error('Error getting centers', error);
+            throw error;
+        }
+    }
+
+    async getTotalUsers(userId: string) {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.get(`${this.baseUrl}/user/count-users`, {
+                    params: {
+                        userId: userId,
+                    },
+                    observe: 'response',
+                }),
+            );
+
+            if (response.status === 200) {
+                return response.body.total_users;
+            } else if (response.status === 403) {
+                this._dialogService.showDialog('ERROR', 'No tens permisos per accedir a aquesta pàgina');
+                this._router.navigate(['/dashboard']);
+            }
+        } catch (error: any) {
+            console.error('Error getting total users', error);
             throw error;
         }
     }

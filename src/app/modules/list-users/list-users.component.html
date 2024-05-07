@@ -1,51 +1,61 @@
+
 @if (role && (this.role === Role.ADMIN || this.role === Role.BIBLIO)) {
-    <div class="container">
-        <div class="row">
-        <div class="col-md-12">
-            <h1>List of Users</h1>
-
-            <p-table [value]="users">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nom</th>
-                        <th>Cognom</th>
-                        <th>Cognom2</th>
-                        <th>Data de neixament</th>
-                        <th>DNI/NIE</th>
-                        <th>Correu</th>
-                        <th>Telefon</th>
-                        <th>Curs</th>
-                        <th>Centre</th>
-                        <th>Role</th>
-
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-user let-i="rowIndex">
-                    <tr routerLink="/editar-usuari/{{user.id}}/">
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.surname }}</td>
-                        <td>{{ user.surname2 }}</td>
-                        <td>{{ user.date_of_birth }}</td>
-                        <td>{{ user.dni }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.phone }}</td>
-                        <td>{{ user.cycle }}</td>
-                        <td>{{ user.centerName }}</td>
-                        @if (user.role_id === Role.ADMIN) {
-                            <td>Admin</td>
-                        } @else if (user.role_id === Role.BIBLIO) {
-                            <td>Bibliotecari</td>
-                        } @else {
-                            <td>Usuari</td>
-
-                        }
-                    </tr>
-                </ng-template>
-            </p-table>
+    @if (users && users.length > 0) {
+        <div>
+            <div class="row">
+            <div class="col-md-12">
+                <h1>List of Users</h1>
+    
+                <p-table
+                    [value]="users"
+                    [paginator]="true"
+                    [rows]="25"
+                    [rowsPerPageOptions]="[25, 50, 75]"
+                    [showCurrentPageReport]="true"
+                    currentPageReportTemplate="{first} - {last} de {totalRecords}"
+                >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Cognom</th>
+                            <th>Cognom2</th>
+                            <th>Data de neixament</th>
+                            <th>DNI/NIE</th>
+                            <th>Correu</th>
+                            <th>Telefon</th>
+                            <th>Curs</th>
+                            <th>Centre</th>
+                            <th>Role</th>
+    
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-user let-i="rowIndex">
+                        <tr routerLink="/editar-usuari/{{user.id}}/">
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.surname }}</td>
+                            <td>{{ user.surname2 }}</td>
+                            <td>{{ user.date_of_birth }}</td>
+                            <td>{{ user.dni }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.phone }}</td>
+                            <td>{{ user.cycle }}</td>
+                            <td>{{ user.centerName }}</td>
+                            @if (user.role_id === Role.ADMIN) {
+                                <td>ADMIN</td>
+                            } @else if (user.role_id === Role.BIBLIO) {
+                                <td>BIBLIOTECÀRIA</td>
+                            } @else {
+                                <td>USUARI</td>
+    
+                            }
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            </div>
         </div>
-        </div>
-    </div>
+    }
 }
 
