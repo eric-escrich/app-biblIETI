@@ -23,12 +23,14 @@ interface AutoCompleteCompleteEvent {
     templateUrl: './item-searcher.component.html',
     styleUrl: './item-searcher.component.css',
 })
+
 export class ItemSearcherComponent {
     suggestions: any[] = [];
   
+    // CONTROL + S
     @ViewChild('searchAutoComplete', { read: ElementRef })
     searchAutoComplete!: ElementRef;
-  
+
     @HostListener('document:keydown.control.s', ['$event'])
     onCtrlS(event: KeyboardEvent) {
       if (event.key === 's' && event.ctrlKey) {
@@ -43,12 +45,29 @@ export class ItemSearcherComponent {
         this.searchAutoComplete.nativeElement.querySelector('input').focus();
       }
     }
+    
+
+    // CONTROL + C
+    // @ViewChild('checkboxHome', { read: ElementRef })
+    // checkboxHome!: ElementRef;
+
+    // @HostListener('document:keydown.control.c', ['$event'])
+    // onCtrlC(event: KeyboardEvent) {
+    //   if (event.key === 'c' && event.ctrlKey) {
+    //     console.log("Funciona")
+    //     event.preventDefault();
+    //     this.focusSearchCheckbox();
+    //   }
+    // }
   
-    search(event: AutoCompleteCompleteEvent) {
-      this.suggestions = [...Array(10).keys()].map(
-        (item) => event.query + '-' + item
-      );
-    }
+    // focusSearchCheckbox() {
+    //     if (this.checkboxHome) {
+    //         console.log(this.checkboxHome.nativeElement)
+    //       this.checkboxHome.nativeElement.querySelector('p-checkbox').focus();
+    //     } else {
+    //         console.log("No")
+    //     }
+    // }      
 
     router = inject(Router);
     _itemService = inject(ItemService);
@@ -122,6 +141,7 @@ export class ItemSearcherComponent {
         }
     }
 
+    // CHECKBOX    
     filterAvailableItems() {
         if (this.onlyAvailable) {
             this.items = this.items.filter((item) => item.available);

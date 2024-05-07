@@ -14,7 +14,7 @@ import { LogService } from '../../../services/log.service';
 import { FormValidationService } from '../../../services/validations-service.service';
 import { StorageService } from '../../../services/storage.service';
 
-interface mailSearchEvent {
+interface mailInputEvent {
     originalEvent: Event;
     query: string;
 }
@@ -29,29 +29,46 @@ interface mailSearchEvent {
 export class LoginComponent {
     suggestions: any[] = [];
   
-    @ViewChild('searchMail', { read: ElementRef })
-    searchMail!: ElementRef;
-  
-    @HostListener('document:keydown.control.m', ['$event'])
-    onCtrlS(event: KeyboardEvent) {
-      if (event.key === 's' && event.ctrlKey) {
-        event.preventDefault();
-        this.focusSearchInput();
-      }
+    // CONTROL + E: email
+    @ViewChild('emailInput', { static: true })
+    emailInput!: ElementRef;
+    
+    @HostListener('document:keydown.control.e', ['$event'])
+    
+    onCtrlE(event: KeyboardEvent) {
+        if (event.key === 'e' && event.ctrlKey) {
+            console.log("Hay Ctrl+E");
+            event.preventDefault();
+            this.focusEmailInput();
+        }
     }
-  
-    focusSearchInput() {
-      if (this.searchMail) {
-        console.log(this.searchMail);
-        this.searchMail.nativeElement.querySelector('input').focus();
-      }
+    
+    focusEmailInput() {
+        if (this.emailInput && this.emailInput.nativeElement) {
+            this.emailInput.nativeElement.focus();
+        }
     }
-  
-    search(event: mailSearchEvent) {
-      this.suggestions = [...Array(10).keys()].map(
-        (item) => event.query + '-' + item
-      );
-    }
+
+     // CONTROL + P: password
+     @ViewChild('passwordInput', { read: ElementRef })
+     passwordInput!: ElementRef;
+ 
+     @HostListener('document:keydown.control.p', ['$event'])
+     onCtrlS(event: KeyboardEvent) {
+       if (event.key === 'p' && event.ctrlKey) {
+         event.preventDefault();
+         this.focusPasswordInput();
+       }
+     }
+   
+     focusPasswordInput() {
+       if (this.passwordInput) {
+         console.log(this.passwordInput);
+         this.passwordInput.nativeElement.querySelector('input').focus();
+       }
+     }
+     
+ 
 
     private _authService = inject(AuthService);
     private _router = inject(Router);

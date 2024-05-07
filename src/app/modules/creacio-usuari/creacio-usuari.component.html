@@ -38,12 +38,12 @@
                             </div>
         
                             <div class="card flex flex-col justify-content-center">
-                                <label for="birth" [class]="{'ng-invalid': invalidBirthDate}">Data de neixament *</label>
+                                <label for="birth" [class]="{'ng-invalid': invalidBirthDate}">Data de naixement *</label>
                                 <p-calendar [(ngModel)]="birthDate" (input)="invalidBirthDate = false" [class]="{'ng-invalid': invalidBirthDate}"name="birth" id="birth" [style]="{ width: '100%' }"></p-calendar>
                             </div>
         
                             <div class="card flex flex-col justify-content-center">
-                                <label for="course" [class]="{'ng-invalid': invalidCourse}">Curs acual *</label>
+                                <label for="course" [class]="{'ng-invalid': invalidCourse}">Curs actual *</label>
                                 <input [(ngModel)]="course" (input)="invalidCourse = false" [class]="{'ng-invalid': invalidCourse}"name="course" id="course" type="text" pInputText/>
                             </div>
         
@@ -72,7 +72,7 @@
                                 <p-password
                                     [(ngModel)]="password"
                                     name="password"
-                                    id="password"
+                                    id="passwordInput"
                                     autocomplete="new-password"
                                     [toggleMask]="true"
                                     (input)="invalidPassword = false"

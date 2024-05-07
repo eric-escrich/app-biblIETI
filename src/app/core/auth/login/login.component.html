@@ -6,13 +6,14 @@
                 <div class="input">
                     <span class="p-float-label">
                         <input
-                            #searchMail
                             pInputText
+                            #emailInput
                             [(ngModel)]="email"
                             name="username"
-                            id="username"
+                            id="emailInput"
                             (input)="invalidLogin = false"
                             [class]="{'ng-invalid': invalidLogin}"
+                            data-input-type="main"
                         />
                         <label for="username" [class]="{'ng-invalid': invalidLogin}">Correu electrònic</label>
                     </span>
@@ -21,9 +22,10 @@
                 <div class="input">
                     <span class="p-float-label">
                         <p-password
+                            #passwordInput
                             [(ngModel)]="password"
                             name="password"
-                            id="password"
+                            id="passwordInput"
                             [toggleMask]="true"
                             [feedback]="false"
                             [toggleMask]="true"
