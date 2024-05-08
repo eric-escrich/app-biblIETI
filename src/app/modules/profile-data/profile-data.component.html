@@ -108,7 +108,7 @@
 
     <div class="flex flex-row items-center gap-x-4">
         <p-button severity="dangeroutlined" (onClick)="logout()">Tancar sessió</p-button>
-        <p-button (click)="cancelChanges()" severity="min">Cancelar</p-button>
+        <p-button (click)="cancelChanges()" severity="min" [routerLink]="['/dashboard']">Cancelar</p-button>
         <p-button (click)="saveChanges()" severity="fill-rounded">Guardar canvis</p-button>
     </div>
 </div>
