@@ -1,0 +1,205 @@
+<main>
+    <div class="headerContainer flex flex-col items-center justify-center text-center">
+        <header class="w-4/5">
+            <div class="flex flex-col items-center justify-center ">
+                <a [routerLink]="['/dashboard']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
+            </div>
+        </header>
+    </div>
+    <div class="p-20 flex flex-col gap-6 items-center justify-center">
+
+        <div class="confCompteContainer">
+            <div class="edicioCompteContainer">
+                <div class="capcelera">
+                    <h2>Creació d'usuari</h2>
+                    <h3>Ingresa les dades per crear un nou usuari</h3>
+                </div>
+
+                <!-- <select [(ngModel)]="selectedType">
+                    <option value="LLIBRE">LLIBRE</option>
+                    <option value="CD">CD</option>
+                    <option value="DISPOSITIUS">DISPOSITIUS</option>
+                </select> -->
+                
+                <!-- @if (selectedType === 'LLIBRE') { -->
+                <div class="flex gap-2">
+                    <input [(ngModel)]="searchIsbn" name="isbn" id="isbn" type="text" placeholder="ISBN" pInputText/>
+                    <p-button severity="fill-rounded" [style]="{'width':'fit-content'}" (click)="searchBookByISBN(searchIsbn)"><i class="pi pi-search mr-2"></i>Buscar</p-button>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    @if (!book || !isbn) {
+                        <div class="card flex flex-col justify-content-center">
+                            <label for="title" [class]="{'ng-invalid': invalidTitle}">Titol del llibre *</label>
+                            <input [(ngModel)]="title" (input)="reset('title')" [class]="{'ng-invalid': invalidTitle}" name="title" id="title" type="text" pInputText/>
+                        </div>
+                        @if (!titleValid) {
+                            <p-button severity="fill-rounded" (click)="nextStep('material')">Següent</p-button>
+                        } @else {
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="material" [class]="{'ng-invalid': invalidMaterial}">Tipus de material</label>
+                                <input [(ngModel)]="material" (input)="reset('material')" [class]="{'ng-invalid': invalidMaterial}" name="material" id="material" type="text" pInputText/>
+                            </div>
+                            @if (titleValid && !materialValid) {
+                                <p-button severity="fill-rounded" (click)="nextStep('author')">Següent</p-button>
+                            } @else {
+                                <div class="card flex flex-col justify-content-center">
+                                    <label for="author" [class]="{'ng-invalid': invalidAuthor}">Autor *</label>
+                                    <input [(ngModel)]="author" (input)="reset('author')" [class]="{'ng-invalid': invalidAuthor}" name="author" id="author" type="text" pInputText/>
+                                </div>
+                                @if (titleValid && materialValid && !authorValid) {
+                                    <p-button severity="fill-rounded" (click)="nextStep('date')">Següent</p-button>
+                                } @else {
+                                    <div class="card flex flex-col justify-content-center">
+                                        <label for="date" [class]="{'ng-invalid': invalidEditionDate}">Data de publicació *</label>
+                                        <p-calendar [(ngModel)]="editionDate" (input)="invalidEditionDate = false" [class]="{'ng-invalid': invalidEditionDate}"name="birth" id="birth" [style]="{ width: '100%' }"></p-calendar>
+                                    </div>
+                                    @if (titleValid && materialValid && authorValid && !dateValid) {
+                                        <p-button severity="fill-rounded" (click)="nextStep('cdu')">Següent</p-button>
+                                    } @else {
+                                        <div class="card flex flex-col justify-content-center">
+                                            <label for="cdu" [class]="{'ng-invalid': invalidCdu}">CDU *</label>
+                                            <input [(ngModel)]="cdu" (input)="reset('cdu')" [class]="{'ng-invalid': invalidCdu}" name="cdu" id="cdu" type="text" pInputText/>
+                                        </div>
+                                        @if (titleValid && materialValid && authorValid && dateValid && !cduValid) {
+                                            <p-button severity="fill-rounded" (click)="nextStep('isbn')">Següent</p-button>
+                                        } @else {
+                                            <div class="card flex flex-col justify-content-center">
+                                                <label for="isbn" [class]="{'ng-invalid': invalidIsbn}">ISBN *</label>
+                                                <input [(ngModel)]="isbn" (input)="reset('isbn')" [class]="{'ng-invalid': invalidIsbn}" name="isbn" id="isbn" type="text" pInputText/>
+                                            </div>
+                                            @if (titleValid && materialValid && authorValid && dateValid && cduValid && !isbnValid) {
+                                                <p-button severity="fill-rounded" (click)="nextStep('publisher')">Següent</p-button>
+                                            } @else {
+                                                <div class="card flex flex-col justify-content-center">
+                                                    <label for="publisher" [class]="{'ng-invalid': invalidPublisher}">Editorial</label>
+                                                    <input [(ngModel)]="publisher" (input)="reset('publisher')" [class]="{'ng-invalid': invalidPublisher}" name="publisher" id="publisher" type="text" pInputText/>
+                                                </div>
+                                                @if (titleValid && materialValid && authorValid && dateValid && cduValid && isbnValid && !publisherValid) {
+                                                    <p-button severity="fill-rounded" (click)="nextStep('collection')">Següent</p-button>
+                                                } @else {
+                                                    <div class="card flex flex-col justify-content-center">
+                                                        <label for="collection" [class]="{'ng-invalid': invalidCollection}">Col·lecció</label>
+                                                        <input [(ngModel)]="collection" (input)="reset('collection')" [class]="{'ng-invalid': invalidCollection}" name="collection" id="collection" type="text" pInputText/>
+                                                    </div>
+                                                    @if (titleValid && materialValid && authorValid && dateValid && cduValid && isbnValid && publisherValid && !collectionValid) {
+                                                        <p-button severity="fill-rounded" (click)="nextStep('pages')">Següent</p-button>
+                                                    } @else {
+                                                        <div class="card flex flex-col justify-content-center">
+                                                            <label for="pages" [class]="{'ng-invalid': invalidPages}">Pàgines *</label>
+                                                            <input [(ngModel)]="pages" (input)="reset('pages')" [class]="{'ng-invalid': invalidPages}" name="pages" id="pages" type="text" pInputText/>
+                                                        </div>
+                                                        @if (titleValid && materialValid && authorValid && dateValid && cduValid && isbnValid && publisherValid && collectionValid && !pagesValid) {
+                                                            <p-button severity="fill-rounded" (click)="nextStep('language')">Següent</p-button>
+                                                        } @else {
+                                                            <div class="card flex flex-col justify-content-center">
+                                                                <label for="language" [class]="{'ng-invalid': invalidPages}">Idioma *</label>
+                                                                <input [(ngModel)]="language" (input)="reset('language')" [class]="{'ng-invalid': invalidPages}" name="language" id="language" type="text" pInputText/>
+                                                            </div>
+                                                            @if (titleValid && materialValid && authorValid && dateValid && cduValid && isbnValid && publisherValid && collectionValid && pagesValid && !languageValid) {
+                                                                <p-button severity="fill-rounded" (click)="nextStep('loanAvailable')">Següent</p-button>
+                                                            } @else {
+                                                                <div class="card flex flex-col justify-content-center">
+                                                                    <label for="loanAvailable">Prestec disponible *</label>
+                                                                    <p-checkbox [(ngModel)]="loanAvailable" binary="true" inputId="binary" name="loanAvailable" id="loanAvailable"></p-checkbox>
+                                                                </div>
+                                                                @if (titleValid && materialValid && authorValid && dateValid && cduValid && isbnValid && publisherValid && collectionValid && pagesValid && languageValid ) {
+                                                                    <p-button (click)="onSubmit()" class="w-full" severity="fill-rounded" [style]="{ width: '100%' }">Guardar</p-button>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+    
+                            @if (errorMessage.length > 0) {
+                                <div>
+                                    <p class="error" [class]="{'invalid': invalidForm}">{{ errorMessage }}</p>
+                                </div>
+                            }
+                    } @else {
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="title" [class]="{'ng-invalid': invalidTitle}">Titol *</label>
+                                <input [(ngModel)]="title" (input)="invalidTitle = false" [class]="{'ng-invalid': invalidTitle}" name="title" id="title" type="text" pInputText/>
+                            </div>
+    
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="material" [class]="{'ng-invalid': invalidMaterial}">Material</label>
+                                <input [(ngModel)]="material" (input)="invalidMaterial = false" [class]="{'ng-invalid': invalidMaterial}" name="material" id="material" type="text" pInputText/>
+                            </div>
+                            
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="author" [class]="{'ng-invalid': invalidAuthor}">Autor *</label>
+                                <input [(ngModel)]="author" (input)="invalidAuthor = false" [class]="{'ng-invalid': invalidAuthor}" name="author" id="author" type="text" pInputText/>
+                            </div>
+                            
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="editionDate" [class]="{'ng-invalid': invalidEditionDate}">Data de publicació *</label>
+                                <p-calendar [(ngModel)]="editionDate" (input)="invalidEditionDate = false" [class]="{'ng-invalid': invalidEditionDate}" name="editionDate" id="editionDate" [style]="{ width: '100%' }"></p-calendar>
+                            </div>
+                            
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="cdu" [class]="{'ng-invalid': invalidCdu}">CDU *</label>
+                                <input [(ngModel)]="cdu" (input)="invalidCdu = false" [class]="{'ng-invalid': invalidCdu}" name="cdu" id="cdu" type="number" pInputText/>
+                            </div>
+                            
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="isbn" [class]="{'ng-invalid': invalidIsbn}">ISBN *</label>
+                                <input [(ngModel)]="isbn" (input)="invalidIsbn = false" [class]="{'ng-invalid': invalidIsbn}" name="isbn" id="isbn" type="number" pInputText/>
+                            </div>
+                            
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="publisher" [class]="{'ng-invalid': invalidPublisher}">Editorial</label>
+                                <input [(ngModel)]="publisher" (input)="invalidPublisher = false" [class]="{'ng-invalid': invalidPublisher}" name="publisher" id="publisher" type="text" pInputText/>
+                            </div>
+                            
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="collection" [class]="{'ng-invalid': invalidCollection}">Col·lecció</label>
+                                <input [(ngModel)]="collection" (input)="invalidCollection = false" [class]="{'ng-invalid': invalidCollection}" name="collection" id="collection" type="text" pInputText/>
+                            </div>
+                            
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="pages" [class]="{'ng-invalid': invalidPages}">Pàgines *</label>
+                                <input [(ngModel)]="pages" (input)="invalidPages = false" [class]="{'ng-invalid': invalidPages}" name="pages" id="pages" type="number" pInputText/>
+                            </div>
+                            
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="language" [class]="{'ng-invalid': invalidLanguage}">Idioma *</label>
+                                <input [(ngModel)]="language" (input)="invalidLanguage = false" [class]="{'ng-invalid': invalidLanguage}" name="language" id="language" type="text" pInputText/>
+                            </div>
+                            
+                            <div class="card flex flex-col justify-content-center">
+                                <label for="loanAvailable">Prestec disponible *</label>
+                                <p-checkbox [(ngModel)]="loanAvailable" binary="true" inputId="binary" name="loanAvailable" id="loanAvailable"></p-checkbox>
+                            </div>
+                            @if (errorMessage.length > 0) {
+                                <div>
+                                    <p class="error" [class]="{'invalid': invalidForm}">{{ errorMessage }}</p>
+                                </div>
+                            }
+                        <div class="flex flex-row gap-x-4 items-start w-full">
+                            <p-button
+                                class="w-full"
+                                severity="dangeroutlined"
+                                [routerLink]="['/dashboard']"
+                                [style]="{ width: '100%' }"
+                            >Cancelar</p-button>
+                            <p-button
+                                class="w-full"
+                                severity="fill-rounded"
+                                [style]="{ width: '100%' }"
+                                (click)="onSubmit()"
+                                (keyup.enter)="onSubmit()"
+                            >Guardar item</p-button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -137,4 +137,45 @@ export class ItemService {
             throw error;
         }
     }
+
+    async createItem(
+        item_type: string,
+        title: string,
+        author: string,
+        loan_available: boolean,
+        edition_date: Date,
+        CDU: string,
+        ISBN: string,
+        publisher: string,
+        collection: string,
+        pages: number,
+        language: string,
+    ) {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.post(
+                    `${this.baseUrl}/items/create-item/`,
+                    {
+                        item_type,
+                        title,
+                        author,
+                        loan_available,
+                        edition_date: edition_date.toISOString().split('T')[0],
+                        CDU,
+                        ISBN,
+                        publisher,
+                        collection,
+                        pages,
+                        language,
+                    },
+                    { observe: 'response' },
+                ),
+            );
+
+            return response;
+        } catch (error: any) {
+            console.error('Error creating item', error);
+            throw error;
+        }
+    }
 }

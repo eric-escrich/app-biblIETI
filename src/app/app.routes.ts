@@ -13,6 +13,7 @@ import { EditUserComponent } from './modules/edit-user/edit-user.component';
 import { ItemDetailsComponent } from './modules/item-details/item-details.component';
 import { ItemSearchResultsComponent } from './modules/item-search-results/item-search-results.component';
 import { AdvancedSearchComponent } from './modules/advanced-search/advanced-search.component';
+import { CreateItemComponent } from './modules/create-item/create-item.component';
 
 export const routes: Routes = [
     {
@@ -52,6 +53,11 @@ export const routes: Routes = [
             {
                 path: 'editar-usuari/:userId',
                 component: EditUserComponent,
+                canActivate: [JwtGuard],
+            },
+            {
+                path: 'crear-item',
+                component: CreateItemComponent,
                 canActivate: [JwtGuard],
             },
             { path: 'reset-password/:uid/:token', component: ResetPasswordComponent },
