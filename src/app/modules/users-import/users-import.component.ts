@@ -6,11 +6,12 @@ import { ProfileService } from '../../services/profile.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DialogService } from '../../services/dialog.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
     selector: 'app-users-import',
     standalone: true,
-    imports: [CommonModule, RouterLink],
+    imports: [CommonModule, RouterLink, ButtonModule],
     templateUrl: './users-import.component.html',
     styleUrl: './users-import.component.css',
 })
