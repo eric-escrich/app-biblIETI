@@ -1,0 +1,44 @@
+<main class="flex flex-col justify-center items-center">
+    <div class="items-start">
+        <h2>Cercar catàleg</h2>
+        <p>Troba els teus llibres preferits!</p>
+
+        <div class="flex flex-row gap-x-2 mt-4">
+            <div class="flex flex-col gap-y-4">
+                <div class="card flex justify-content-center gap-x-2">
+                    <p-autoComplete
+                        #searchAutoComplete
+                        [(ngModel)]="searchQuery"
+                        [suggestions]="items"
+                        (input)="onFilterChange()"
+                        [minLength]="3"
+                        field="name"
+                        (onSelect)="onItemSelect($event)"
+                        (keyup.enter)="onSearch()"
+                    ></p-autoComplete>
+                    <p-button
+                        #searchButton
+                        severity="icon"
+                        (click)="onSearch()">
+                        <i class="pi pi-search"></i>
+                    </p-button>
+                </div>
+
+                <div class="card flex justify-content-center gap-x-2 items-center">
+                    <label for="binary">Només disponibles</label>
+                    <p-checkbox
+                        #checkboxHome
+                        [(ngModel)]="onlyAvailable"
+                        (ngModelChange)="filterAvailableItems()"
+                        binary="true"
+                        inputId="binary">
+                    </p-checkbox>
+                </div>                            
+            </div>
+        </div>
+    </div>
+
+    <div class="libroImgContainer">
+        <img src="/assets/imgs/libros3D.png" alt="Il·lustració d'un munt de llibres amb forma 3D.">
+    </div>
+</main>

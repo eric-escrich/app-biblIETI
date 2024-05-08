@@ -1,0 +1,9 @@
+.bentoBox:hover{
+    transition-duration: 1s;
+    transform: scale(1.01);
+    box-shadow: 1px 1px 10px #b4b4b4;
+}
+
+article {
+    max-width: 100%; /* Ajusta según tu diseño */
+}

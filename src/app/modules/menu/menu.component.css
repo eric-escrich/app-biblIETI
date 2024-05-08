@@ -1,0 +1,5 @@
+@media only screen and (max-width: 375px) {
+    input#cif, .p-inputtext, input.p-element.p-autocomplete-input.p-inputtext.p-component {
+        width: 10px;
+    }
+}

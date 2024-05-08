@@ -13,7 +13,7 @@ export const JwtGuard: CanActivateFn = async () => {
     const token = _authService.getToken();
     let email: string = '';
     try {
-        email = await _profileService.getUsername();
+        email = await _profileService.getEmail();
     } catch (error) {
         email = '';
     }

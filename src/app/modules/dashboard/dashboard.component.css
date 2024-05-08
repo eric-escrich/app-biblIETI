@@ -25,3 +25,7 @@
     border-radius: 10px;
     background-color: rgba(251, 255, 251, 0.7);
 }
+
+td:hover {
+    cursor: pointer;
+}

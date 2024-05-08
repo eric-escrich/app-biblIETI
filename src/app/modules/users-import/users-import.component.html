@@ -1,0 +1,41 @@
+<div class="headerContainer flex flex-col items-center justify-center text-center">
+    <header class="w-4/5">
+        <div class="flex flex-col items-center justify-center ">
+            <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
+        </div>
+    </header>
+</div>
+<div class="p-20 flex flex-col gap-6 items-center justify-center">
+    <div class="confCompteContainer">
+        <div class="edicioCompteContainer">
+            <div class="capcelera">
+                <h2>Importació d'usuaris</h2>
+                <h3>Sel·lecciona un arxiu CSV per importar usuaris</h3>
+                <div class="form-group">
+                    <input
+                        class="form-control custom-file-input"
+                        accept=".csv"
+                        id="csv"
+                        type="file" 
+                        name="myfile"
+                        (change)="onFileSelect($event.target)"
+                    />
+                </div>
+            </div>
+            <div class="flex flex-col gap-5">
+                <div class="resum">
+                    <p>Número total de registres: {{totalUsers}}</p>
+                    <p>S'han inserit un total de {{totalSaves}} registres</p>
+                </div>
+                <div class="errors">
+                    <ul>
+                        <li *ngFor="let messag of messages; let index = index">
+                            <p>{{messag}}</p>
+                        </li>
+                    </ul>
+                </div>
+                <p-button severity="fill" [routerLink]="['/dashboard']">Tornar</p-button>
+            </div>
+        </div>
+    </div>
+</div>

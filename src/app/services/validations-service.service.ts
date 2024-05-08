@@ -17,25 +17,25 @@ export class FormValidationService {
                 errorMessage: 'La contrasenya és massa llarga (${password.length})',
             };
         }
-        if (!/[A-Z]/.test(password)) {
+        if (!/[A-Z]/g.test(password)) {
             return {
                 isValid: false,
                 errorMessage: 'La contrasenya ha de contenir almenys una lletra majúscula.',
             };
         }
-        if (!/[a-z]/.test(password)) {
+        if (!/[a-z]/g.test(password)) {
             return {
                 isValid: false,
                 errorMessage: 'La contrasenya ha de contenir almenys una lletra minúscula.',
             };
         }
-        if (!/\d/.test(password)) {
+        if (!/\d/g.test(password)) {
             return {
                 isValid: false,
                 errorMessage: 'La contrasenya ha de contenir almenys un número.',
             };
         }
-        if (!/[!@#$%^&*()-_=+[\]{};:'",.<>/?\\|~]/.test(password)) {
+        if (!/[!@#$%^&*()-_=+[\]{};:'",.<>/?\\|~]/g.test(password)) {
             return {
                 isValid: false,
                 errorMessage: 'La contrasenya ha de contenir almenys un caràcter especial.',

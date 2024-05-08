@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule, formatDate } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -68,17 +68,15 @@ export class CreacioUsuariComponent {
 
     public errorMessage: string = '';
 
-    private userEmail: string = '';
-
-    public ca: any = {};
+    private adminEmail!: string;
 
     async ngOnInit() {
-        this.userEmail = await this._profileService.getEmail();
+        this.adminEmail = await this._profileService.getEmail();
         this._logService.logInfo(
             'Initializing CreacioUsuarisComponent',
             'Inicializando CreacioUsuarisComponent',
             'CreacioUsuariComponent - ngOnInit',
-            this.email,
+            this.adminEmail,
         );
 
         this.config.setTranslation({
@@ -97,7 +95,7 @@ export class CreacioUsuariComponent {
             'Verifying user creation form',
             'Se va a revisar el formulario de creación de usuario',
             'CreacioUsuariComponent - onSubmit',
-            this.email,
+            this.adminEmail,
         );
 
         this.invalidUsername = this._formValidationService.isEmpty(this.username);
@@ -107,6 +105,7 @@ export class CreacioUsuariComponent {
                 'Invalid username',
                 'No se ha podido crear el usuario porque ha introducido un nombre de usuario inválido',
                 'CreacioUsuariComponent - onSubmit',
+                this.adminEmail,
             );
             this.errorMessage = "El nom d'usuari es obligatori";
             this._dialogService.showDialog('ERROR', "El nom d'usuari es obligatori");
@@ -120,6 +119,7 @@ export class CreacioUsuariComponent {
                 'Invalid name',
                 'No se ha podido crear el usuario porque ha introducido un nombre inválido',
                 'CreacioUsuariComponent - onSubmit',
+                this.adminEmail,
             );
             this.errorMessage = 'No has introduit el nom';
             this._dialogService.showDialog('ERROR', 'El nom es obligatori');
@@ -133,6 +133,7 @@ export class CreacioUsuariComponent {
                 'Invalid last name',
                 'No se ha podido crear el usuario porque ha introducido un apellido inválido',
                 'CreacioUsuariComponent - onSubmit',
+                this.adminEmail,
             );
             this.errorMessage = 'No has introduit el cognom';
             this._dialogService.showDialog('ERROR', 'El cognom és obligatori');
@@ -146,6 +147,7 @@ export class CreacioUsuariComponent {
                 'Invalid birth date',
                 'No se ha podido crear el usuario porque ha introducido una fecha de nacimiento inválida',
                 'CreacioUsuariComponent - onSubmit',
+                this.adminEmail,
             );
             this.errorMessage = 'No has introduit la data de naixement';
             this._dialogService.showDialog('ERROR', 'La data de naixement es obligatoria');
@@ -159,6 +161,7 @@ export class CreacioUsuariComponent {
                 'Invalid cycle',
                 'No se ha podido crear el usuario porque ha introducido un ciclo inválido',
                 'CreacioUsuariComponent - onSubmit',
+                this.adminEmail,
             );
             this.errorMessage = 'No has introduit el curs';
             this._dialogService.showDialog('ERROR', 'El curs es obligatori');
@@ -174,6 +177,7 @@ export class CreacioUsuariComponent {
                     'Invalid email',
                     'No se ha podido crear el usuario porque ha introducido un email inválido',
                     'CreacioUsuariComponent - onSubmit',
+                    this.adminEmail,
                 );
                 this.errorMessage = 'El correu electronic es invalid';
                 this._dialogService.showDialog('ERROR', 'El correu electronic es invalid');
@@ -185,6 +189,7 @@ export class CreacioUsuariComponent {
                 'Invalid email',
                 'No se ha podido crear el usuario porque no ha introducido un email',
                 'CreacioUsuariComponent - onSubmit',
+                this.adminEmail,
             );
             this.errorMessage = 'No has introduit el correu electronic';
             this._dialogService.showDialog('ERROR', 'El correu electronic es obligatori');
@@ -199,6 +204,7 @@ export class CreacioUsuariComponent {
                     'Invalid DNI',
                     'No se ha podido crear el usuario porque ha introducido un DNI inválido',
                     'CreacioUsuariComponent - onSubmit',
+                    this.adminEmail,
                 );
                 this.errorMessage = 'El DNI es invalid';
                 this._dialogService.showDialog('ERROR', 'El DNI es invalid');
@@ -214,6 +220,7 @@ export class CreacioUsuariComponent {
                     'Invalid phone number',
                     'No se ha podido crear el usuario porque ha introducido un número de teléfono inválido',
                     'CreacioUsuariComponent - onSubmit',
+                    this.adminEmail,
                 );
                 this.errorMessage = 'El numero de telefon es invalid';
                 this._dialogService.showDialog('ERROR', 'El numero de telefon es invàlid');
@@ -238,6 +245,7 @@ export class CreacioUsuariComponent {
                 'User already exists',
                 'No se ha podido crear el usuario porque ya existe un usuario con ese nombre o email',
                 'CreacioUsuariComponent - onSubmit',
+                this.adminEmail,
             );
             this.errorMessage = errorMessage;
             this._dialogService.showDialog('ERROR', errorMessage);
@@ -256,6 +264,7 @@ export class CreacioUsuariComponent {
                 'Passwords do not match',
                 'No se ha podido modificar la contraseña del usuario porque las contraseñas no coinciden',
                 'ResetPasswordComponent - onSubmit',
+                this.adminEmail,
             );
             this._dialogService.showDialog('ERROR', 'Les contrasenyes no coincideixen');
             return false;
@@ -271,6 +280,7 @@ export class CreacioUsuariComponent {
                 'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña inválida: ' +
                     passwordValidation.errorMessage,
                 'ResetPasswordComponent - onSubmit',
+                this.adminEmail,
             );
             this._dialogService.showDialog('ERROR', passwordValidation.errorMessage);
             return false;
@@ -285,6 +295,7 @@ export class CreacioUsuariComponent {
                 'Invalid password',
                 'No se ha podido modificar la contraseña del usuario porque ha introducido una contraseña inválida',
                 'ResetPasswordComponent - onSubmit',
+                this.adminEmail,
             );
             this._dialogService.showDialog('ERROR', passwordValidation.errorMessage);
             return false;
@@ -300,7 +311,7 @@ export class CreacioUsuariComponent {
             let formattedBirthDate = formatDate(this.birthDate, 'dd-MM-yyyy', 'en-US');
 
             const response = await this._authService.registerUser(
-                this.userEmail,
+                this.adminEmail,
                 this.username,
                 this.name,
                 this.lastName,
@@ -316,16 +327,21 @@ export class CreacioUsuariComponent {
             console.log('response.status --> ', response.status);
 
             if (response.status === 201) {
-                this._logService.logInfo('User created', 'El usuario ha sido creado con éxito', 'CreacioUsuariComponent - register');
                 this._dialogService.showDialog('INFO', 'Usuari creat correctament');
+                this._logService.logInfo('Redirect', `Redirecció a la pàgina de Dashboard`, 'LoginComponent - handleLoginResponse', this.adminEmail);
+                this._router.navigateByUrl('/dashboard');
             } else {
-                this._logService.logError('Error creating user', 'Error al crear el usuario', 'CreacioUsuariComponent - register');
                 this._dialogService.showDialog('ERROR', 'Error al crear el usuari');
             }
         } catch (error: any) {
             console.error('Error creating user', error.message);
-            this._logService.logError('Error creating user', `Error al crear el usuario: ${error.message}`, 'CreacioUsuariComponent - register');
-            this._dialogService.showDialog('ERROR', error.message);
+            this._logService.logError(
+                'Error creating user',
+                `Error al crear el usuario: ${error.message}`,
+                'CreacioUsuariComponent - register',
+                this.adminEmail,
+            );
+            this._dialogService.showDialog('ERROR', "No s'ha pogut crear l'usauri. Torni a intentar-ho més tard.");
         }
     }
 }

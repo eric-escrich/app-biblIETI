@@ -7,132 +7,51 @@
         </header>
     </div>
     
-    <div class="flex flex-row px-10 mb-40 justify-center items-center gap-x-20 w-full">
-        <div class="confCompteContainer w-1/2" routerLink="/perfil">
-            <div class="flex flex-row items-center">
-                <p-avatar label="{{initials}}" styleClass="mr-2" size="xlarge" shape="circle"></p-avatar>
-    
-                <div class="flex flex-col items-start">
-                    <p class="font-bold">IETI</p>
-                    <p>{{roleName}}</p>
-                </div>
-            </div>
-    
-    
-            <div class="edicioCompteContainer">
-                <div class="flex flex-row gap-x-20 justify-between items-center">
-                    <div class="flex flex-col">
-                        <h3>Nom</h3>
-                        @if (!isEditingName && getRoleName() !== 'Alumne') {
-                            <p>{{profileData.name}} {{profileData.surname}} {{profileData.surname2}}</p>
-                        } @else {
-                            <div class="flex flex-col gap-2">
-                                <input pInputText [(ngModel)]="newName" placeholder="Nom" styleClass="w-1/2">
-                                <input pInputText [(ngModel)]="newSurname" placeholder="Primer cognom" styleClass="w-1/2">
-                                <input pInputText [(ngModel)]="newSurname2" placeholder="Segon cognom" styleClass="w-1/2">
-                            </div>
-                        }
-                    </div>
-                    <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingName = !isEditingName" severity="fill">Editar</p-button>
-                </div>
+    <body class="flex flex-col px-10 mb-40 justify-center items-center gap-x-20 w-full">
+  
+        <div class="flex flex-row gap-24 mt-10 justify-center items-center">
+            <app-item-searcher></app-item-searcher>
 
-                <!-- [Claudia]: No sé si funciona. Esto es una prueba para ver si el usuario NO puede editarlo. -->
-                <div class="flex flex-row gap-x-20 justify-between items-center">
-                    <div class="flex flex-col">
-                        <h3>Correo</h3>
-                        @if (!isEditingEmail && getRoleName() !== 'Alumne') {
-                            <p>{{profileData.username}}</p>
-                        } @else {
-                            <input pInputText [(ngModel)]="newEmail" placeholder="Correo" styleClass="w-1/2">
-                        }
-                    </div>
-                    <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingEmail = !isEditingEmail" severity="fill">Editar</p-button>
-                </div>                
+            <div class="flex flex-col gap-y-4 items-center">
+                @if (role === Role.ADMIN || role === Role.BIBLIO) {
+                        <p-button
+                            label="Crear nou alumne"
+                            styleClass="p-button-rounded"
+                            severity="fill"
+                            routerLink="/creacio-usuari"
+                            [style]="{'width': 'fit-content'}">
+                        </p-button>
+                        <p-button
+                            label="Importar usuaris"
+                            styleClass="p-button-rounded"
+                            severity="fill"
+                            routerLink="/importacio-usuaris"
+                            [style]="{'width': 'fit-content'}">
+                        </p-button>
 
-                <div class="flex flex-row gap-x-20 justify-between items-center">
-                    <div class="flex flex-col">
-                        <h3>Contrasenya</h3>
-                        @if (!isEditingPassword && getRoleName() !== 'Alumne') {
-                            <p>************</p>
-                        } @else {
-                            <div class="flex flex-col gap-2">
-                                <p-password
-                                    [(ngModel)]="lastPassword"
-                                    placeholder="Contrasenya actual"
-                                    name="password"
-                                    id="password"
-                                    autocomplete="off"
-                                    [feedback]="false"
-                                    [toggleMask]="true"
-                                    [style]="{'width':'100%', 'height':'3rem'}"
-                                    [inputStyle]="{'width':'100%'}"
-                                ></p-password>
-                                <p-password
-                                    [(ngModel)]="password"
-                                    placeholder="Nova contrasenya"
-                                    name="password"
-                                    id="password"
-                                    autocomplete="off"
-                                    [feedback]="false"
-                                    [toggleMask]="true"
-                                    [style]="{'width':'100%', 'height':'3rem'}"
-                                    [inputStyle]="{'width':'100%'}"
-                                ></p-password>
-                                <p-password
-                                    [(ngModel)]="repeatPassword"
-                                    placeholder="Repetir contrasenya"
-                                    name="password"
-                                    id="password"
-                                    autocomplete="off"
-                                    [feedback]="false"
-                                    [toggleMask]="true"
-                                    [style]="{'width':'100%', 'height':'3rem'}"
-                                    [inputStyle]="{'width':'100%'}"
-                                ></p-password>
-                            </div>
-                        }
-                    </div>
-                    <p-button *ngIf="getRoleName() !== 'Alumne'" (click)="isEditingPassword = !isEditingPassword" severity="fill">Editar</p-button>
-                </div>
+                        <p-button
+                            label="El teu perfil"
+                            styleClass="p-button-rounded"
+                            severity="fill"
+                            routerLink="/perfil">
+                        </p-button>
+
+                        <p-button
+                            label="Usuaris"
+                            styleClass="p-button-rounded"
+                            severity="fill"
+                            routerLink="/llista-usuaris">
+                        </p-button>
+                }
+                <p-button
+                    label="SORTIR"
+                    styleClass="p-button-rounded"
+                    severity="fill"
+                    (click)="_profileService.logout()"
+                    [style]="{'width': 'fit-content', 'background': 'red'}">
+                </p-button>
             </div>
         </div>
-    
-        <div class="flex flex-col justify-center items-start w-fit">
-            <h2>Estado de la cuenta</h2>
-            <div>
-                <p-button severity="dangeroutlined" (onClick)="logout()">Tancar sessió</p-button>
-    
-                <hr>
-    
-                <div class="flex flex-row items-center gap-x-4">
-                    <p-button (click)="cancelChanges()" severity="min">Cancelar</p-button>
-                    <p-button (click)="saveChanges()" severity="fill-rounded">Guardar canvis</p-button>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex flex-row gap-x-4">      
-            <div class="card flex justify-content-center">
-                <p-fileUpload
-                    mode="basic"
-                    chooseLabel="Puja un CSV"
-                    name="demo[]" 
-                    url="https://www.primefaces.org/cdn/api/upload.php"
-                    accept="csv/*"
-                    maxFileSize="1000000">
-                </p-fileUpload>
-            </div>
-        </div>
-
-        @if (role === Role.ADMIN || role === Role.BIBLIO) {
-            <p-button
-                label="CREA UN NOU ALUMNE"
-                styleClass="p-button-rounded"
-                severity="fill"
-                routerLink="/creacio-usuari"
-                class="w-fit"
-            ></p-button>
-
-        }
-    </div>
+       
+    </body>
 }
