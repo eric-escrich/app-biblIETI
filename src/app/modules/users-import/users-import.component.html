@@ -13,13 +13,13 @@
                 <h3>Sel·lecciona un arxiu CSV per importar usuaris</h3>
                 <div class="form-group">
                     <input
-                    class="form-control"
-                    accept=".csv"
-                    id="csv"
-                    type="file" 
-                    name="myfile"
-                    (change)="onFileSelect($event.target)" 
-                />
+                        class="form-control custom-file-input"
+                        accept=".csv"
+                        id="csv"
+                        type="file" 
+                        name="myfile"
+                        (change)="onFileSelect($event.target)"
+                    />
                 </div>
             </div>
             <div class="flex flex-col gap-5">

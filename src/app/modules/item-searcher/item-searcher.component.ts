@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { LogService } from '../../services/log.service';
 import { DialogService } from '../../services/dialog.service';
 import { ItemService } from '../../services/item.service';
@@ -23,7 +23,52 @@ interface AutoCompleteCompleteEvent {
     templateUrl: './item-searcher.component.html',
     styleUrl: './item-searcher.component.css',
 })
+
 export class ItemSearcherComponent {
+    suggestions: any[] = [];
+  
+    // CONTROL + S
+    @ViewChild('searchAutoComplete', { read: ElementRef })
+    searchAutoComplete!: ElementRef;
+
+    @HostListener('document:keydown.control.s', ['$event'])
+    onCtrlS(event: KeyboardEvent) {
+      if (event.key === 's' && event.ctrlKey) {
+        event.preventDefault();
+        this.focusSearchInput();
+      }
+    }
+  
+    focusSearchInput() {
+      if (this.searchAutoComplete) {
+        console.log(this.searchAutoComplete);
+        this.searchAutoComplete.nativeElement.querySelector('input').focus();
+      }
+    }
+    
+
+    // CONTROL + C
+    // @ViewChild('checkboxHome', { read: ElementRef })
+    // checkboxHome!: ElementRef;
+
+    // @HostListener('document:keydown.control.c', ['$event'])
+    // onCtrlC(event: KeyboardEvent) {
+    //   if (event.key === 'c' && event.ctrlKey) {
+    //     console.log("Funciona")
+    //     event.preventDefault();
+    //     this.focusSearchCheckbox();
+    //   }
+    // }
+  
+    // focusSearchCheckbox() {
+    //     if (this.checkboxHome) {
+    //         console.log(this.checkboxHome.nativeElement)
+    //       this.checkboxHome.nativeElement.querySelector('p-checkbox').focus();
+    //     } else {
+    //         console.log("No")
+    //     }
+    // }      
+
     router = inject(Router);
     _itemService = inject(ItemService);
     _dialogService = inject(DialogService);
@@ -92,6 +137,7 @@ export class ItemSearcherComponent {
         }
     }
 
+    // CHECKBOX    
     filterAvailableItems() {
         if (this.onlyAvailable) {
             this.items = this.items.filter((item) => item.available);

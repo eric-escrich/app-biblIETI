@@ -1,4 +1,10 @@
-
+<div class="headerContainer flex flex-col items-center justify-center text-center">
+    <header class="w-4/5">
+        <div class="flex flex-col items-center justify-center ">
+            <a [routerLink]="['/inici']"><h1>BIBLIOTECA MARI CARMEN BRITO</h1></a>
+        </div>
+    </header>
+</div>
 @if (role && (this.role === Role.ADMIN || this.role === Role.BIBLIO)) {
     @if (users && users.length > 0) {
         <div>

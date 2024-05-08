@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ValidationErrors, ValidatorFn, Validators, ReactiveFormsModule } from '@angular/forms';
 
@@ -14,6 +14,11 @@ import { LogService } from '../../../services/log.service';
 import { FormValidationService } from '../../../services/validations-service.service';
 import { StorageService } from '../../../services/storage.service';
 
+interface mailInputEvent {
+    originalEvent: Event;
+    query: string;
+}
+
 @Component({
     selector: 'app-login',
     standalone: true,
@@ -22,6 +27,49 @@ import { StorageService } from '../../../services/storage.service';
     styleUrl: './login.component.css',
 })
 export class LoginComponent {
+    suggestions: any[] = [];
+  
+    // CONTROL + E: email
+    @ViewChild('emailInput', { static: true })
+    emailInput!: ElementRef;
+    
+    @HostListener('document:keydown.control.e', ['$event'])
+    
+    onCtrlE(event: KeyboardEvent) {
+        if (event.key === 'e' && event.ctrlKey) {
+            console.log("Hay Ctrl+E");
+            event.preventDefault();
+            this.focusEmailInput();
+        }
+    }
+    
+    focusEmailInput() {
+        if (this.emailInput && this.emailInput.nativeElement) {
+            this.emailInput.nativeElement.focus();
+        }
+    }
+
+     // CONTROL + P: password
+     @ViewChild('passwordInput', { read: ElementRef })
+     passwordInput!: ElementRef;
+ 
+     @HostListener('document:keydown.control.p', ['$event'])
+     onCtrlS(event: KeyboardEvent) {
+       if (event.key === 'p' && event.ctrlKey) {
+         event.preventDefault();
+         this.focusPasswordInput();
+       }
+     }
+   
+     focusPasswordInput() {
+       if (this.passwordInput) {
+         console.log(this.passwordInput);
+         this.passwordInput.nativeElement.querySelector('input').focus();
+       }
+     }
+     
+ 
+
     private _authService = inject(AuthService);
     private _router = inject(Router);
     private _profileService = inject(ProfileService);
@@ -58,7 +106,7 @@ export class LoginComponent {
             );
             this._logService.logInfo(
                 'Login OK',
-                `L'usuario: ${JSON.stringify(profile.email)} ha iniciat sessió correctament.`,
+                `L'usuari: ${JSON.stringify(profile.email)} ha iniciat sessió correctament.`,
                 'LoginComponent - handleLoginResponse',
                 profile.email,
             );

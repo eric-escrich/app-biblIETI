@@ -25,3 +25,42 @@
     border-radius: 10px;
     background-color: rgba(251, 255, 251, 0.7);
 }
+input#file-upload-button {
+    background-color: white;
+    border: 1px solid #59B468;
+    border-radius: 100px;
+    color: #59B468;
+    transition-duration: 1s;
+}
+
+input#file-upload-button:hover {
+    transition-duration: 1s;
+    border-color: #338240;
+    color: #338240;
+}
+
+.custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.custom-file-input::before {
+    content: 'Seleccionar';
+    display: inline-block;
+    background: #59B468;
+    border: 1px solid #59B468;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.custom-file-input:hover::before {
+    transition-duration: 1s;
+    background-color: #338240;
+    border-color: #338240;
+}
