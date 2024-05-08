@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenubarModule } from 'primeng/menubar';
 import { InputTextModule } from 'primeng/inputtext';
@@ -37,7 +37,23 @@ export class MenuComponent {
     }
 
     profileData!: any;
-    role!: number;
+    role = computed(() => {
+        const profileData: any = this._profileService.profileDataChanges();
+        if (profileData) {
+            switch (profileData.role) {
+                case 1:
+                    return 'ADMIN';
+                case 2:
+                    return 'BIBLIOTECÀRIA';
+                case 3:
+                    return 'USUARI';
+                default:
+                    return 'USUARI';
+            }
+        } else {
+            return null;
+        }
+    });
     Role = Role;
 
     onlyAvailable: boolean = false;
@@ -49,6 +65,119 @@ export class MenuComponent {
 
     searchQuery: string = '';
     items: any[] = [];
+
+    constructor() {
+        effect(() => {
+            this.profileData = this._profileService.profileDataChanges();
+
+            if (!this.profileData) {
+                this.menuItems = [
+                    {
+                        label: 'Inici',
+                        icon: 'pi pi-home',
+                        routerLink: ['/'],
+                    },
+                ];
+            } else {
+                if (this.profileData.role == Role.ADMIN) {
+                    this.menuItems = [
+                        {
+                            label: 'Panell de control',
+                            icon: 'pi pi-table',
+                            routerLink: ['/dashboard'],
+                            items: [
+                                {
+                                    label: 'Perfil',
+                                    icon: 'pi pi-user',
+                                    routerLink: ['/perfil'],
+                                },
+                                {
+                                    label: 'Crear usuari',
+                                    icon: 'pi pi-user-plus',
+                                    routerLink: ['/creacio-usuari'],
+                                },
+                                {
+                                    label: 'Llistar usuaris',
+                                    icon: 'pi pi-list',
+                                    routerLink: ['/llista-usuaris'],
+                                },
+                                {
+                                    label: 'Importar CSV',
+                                    icon: 'pi pi-file-import',
+                                    routerLink: ['/importar-usuaris'],
+                                },
+                                {
+                                    label: 'Logs',
+                                    icon: 'pi pi-cloud-upload',
+                                    navigateTo: 'http://127.0.0.1:8000/admin/biblioApp/log/',
+                                },
+                            ],
+                        },
+                        {
+                            label: 'Sortir',
+                            icon: 'pi pi-fw pi-power-off',
+                            command: () => this.logout(),
+                        },
+                    ];
+                } else if (this.profileData.role == Role.BIBLIO) {
+                    this.menuItems = [
+                        {
+                            label: 'Panell de control',
+                            icon: 'pi pi-table',
+                            routerLink: ['/dashboard'],
+                            items: [
+                                {
+                                    label: 'Perfil',
+                                    icon: 'pi pi-user',
+                                    routerLink: ['/perfil'],
+                                },
+                                {
+                                    label: 'Crear usuari',
+                                    icon: 'pi pi-user-plus',
+                                    routerLink: ['/creacio-usuari'],
+                                },
+                                {
+                                    label: 'Llistar usuaris',
+                                    icon: 'pi pi-list',
+                                    routerLink: ['/llista-usuaris'],
+                                },
+                                {
+                                    label: 'Importar CSV',
+                                    icon: 'pi pi-file-import',
+                                    routerLink: ['/importar-usuaris'],
+                                },
+                            ],
+                        },
+                        {
+                            label: 'Sortir',
+                            icon: 'pi pi-fw pi-power-off',
+                            command: () => this.logout(),
+                        },
+                    ];
+                } else if (this.profileData.role == Role.USER) {
+                    this.menuItems = [
+                        {
+                            label: 'Panell de control',
+                            icon: 'pi pi-table',
+                            routerLink: ['/dashboard'],
+                            items: [
+                                {
+                                    label: 'Perfil',
+                                    icon: 'pi pi-user',
+                                    routerLink: ['/perfil'],
+                                },
+                            ],
+                        },
+                        {
+                            label: 'Sortir',
+                            icon: 'pi pi-fw pi-power-off',
+                            command: () => this.logout(),
+                        },
+                    ];
+                }
+            }
+        });
+    }
 
     async searchItems(query: string) {
         try {
@@ -124,128 +253,9 @@ export class MenuComponent {
     email!: string;
 
     async ngOnInit() {
-        this._logService.logInfo('Initializing HomeComponent', 'Inicializando HomeComponent', 'HomeComponent - ngOnInit()');
-        this._profileService.profileDataChanges.subscribe((value) => {
-            this.profileData = value;
-
-            const role = value.role;
-            this.email = this.profileData.email;
-
-            switch (role) {
-                case 1:
-                    this.roleName = 'ADMIN';
-                    break;
-                case 2:
-                    this.roleName = 'BIBLIOTECÀRIA';
-                    break;
-                case 3:
-                    this.roleName = 'USUARI';
-                    break;
-                default:
-                    this.roleName = 'USUARI';
-            }
-
+        if (this.profileData) {
             console.log('roleName -> ', this.roleName);
             console.log('profileData -> ', this.profileData);
-
-            if (this.profileData) {
-                if (role == Role.ADMIN) {
-                    this.menuItems = [
-                        {
-                            label: 'Panell de control',
-                            icon: 'pi pi-table',
-                            routerLink: ['/dashboard'],
-                            items: [
-                                {
-                                    label: 'Perfil',
-                                    icon: 'pi pi-user',
-                                    routerLink: ['/perfil'],
-                                },
-                                {
-                                    label: 'Crear usuari',
-                                    icon: 'pi pi-user-plus',
-                                    routerLink: ['/creacio-usuari'],
-                                },
-                                {
-                                    label: 'Llistar usuaris',
-                                    icon: 'pi pi-list',
-                                    routerLink: ['/llista-usuaris'],
-                                },
-                                {
-                                    label: 'Importar CSV',
-                                    icon: 'pi pi-file-import',
-                                    routerLink: ['/importar-usuaris'],
-                                },
-                                {
-                                    label: 'Logs',
-                                    icon: 'pi pi-cloud-upload',
-                                    navigateTo: 'http://127.0.0.1:8000/admin/biblioApp/log/',
-                                },
-                            ],
-                        },
-                        {
-                            label: 'Sortir',
-                            icon: 'pi pi-fw pi-power-off',
-                            command: () => this.logout(),
-                        },
-                    ];
-                } else if (role == Role.BIBLIO) {
-                    this.menuItems = [
-                        {
-                            label: 'Panell de control',
-                            icon: 'pi pi-table',
-                            routerLink: ['/dashboard'],
-                            items: [
-                                {
-                                    label: 'Perfil',
-                                    icon: 'pi pi-user',
-                                    routerLink: ['/perfil'],
-                                },
-                                {
-                                    label: 'Crear usuari',
-                                    icon: 'pi pi-user-plus',
-                                    routerLink: ['/creacio-usuari'],
-                                },
-                                {
-                                    label: 'Llistar usuaris',
-                                    icon: 'pi pi-list',
-                                    routerLink: ['/llista-usuaris'],
-                                },
-                                {
-                                    label: 'Importar CSV',
-                                    icon: 'pi pi-file-import',
-                                    routerLink: ['/importar-usuaris'],
-                                },
-                            ],
-                        },
-                        {
-                            label: 'Sortir',
-                            icon: 'pi pi-fw pi-power-off',
-                            command: () => this.logout(),
-                        },
-                    ];
-                } else if (role == Role.USER) {
-                    this.menuItems = [
-                        {
-                            label: 'Panell de control',
-                            icon: 'pi pi-table',
-                            routerLink: ['/dashboard'],
-                            items: [
-                                {
-                                    label: 'Perfil',
-                                    icon: 'pi pi-user',
-                                    routerLink: ['/perfil'],
-                                },
-                            ],
-                        },
-                        {
-                            label: 'Sortir',
-                            icon: 'pi pi-fw pi-power-off',
-                            command: () => this.logout(),
-                        },
-                    ];
-                }
-            }
-        });
+        }
     }
 }

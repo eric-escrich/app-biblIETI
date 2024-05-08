@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Role } from '../constants/role.code';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -20,15 +20,12 @@ export class ProfileService {
     private baseUrl: string = environment.apiUrl;
     selfProfileData: any;
 
-    profileDataChanges = new BehaviorSubject<any>(null);
+    profileDataChanges = signal(null);
 
     constructor(private http: HttpClient) {}
 
     async ngOnInit() {
         this.selfProfileData = await this.getSelfProfileData();
-        this.profileDataChanges.subscribe((value) => {
-            this.selfProfileData = value;
-        });
     }
 
     async getSelfProfileData() {
@@ -41,7 +38,7 @@ export class ProfileService {
 
             if (response.status === 200) {
                 this.selfProfileData = response.body;
-                this.profileDataChanges.next(this.selfProfileData);
+                this.profileDataChanges.set(this.selfProfileData);
                 return this.selfProfileData;
             }
         } catch (error: any) {
@@ -60,6 +57,7 @@ export class ProfileService {
         if (this.selfProfileData) return this.selfProfileData;
         else if (this._storageService.getItem('profile')) {
             this.selfProfileData = JSON.parse(this._storageService.getItem('profile')!);
+            this.profileDataChanges.set(this.selfProfileData);
             return this.selfProfileData;
         } else {
             return await this.getSelfProfileData();
@@ -70,6 +68,7 @@ export class ProfileService {
         if (this.selfProfileData) return this.selfProfileData;
         else if (this._storageService.getItem('profile')) {
             this.selfProfileData = JSON.parse(this._storageService.getItem('profile')!);
+            this.profileDataChanges.set(this.selfProfileData);
             return this.selfProfileData;
         } else {
             return null;
@@ -178,7 +177,7 @@ export class ProfileService {
         this._logService.logInfo('Token refresh delete', 'Se ha eliminado el token refresh del localStorage', 'ProfileService - logout', mail);
 
         this.selfProfileData = null;
-        this.profileDataChanges = new BehaviorSubject<any>(null);
+        this.profileDataChanges.set(null);
         this._logService.logInfo('User data delete', 'Se ha seteado la variable selfProfileData en null', 'ProfileService - logout', mail);
 
         this._storageService.removeItem('profile');

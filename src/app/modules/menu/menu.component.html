@@ -1,13 +1,18 @@
+
 <div class="card sticky top-0 z-50">
     <p-menubar [model]="menuItems">
         <ng-template pTemplate="start">
-            <img src="/assets/imgs/libros3D.png" height="40" class="mr-2" />
+            <div class="flex gap-2">
+                <img src="/assets/imgs/libros3D.png" height="40" class="mr-2" />
+                @if (this.profileData) {
+                    <div class="flex flex-col items-center justify-center mr-6">
+                        <span>{{ profileData.email }}</span>
+                        <span>{{ role() }}</span>
+                    </div>
+                }
+            </div>
         </ng-template>
 
-        @if (email && roleName) {
-            <span>{{ email }} - {{ roleName }}</span>
-        }
-        
         <ng-template pTemplate="end">
             <div class="flex flex-row gap-x-4 items-center">
                 <p-autoComplete
