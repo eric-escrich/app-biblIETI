@@ -73,4 +73,38 @@ export class FormValidationService {
         const telefonoRegex = /^[679][0-9]{8}$/;
         return telefonoRegex.test(telefono);
     }
+
+    isValidIsbn(isbn: string) {
+        // Eliminar guiones o espacios en blanco del ISBN
+        isbn = isbn.replace(/[-\s]/g, '');
+
+        // Verificar si el ISBN tiene 10 o 13 dígitos
+        if (isbn.length !== 10 && isbn.length !== 13) {
+            return false;
+        }
+
+        // Verificar si todos los caracteres son dígitos o el último carácter es 'X' (solo en ISBN-10)
+        if (isbn.length === 10 && !/^\d{9}(\d|X)$/.test(isbn)) {
+            return false;
+        } else if (isbn.length === 13 && !/^\d{12}(\d|X)$/.test(isbn)) {
+            return false;
+        }
+
+        // Calcular la suma ponderada de los dígitos
+        let suma = 0;
+        for (let i = 0; i < isbn.length - 1; i++) {
+            suma += parseInt(isbn[i]) * (i % 2 === 0 ? 1 : 3);
+        }
+
+        // Calcular el dígito de verificación
+        let digitoVerificador = (10 - (suma % 10)) % 10;
+
+        // Verificar si el dígito de verificación coincide con el último dígito del ISBN (solo en ISBN-10)
+        if (isbn.length === 10) {
+            return digitoVerificador === (isbn[9] === 'X' ? 10 : parseInt(isbn[9]));
+        }
+
+        // Verificar si el dígito de verificación coincide con el último dígito del ISBN (solo en ISBN-13)
+        return digitoVerificador === parseInt(isbn[12]);
+    }
 }
