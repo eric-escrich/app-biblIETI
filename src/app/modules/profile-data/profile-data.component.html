@@ -11,10 +11,10 @@
         <div class="flex justify-between items-center w-full">
             <div class="flex flex-row items-center">
                 @if (profileData) {
-                    <div class="profileImag flex justify-center">
+                    <div class="profileImag flex justify-center" (click)="fileInput.click()">
                         <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput style="display: none" />
                         <div class="image-overlay"></div>
-                        <img [src]="profileImage" (click)="fileInput.click()" alt="Imate de perfil"/>
+                        <img [src]="profileImage" alt="Imate de perfil"/>
                         <i class="pi pi-pencil edit-icon"></i>
                     </div>
                 }
@@ -50,14 +50,7 @@
                         </div>
                     }
                 </div>
-            </div>
-
-            <div class="flex flex-row gap-x-20 justify-between items-center">
-                <div class="flex flex-col">
-                    <h3>Correo</h3>
-                    <p>{{profileData.email}}</p>
-                </div>
-            </div>                
+            </div>              
 
             <div class="flex flex-row gap-x-20 justify-between items-center">
                 <div class="flex flex-col">
@@ -103,12 +96,64 @@
                     }
                 </div>
             </div>
+
+            <div class="flex flex-row gap-x-20 justify-between items-center">
+                <div class="flex flex-col">
+                    <h3>Correo</h3>
+                    <p>{{profileData.email}}</p>
+                </div>
+            </div>  
+
+            <div>
+                <div class="flex flex-col">
+                    <h3>Nom d'usuari</h3>
+                    <p>{{profileData.username}}</p>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex flex-col">
+                    <h3>Centre</h3>
+                    <p>{{profileData.center}}</p>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex flex-col">
+                    <h3>DNI / NIE</h3>
+                    <p>{{profileData.dni}}</p>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex flex-col">
+                    <h3>Data de neixament</h3>
+                    <p>{{profileData.date_of_birth}}</p>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex flex-col">
+                    <h3>Rol</h3>
+                    @if (profileData.role == Role.ADMIN) {
+                        <p>ADMINISTRADOR</p>
+                    }
+                    @else if (profileData.role == Role.BIBLIO) {
+                        <p>BIBLIOTECÀRIA</p>
+                    }
+                    @if (profileData.role == Role.USER) {
+                        <p>USUARI</p>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="flex flex-row items-center gap-x-4">
-        <p-button severity="dangeroutlined" (onClick)="logout()">Tancar sessió</p-button>
-        <p-button (click)="cancelChanges()" severity="min" [routerLink]="['/dashboard']">Cancelar</p-button>
-        <p-button (click)="saveChanges()" severity="fill-rounded">Guardar canvis</p-button>
+        <p-button severity="min" [routerLink]="['/dashboard']">Tornar</p-button>
+        @if (isEditing) {
+            <p-button severity="dangeroutlined" (click)="cancelChanges()">Cancel·lar</p-button>
+            <p-button (click)="saveChanges()" severity="fill-rounded">Guardar canvis</p-button>
+        }
     </div>
 </div>

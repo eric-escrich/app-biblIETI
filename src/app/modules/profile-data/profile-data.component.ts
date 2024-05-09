@@ -16,6 +16,7 @@ import { MessageService } from 'primeng/api';
 import { AuthService } from '../../core/auth/auth.service';
 import { PasswordModule } from 'primeng/password';
 import { environment } from '../../../environments/environment';
+import { Role } from '../../constants/role.code';
 
 @Component({
     selector: 'app-profile-data',
@@ -47,6 +48,8 @@ export class ProfileDataComponent {
     public file!: any;
     profileImage = '';
     public role!: any;
+
+    Role = Role;
 
     async ngOnInit() {
         this._logService.logInfo('Initializing DashboardComponent', 'Inicializando DashboardComponent', 'DashboardComponent - ngOnInit()');
