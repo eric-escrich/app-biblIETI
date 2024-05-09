@@ -16,55 +16,90 @@
                     </div>
                 </ng-template>
 
-
-                <div class="flex flex-col items-center justify-start gap-x-20 w-full">    
-                    <div class="grid grid-cols-3 gap-4 items-end">
-                        <!-- <div class="flex flex-col items-start">
-                            <label for="inputTitol">Títol</label>
-                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
-                        </div>
-
-                        <div class="flex flex-col items-start">
-                            <label for="inputAutorArtista">Autor/artista</label>
-                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
-                        </div>
-
-                        <div class="flex flex-col items-start">
-                            <label for="materiaInput">Matèria</label>
-                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
-                        </div>
-
-                        <div class="flex flex-col items-start">
-                            <label for="tipusDeMaterial">Tipus de material</label>
-                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
-                        </div>
-
-                        <div class="flex flex-col items-start">
-                            <label for="inputLlengua">Llengua</label>
-                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
-                        </div>
-
-                        <div class="flex flex-col items-start">
-                            <label for="inputAny">Any:</label>
-                            <p-autoComplete  [suggestions]="items" (input)="onFilterChange()" [minLength]="3" field="name" (onSelect)="onItemSelect($event)"></p-autoComplete>
-                        </div>
-                        
-                        <div class="flex flex-row items-end gap-x-4">
+                <form>
+                    <div class="flex flex-col items-center justify-start gap-x-20 w-full">    
+                        <div class="grid grid-cols-3 gap-4 items-end">
                             <div class="flex flex-col items-start">
-                                <form [formGroup]="formGroup">
-                                    <label for="selectOrdenarPer">Ordenar per</label>
-                                    <p-selectButton id="selectOrdenarPer" [options]="stateOptions" formControlName="value" optionLabel="label" optionValue="value"></p-selectButton>
-                                </form>
+                                <label for="inputTitol">Títol</label>
+                                <p-autoComplete
+                                    [(ngModel)]="searchQuery"
+                                    name="searchQuery"
+                                    [suggestions]="items"
+                                    (input)="onFilterChange()"
+                                    [minLength]="3"
+                                    field="name"
+                                    (onSelect)="onItemSelect($event)"
+                                ></p-autoComplete>
                             </div>
 
                             <div class="flex flex-col items-start">
-                                <p-button severity="icon">
-                                    <i class="pi pi-search"></i>
-                                </p-button>
-                            </div> -->
-                        <!-- </div> -->
+                                <label for="tipoItem">Tipus d'item</label>
+                                <p-dropdown 
+                                    [options]="typesItemsArray" 
+                                    [(ngModel)]="typeItem" 
+                                    name="typeItem"
+                                    optionLabel="name" 
+                                    placeholder="Tipus d'item" />
+                            </div>
+
+                            <div class="flex flex-col items-start">
+                                <label for="tipoItem">Estat</label>
+                                <p-dropdown 
+                                    [options]="statusArray" 
+                                    [(ngModel)]="status" 
+                                    name="status"
+                                    optionLabel="name" 
+                                    placeholder="Estat" />
+                            </div>
+
+                            <div class="flex flex-col items-start">
+                                <label for="tipoItem">Centre</label>
+                                <p-dropdown 
+                                [options]="centersArray" 
+                                [(ngModel)]="center" 
+                                name="center"
+                                optionLabel="label" 
+                                placeholder="Centre"/>
+                            </div>
+                            <div class="w-full flex gap-6">
+                                <div>
+                                    <label for="date">Data de publicació (menor)</label>
+                                    <p-calendar [(ngModel)]="publishDateMin" name="publishDateMin" id="publishDateMin" [style]="{ width: '100%' }"></p-calendar>
+                                </div>
+    
+                                <div>
+                                    <label for="date">Data de publicació (major)</label>
+                                    <p-calendar [(ngModel)]="publishDateMax" name="publishDateMax" id="publishDateMax" [style]="{ width: '100%' }"></p-calendar>
+                                </div>
+                            </div>
+
+                            @if (typeItem && typeItem.value == 'llibre') {
+                                <div class="flex flex-col items-start">
+                                    <label for="tipoItem">Editorial</label>
+                                    <p-dropdown 
+                                        [options]="publisherArray" 
+                                        [(ngModel)]="publisher"
+                                        name="publisher"
+                                        optionLabel="label" 
+                                        placeholder="Editorial"/>
+                                </div>
+    
+                                <div class="flex flex-col items-start">
+                                    <label for="tipoItem">Idioma</label>
+                                    <p-dropdown 
+                                        [options]="languagesArray" 
+                                        [(ngModel)]="language"
+                                        name="language"
+                                        optionLabel="name" 
+                                        placeholder="Idioma"/>
+                                </div>
+                            }
+
+                            <p-button (click)="advancedSearch()" class="w-full" severity="fill-rounded" [style]="{ width: '100%' }">Guardar</p-button>
+
+                        </div>
                     </div>
-                </div>
+                </form>
             </p-panel>
         </div>
     </form>
@@ -76,11 +111,11 @@
             <div
                 class="cards w-64 h-[30rem]"
                 [class.justify-center]="item.item_type != 'Book'"
-                *ngFor="let item of items"
+                *ngFor="let item of currentItems"
                 (click)="onSelectItem(item)"
             >
                 @if (item.item_type == 'Book') {
-                    <img class="bookCard" [src]="getRandomImage(booksImages)" alt="Imatge de la portada del llibre">
+                    <img class="bookCard" [src]="item.image" alt="Imatge de la portada del llibre">
                     <div class="details">
                         <p class="title m-0 text-center">{{item.title}}</p>
                         <p class="m-0 text-center">Escriptor: {{item.author}}</p>
@@ -88,7 +123,7 @@
                         <p class="m-0 text-center">Exemplars disponibles: {{item.available_copies}}</p>
                     </div>
                 } @else if (item.item_type == 'CD') {
-                    <img class="cdCard" [src]="getRandomImage(cdsImages)" alt="Imatge de la portada del CD">
+                    <img class="cdCard" [src]="item.image" alt="Imatge de la portada del CD">
                     <div class="details">
                         <p class="title m-0 text-center">{{item.title}}</p>
                         <p class="m-0 text-center">Artista: {{item.author}}</p>
@@ -100,11 +135,16 @@
             </div>
         </div>
     </div>
-    <p-paginator
-        (onPageChange)="onPageChange($event)"
-        [first]="first"
-        [rows]="rows"
-        [totalRecords]="totalItems"
-        [rowsPerPageOptions]="[10, 20, 30]"
-    ></p-paginator>
+    <div class="flex items-center justify-center">
+        <p-paginator
+            (onPageChange)="onPageChange($event)"
+            [first]="first"
+            [rows]="rows"
+            [totalRecords]="items.length"
+            [showFirstLastIcon]="false" 
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="{first} - {last} de {totalRecords}"
+            [rowsPerPageOptions]="[10, 25, 35, 50, 75, 100, 120]"
+        ></p-paginator>
+    </div>
 }

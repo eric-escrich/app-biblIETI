@@ -10,7 +10,7 @@
        
         <form method="post" (ngSubmit)="onSubmit()">
             <div class="p-20 flex flex-col gap-6 items-center justify-center">
-                <div class="flex flex-row gap-6 justify-around items-center">
+                <div class="flex flex-col gap-6 justify-around items-center">
                     <div class="confCompteContainer">
                         <div class="edicioCompteContainer">
                             <div class="capcelera">
@@ -121,21 +121,21 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                    
-                <div class="flex flex-row gap-x-4 items-start w-[90%]">
-                    <p-button
-                        class="w-full"
-                        severity="dangeroutlined"
-                        (onClick)="setDefaultData()"
-                        [style]="{ width: '100%' }"
-                    >Cancelar</p-button>
-                    <p-button
-                        class="w-full"
-                        type="submit"
-                        severity="fill-rounded"
-                        [style]="{ width: '100%' }"
-                    >Guardar canvis</p-button>
+                    <div class="flex flex-row gap-x-4 items-start w-[90%]">
+                        <p-button
+                            class="w-full"
+                            severity="dangeroutlined"
+                            (onClick)="setDefaultData()"
+                            [routerLink]="['/dashboard']"
+                            [style]="{ width: '100%' }"
+                        >Cancelar</p-button>
+                        <p-button
+                            class="w-full"
+                            type="submit"
+                            severity="fill-rounded"
+                            [style]="{ width: '100%' }"
+                        >Guardar canvis</p-button>
+                    </div>
                 </div>
             </div>
         </form>

@@ -7,11 +7,12 @@ import { DialogService } from '../../services/dialog.service';
 import { TableModule } from 'primeng/table';
 import { RoleService } from '../../services/role.service';
 import { PaginatorModule } from 'primeng/paginator';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
     selector: 'app-list-users',
     standalone: true,
-    imports: [RouterModule, CommonModule, TableModule, PaginatorModule],
+    imports: [RouterModule, CommonModule, TableModule, PaginatorModule, ButtonModule, RouterLink],
     templateUrl: './list-users.component.html',
     styleUrl: './list-users.component.css',
 })

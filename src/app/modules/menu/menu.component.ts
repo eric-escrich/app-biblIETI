@@ -107,6 +107,11 @@ export class MenuComponent {
                                     routerLink: ['/importar-usuaris'],
                                 },
                                 {
+                                    label: 'Crear llibre',
+                                    icon: 'pi pi-book',
+                                    routerLink: ['/crear-item'],
+                                },
+                                {
                                     label: 'Logs',
                                     icon: 'pi pi-cloud-upload',
                                     navigateTo: 'http://127.0.0.1:8000/admin/biblioApp/log/',
@@ -145,6 +150,11 @@ export class MenuComponent {
                                     label: 'Importar CSV',
                                     icon: 'pi pi-file-import',
                                     routerLink: ['/importar-usuaris'],
+                                },
+                                {
+                                    label: 'Crear llibre',
+                                    icon: 'pi pi-book',
+                                    routerLink: ['/crear-item'],
                                 },
                             ],
                         },
