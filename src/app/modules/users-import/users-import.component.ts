@@ -131,8 +131,6 @@ export class UsersImportComponent {
         try {
             const response = await this._authService.uploadUsers(users);
 
-            console.log('response ----------> ', response);
-
             this.messages = response.body.messages;
             this.totalSaves = response.body.saves;
             this.errorsCount = response.body.errorsCount;
