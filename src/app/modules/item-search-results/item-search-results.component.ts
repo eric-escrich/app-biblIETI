@@ -6,12 +6,11 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { PanelModule } from 'primeng/panel';
 import { SliderModule } from 'primeng/slider';
 import { CalendarModule } from 'primeng/calendar';
-import { SelectItemGroup } from 'primeng/api';
 import { LibrosComponent } from '../libros/libros.component';
 import { ItemService } from '../../services/item.service';
 import { DialogService } from '../../services/dialog.service';
@@ -64,6 +63,7 @@ export class ItemSearchResultsComponent implements OnInit {
     selectedItem: any;
     checked: boolean = false;
 
+    isAdvancedOptions: boolean = false;
     items!: any[];
     currentItems!: any[];
     totalItems!: number;
@@ -81,14 +81,15 @@ export class ItemSearchResultsComponent implements OnInit {
     typeItem!: any;
 
     statusArray = [
-        { name: 'Disponible', value: 'Available' },
-        { name: 'No disponible', value: 'Indiferent' },
+        { name: 'Lliure', value: 'Available' },
+        { name: 'Indiferent', value: 'Indiferent' },
         { name: 'En préstec', value: 'Loaned' },
     ];
     status!: any;
 
     centersArray!: any;
     center!: any;
+    centersObject: any;
 
     publishDateMin!: Date;
     publishDateMax!: Date;
@@ -115,6 +116,8 @@ export class ItemSearchResultsComponent implements OnInit {
         });
 
         this.centersArray = await this._itemService.getCenters();
+        console.log('Centers-------------------------------', this.centersArray);
+
         this.publisherArray = await this._itemService.getPublishers();
 
         if (this.query) {
@@ -145,19 +148,6 @@ export class ItemSearchResultsComponent implements OnInit {
     toggleSettings() {
         this.areSettingsVisible = !this.areSettingsVisible;
     }
-
-    // async searchItems(item: string) {
-    //     try {
-    //         const response: any = await this._itemService.autocompleatQuery(item);
-    //         console.log('HomeComponent | searchItems - response -> ', response);
-
-    //         this.items = response;
-    //         suggestions: [] = this.items.map((item) => item.name);
-    //     } catch (error: any) {
-    //         console.error('Error fetching items', error);
-    //         this._dialogService.showDialog('ERROR', "No s'han pogut carregar els resultats de la cerca. Si us plau, torna-ho a provar més tard.");
-    //     }
-    // }
 
     async searchItemsOnlyAvailable(query: string, page: number, pageSize: number) {
         try {
@@ -286,6 +276,19 @@ export class ItemSearchResultsComponent implements OnInit {
         this._router.navigate(['/detall-item/', item.id]);
     }
 
+    onSelectItemFilter(item: any) {
+        console.log('Item selected', item);
+
+        this._logService.logInfo(
+            'Item selected',
+            `Item with id ${item.item_id} has been selected ('${item.item_name}')`,
+            'HomeComponent - onItemSelect',
+        );
+
+        this._logService.logInfo('Redirect', `Redirecció a la pàgina de /itemDetails`, 'HomeComponent - viewItemDetails');
+        this._router.navigate(['/detall-item/', item.item_id]);
+    }
+
     async advancedSearch() {
         try {
             let query = '';
@@ -332,12 +335,14 @@ export class ItemSearchResultsComponent implements OnInit {
                     publisher,
                     language,
                 );
+                // console.log('Advanced search results', response);
 
-                if (response.status === 200) {
-                    this.items = response.body.item_copies;
-                    console.log('items ---> ', this.items);
-
+                if (response) {
+                    this.isAdvancedOptions = true;
+                    this.items = response;
                     this.updateDisplayItems();
+                    this.centersObject = await this._itemService.getCentersObject();
+                    console.log('CentersObject-------------------------------', this.centersObject);
                 }
 
                 suggestions: [] = this.items.map((item) => item.name);

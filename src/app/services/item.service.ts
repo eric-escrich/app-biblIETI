@@ -160,9 +160,8 @@ export class ItemService {
                         // Handle other item types if needed
                     }
                 });
+                return items;
             }
-
-            return response.body;
         } catch (error: any) {
             console.error('Error fetching items', error);
             throw error;
@@ -190,9 +189,8 @@ export class ItemService {
                         // Handle other item types if needed
                     }
                 });
+                return items;
             }
-
-            return response.body;
         } catch (error: any) {
             console.error('Error fetching items', error);
             throw error;
@@ -319,6 +317,21 @@ export class ItemService {
         }
     }
 
+    async getCentersObject() {
+        try {
+            const response: any = await firstValueFrom(
+                this.http.get(`${this.baseUrl}/centers/get-centers/`, {
+                    observe: 'response',
+                }),
+            );
+
+            return response.body;
+        } catch (error: any) {
+            console.error('Error fetching center', error);
+            throw error;
+        }
+    }
+
     async getPublishers() {
         try {
             const response: any = await firstValueFrom(
@@ -353,15 +366,6 @@ export class ItemService {
         language: string = '',
     ) {
         try {
-            console.log('item_type', item_type);
-            console.log('search', search);
-            console.log('status', status);
-            console.log('center', center);
-            console.log('edition_date_start', edition_date_start);
-            console.log('edition_date_end', edition_date_end);
-            console.log('publisher', publisher);
-            console.log('language', language);
-
             const response: any = await firstValueFrom(
                 this.http.post(
                     `${this.baseUrl}/items/search-advanced/`,
@@ -382,7 +386,20 @@ export class ItemService {
             );
 
             if (response.status === 200) {
-                return response;
+                const items = response.body.item_copies;
+                items.forEach((item: any) => {
+                    if (item.item_type === 'llibre') {
+                        const randomIndex = Math.floor(Math.random() * this.booksImages.length);
+                        item.image = this.booksImages[randomIndex];
+                    } else if (item.item_type === 'cd') {
+                        const randomIndex = Math.floor(Math.random() * this.cdsImages.length);
+                        item.image = this.cdsImages[randomIndex];
+                    } else {
+                        console.log('ItemService - getItemsByAdvancedQuery - item_type', item.item_type);
+                    }
+                });
+
+                return items;
             } else {
                 this._logService.logError('Returned Items', `La consulta avanzada devolvió un error`, 'ItemService - searchQueryPaginator');
                 return response;

@@ -105,7 +105,59 @@
     </form>
 </div>
 
-@if (items) {
+@if (isAdvancedOptions && items) {
+    <div class="searchContainer">
+        <div class="grid grid-cols-3 px-10 mb-40 justify-center gap-x-20">
+            <div
+                class="cards w-64 h-[30rem]"
+                [class.justify-center]="item.item_type != 'Book'"
+                *ngFor="let item of currentItems"
+                (click)="onSelectItemFilter(item)"
+            >
+                @if (item.item_type == 'llibre') {
+                    <img class="bookCard" [src]="item.image" alt="Imatge de la portada del llibre">
+                    <div class="details">
+                        <p class="title m-0 text-center">{{item.item_name}}</p>
+                        @if (item.status == 'Available') {
+                            <p class="m-0 text-center">Estat: Lliure</p>
+                        } @else if (item.status == 'Indiferent') {
+                            <p class="m-0 text-center">Estat: Indiferent</p>
+                        } @else if (item.status == 'Loaned') {
+                            <p class="m-0 text-center">Estat: En prèstec</p>
+                        }
+                        <p class="m-0 text-center">Centre: {{ centersObject[item.center] }}</p>
+                    </div>
+                } @else if (item.item_type == 'cd') {
+                    <img class="cdCard" [src]="item.image" alt="Imatge de la portada del CD">
+                    <div class="details">
+                        <p class="title m-0 text-center">{{item.item_name}}</p>
+                        @if (item.status == 'Available') {
+                            <p class="m-0 text-center">Estat: Lliure</p>
+                        } @else if (item.status == 'Indiferent') {
+                            <p class="m-0 text-center">Estat: Indiferent</p>
+                        } @else if (item.status == 'Loaned') {
+                            <p class="m-0 text-center">Estat: En prèstec</p>
+                        }
+                        <p class="m-0 text-center">Centre: {{ centersObject[item.center] }}</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="flex items-center justify-center">
+        <p-paginator
+            (onPageChange)="onPageChange($event)"
+            [first]="first"
+            [rows]="rows"
+            [totalRecords]="items.length"
+            [showFirstLastIcon]="false" 
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="{first} - {last} de {totalRecords}"
+            [rowsPerPageOptions]="[10, 25, 35, 50, 75, 100, 120]"
+        ></p-paginator>
+    </div>
+}
+@if (!isAdvancedOptions && items) {
     <div class="searchContainer">
         <div class="grid grid-cols-3 px-10 mb-40 justify-center gap-x-20">
             <div
